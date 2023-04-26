@@ -9,6 +9,7 @@ class FlowModel(nn.Module):
         # Define the vocabulary
         self.vocab = vocab
 
+        # Define the device
         self.device = device
 
         # Define the embedding layer
@@ -27,6 +28,7 @@ class FlowModel(nn.Module):
         # Define the linear layer for decoding the output token
         self.decoder = nn.Linear(embedding_dim, len(vocab))
 
+        # Define the logZ parameter
         self.logZ = nn.Parameter(torch.ones(1))
 
     def forward(self, x):

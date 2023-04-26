@@ -4,29 +4,36 @@ from torch.distributions.categorical import Categorical
 import matplotlib.pyplot as plt
 import numpy as np
 
-from env import Primes
-from grammar import Grammar
+from src.env import Primes
+from src.sequential.grammar import Grammar
 from model import FlowModel
+from src.sequential.tokenizer import Tokenizer
 
 primes = Primes(100)
-primes.plot_rewards()
+# primes.plot_rewards()
 grammar = Grammar(primes)
+tokenizer = Tokenizer()
 
-vocab = grammar.primitives
+
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model = FlowModel(vocab, device).to(device)
-opt = torch.optim.Adam(model.parameters(), 3e-4)
 
-epochs = 10
+
+epochs = 2500
 max_trajectory = 5
-
 losses = []
 sampled_functions = []
-
 minibatch_loss = 0
 update_freq = 2
-
 logZs = []
+
+# vocab = tokenizer.tokenize(''.join(grammar.primitives))
+# for _ in range(max_trajectory):
+#     vocab.insert(0, tokenizer.character_to_token('<BOS>'))
+
+
+vocab = [''] + grammar.primitives
+model = FlowModel(vocab, device).to(device)
+opt = torch.optim.Adam(model.parameters(), 3e-4)
 
 for episode in tqdm.tqdm(range(epochs)):
     state = ['']
@@ -59,7 +66,7 @@ for episode in tqdm.tqdm(range(epochs)):
         logZs.append(model.logZ.item())
 
 
-f, ax = plt.subplots(2, 1, figsize=(10,6))
+f, ax = plt.subplots(2, 1, figsize=(10, 6))
 plt.sca(ax[0])
 plt.plot(losses)
 plt.yscale('log')
