@@ -27,6 +27,7 @@ class Grammar:
 
     def valid_function(self, func: list) -> bool:
 
+        # no additional starting tokens should be in the sequence
         if '<START>' in func:
             return False
 
@@ -62,10 +63,11 @@ class Grammar:
 
     def reward(self, func: list) -> int:
         assert func[0] == '<START>', 'The function should start with <START>'
-        func = func[1:]
+        func = func.copy()[1:]
 
+        # remove the stop token for evaluation
         if func[-1] == '<STOP>':
-            func = func[:-1].copy()
+            func = func[:-1]
 
         # We want to check whether the created function is well-defined
         if not self.valid_function(func):
@@ -82,4 +84,6 @@ class Grammar:
 
         # we want a short function to avoid redundancy
         else:
-            return max(3, 2 * max_trajectory - len(func))
+            print(func)
+            # return max(3, 2 * max_trajectory - len(func))
+            return 30

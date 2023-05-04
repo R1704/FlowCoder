@@ -1,7 +1,6 @@
 import re
 
 
-# TODO: I suspect the regex is really slow.
 class Tokenizer:
     def __init__(self, grammar):
         self.grammar = grammar
@@ -13,6 +12,7 @@ class Tokenizer:
 
     def seq2tokens(self, seq):
         return re.findall(self.terminals_pattern + '|' + self.nonterminals_pattern + '|<START>|<STOP>', ''.join(seq))
+
     def encode(self, seq):
         token_seq = self.seq2tokens(seq)
         return [self.token_to_idx[token] for token in token_seq]
