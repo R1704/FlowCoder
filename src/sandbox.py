@@ -18,14 +18,58 @@ loop = lambda f, x: list(map(f, x))
 
 from src.tree.AST import Node
 
+from src.tree.utils import *
+
 primitives = [
     *[Node(symbol=i) for i in range(10)],
     Node(symbol='+', arity=2, function=lambda x, y: x + y),
     Node(symbol='-', arity=2, function=lambda x, y: x - y),
     Node(symbol='*', arity=2, function=lambda x, y: x * y),
-    Node(symbol='/', arity=2, function=lambda x, y: x / y),
+    # Node(symbol='/', arity=2, function=lambda x, y: x / y),
 ]
 
-tree = Node.create_tree(primitives, depth=5)
-tree.print()
-print(tree.evaluate())
+max_depth = 5
+d_model = 64
+ast = Node.create_tree(primitives, depth=max_depth)
+ast.print()
+print(ast.evaluate())
+
+from src.tree.positional_encoding import *
+position_encoder = PositionalEncoding(d_model=d_model, max_depth=max_depth, max_arity=2)
+
+position_encoding = position_encoder.encode_position(ast)
+
+for node, encoding in position_encoding.items():
+    print(node, encoding)
+
+
+# encoded = encode_tree(tree, primitives)
+# print(encoded)
+
+# token_1 = Node(symbol='+', arity=2, function=lambda x, y: x + y)
+# token_1.attach(Node(symbol='-', arity=2, function=lambda x, y: x - y), 0)
+# token_1.attach(Node(symbol='+', arity=2, function=lambda x, y: x + y), 1)
+#
+# token_2 = Node(symbol='-', arity=2, function=lambda x, y: x - y)
+# token_2.attach(Node(symbol='-', arity=2, function=lambda x, y: x - y), 0)
+# token_2.attach(Node(symbol='+', arity=2, function=lambda x, y: x + y), 1)
+#
+# # token_1.print()
+# # token_2.print()
+# tokens = primitives + [token_1, token_2]
+#
+#
+# tree = Node(symbol='+', arity=2, function=lambda x, y: x + y)
+# tree.attach(Node(symbol='-', arity=2, function=lambda x, y: x - y), 0)
+# tree.attach(Node(symbol='+', arity=2, function=lambda x, y: x + y), 1)
+# tree.children[0].attach(Node(symbol='-', arity=2, function=lambda x, y: x - y), 0)
+# tree.children[0].attach(Node(symbol='+', arity=2, function=lambda x, y: x + y), 1)
+# # tree.print()
+#
+# from src.tree.ASTTokenizer import ASTTokenizer
+# tokenizer = ASTTokenizer(tokens)
+# tokenized_tree = tokenizer.tokenize(tree)
+#
+# for t in tokenized_tree:
+#     t.print()
+#     print('\n')

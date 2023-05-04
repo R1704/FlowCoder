@@ -1,17 +1,27 @@
+import torch
 import torch.nn as nn
-
+from positional_encoding import PositionalEncoding
+from grammar import *
 
 class TransformerModel(nn.Module):
-    def __init__(self, num_nodes, d_model, nhead, num_layers):
+    def __init__(self, vocab_size, embedding_dim, num_heads, num_layers, dim_feedforward=2048, dropout=0.1):
         super(TransformerModel, self).__init__()
-        self.transformer = nn.Transformer(
-            d_model, nhead, num_layers, dim_feedforward=2 * d_model
-        )
-        self.output_next_node = nn.Linear(d_model, 1)
-        self.output_node_type = nn.Linear(d_model, num_nodes)
 
-    def forward(self, x):
-        x = self.transformer(x)
-        next_node = self.output_next_node(x)
-        node_type = self.output_node_type(x)
-        return next_node, node_type
+        self.embedding = nn.Embedding(vocab_size, embedding_dim)
+        self.positional_encoder = PositionalEncoding(vocab_size, embedding_dim, primitives)
+
+        encoder_layer = nn.TransformerEncoderLayer(embedding_dim, num_heads, dim_feedforward, dropout)
+        self.transformer_encoder = nn.TransformerEncoder(encoder_layer, num_layers)
+
+        self.next_node_head = nn.Linear(embedding_dim, 2)
+        self.node_type_head = nn.Linear(embedding_dim, vocab_size)
+
+    def forward(self, x, tree):
+        x = self.embedding(x) + self.positional_encoder.encode(tree)
+
+        x = self.transformer_encoder(x)
+
+        next_node_logits = self.next_node_head(x)
+        node_type_logits = self.node_type_head(x)
+
+        return next_node_logits, node_type_logits

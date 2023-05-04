@@ -1,4 +1,5 @@
 import torch
+import torch.nn as nn
 from torch.optim import Optimizer
 
 
@@ -27,12 +28,14 @@ class RSGD(Optimizer):
                 # Update the model parameters using the Riemannian exponential map
                 p.add_(self._riemannian_exponential_map(p, -group['lr'] * rgrad))
 
-    def _riemannian_gradient(self, p):
+    @staticmethod
+    def _riemannian_gradient(p):
         grad = p.grad.data
         p_sqnorm = p.data.pow(2).sum(dim=-1, keepdim=True)
         return (1 - p_sqnorm).pow(2) * grad
 
-    def _riemannian_exponential_map(self, p, u):
+    @staticmethod
+    def _riemannian_exponential_map(p, u):
         p_sqnorm = p.data.pow(2).sum(dim=-1, keepdim=True)
         u_sqnorm = u.pow(2).sum(dim=-1, keepdim=True)
         second_term = ((1 - p_sqnorm).sqrt() * (u_sqnorm / (1 - p_sqnorm)).atanh() * u).clamp(
@@ -40,10 +43,10 @@ class RSGD(Optimizer):
         return second_term
 
 
-class PoincareEmbedding(torch.nn.Module):
+class PoincareEmbedding(nn.Module):
     def __init__(self, num_nodes, embedding_dim):
         super(PoincareEmbedding, self).__init__()
-        self.embedding = torch.nn.Embedding(num_nodes, embedding_dim)
+        self.embedding = nn.Embedding(num_nodes, embedding_dim)
         self.embedding.weight.data.uniform_(-0.001, 0.001)
 
     def forward(self, indices):
@@ -72,10 +75,10 @@ class PoincareEmbedding(torch.nn.Module):
         return dist.mean()
 
 
-class EuclideanEmbedding(torch.nn.Module):
+class EuclideanEmbedding(nn.Module):
     def __init__(self, num_nodes, embedding_dim):
         super(EuclideanEmbedding, self).__init__()
-        self.embedding = torch.nn.Embedding(num_nodes, embedding_dim)
+        self.embedding = nn.Embedding(num_nodes, embedding_dim)
         torch.nn.init.xavier_uniform_(self.embedding.weight.data)
 
     def forward(self, indices):
@@ -89,3 +92,21 @@ class EuclideanEmbedding(torch.nn.Module):
     def euclidean_loss(u, v):
         dist = EuclideanEmbedding.euclidean_distance(u, v)
         return dist.mean()
+
+
+def train_embeddings(model, optimizer, train_data, loss_function, max_norm, num_epochs=1):
+    """
+    Trains the given model using the given optimizer and loss function.
+    """
+    for epoch in range(num_epochs):
+        total_loss = 0
+        for u_idx, v_idx in train_data:
+            optimizer.zero_grad()
+            u = model(torch.tensor([u_idx]))
+            v = model(torch.tensor([v_idx]))
+            loss = loss_function(u, v)
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=max_norm)
+            optimizer.step()
+            total_loss += loss.item()
+        print(f'Epoch {epoch + 1}, Loss: {total_loss / len(train_data)}')
