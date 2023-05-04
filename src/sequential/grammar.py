@@ -82,4 +82,4 @@ class Grammar:
 
         # we want a short function to avoid redundancy
         else:
-            return max(3, 2 * max_trajectory - len(func) - 1)
+            return max(3, 2 * max_trajectory - len(func))

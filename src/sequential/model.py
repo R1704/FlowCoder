@@ -1,14 +1,13 @@
 import torch
 import torch.nn as nn
-from torch import jit
 
 
 class FlowModel(nn.Module):
     def __init__(self,
                  tokenizer,
                  device,
-                 embedding_dim=128,
-                 num_layers=3,
+                 embedding_dim=512,
+                 num_layers=6,
                  num_heads=8,
                  dropout_prob=0.1
                  ):
@@ -41,16 +40,22 @@ class FlowModel(nn.Module):
     def forward(self, x):
         # Get the index of the input sequence
         input_seq_idx = torch.tensor(self.tokenizer.encode(x), dtype=torch.long).to(self.device)
+
         # Add a batch dimension
         input_seq_idx = input_seq_idx.unsqueeze(1)
+
         # Embed the input sequence
         embds = self.embeddings(input_seq_idx)
+
         # Encode the input sequence
         input_encoding = self.encoder(embds)
+
         # Decode the output sequence (we only care about the last token)
         output_encoding = self.decoder(input_encoding[-1])
+
         # Return the logits
         logits = output_encoding
+
         return logits
 
 
