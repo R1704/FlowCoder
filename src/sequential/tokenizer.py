@@ -4,7 +4,7 @@ import re
 class Tokenizer:
     def __init__(self, grammar):
         self.grammar = grammar
-        self.vocab = ['<START>', '<STOP>'] + grammar.primitives
+        self.vocab = {'<START>', '<STOP>'} | grammar.primitives
         self.token_to_idx = {token: idx for idx, token in enumerate(self.vocab)}
         self.idx_to_token = {idx: token for idx, token in enumerate(self.vocab)}
         self.terminals_pattern = '|'.join([re.escape(op) for op in self.grammar.terminals])

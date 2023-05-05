@@ -1,6 +1,6 @@
-import re
+import pickle
 from src.env import Environment
-from config import *
+from src.sequential.config import *
 
 class Grammar:
     def __init__(self, env: Environment):
@@ -10,20 +10,21 @@ class Grammar:
         # A dictionary that turns string representations into actual operators
         self.ops: dict = {
             '+': lambda x, y: x + y,
-            '-': lambda x, y: x - y
+            '-': lambda x, y: x - y,
+            '*': lambda x, y: x * y,
         }
 
-        self.terminals = ['2', '3']
-        self.nonterminals = list(self.ops.keys())
-        self.primitives = self.terminals + self.nonterminals
+        self.terminals: set = {'2', '3'}
+        self.nonterminals: set = {k for k in self.ops.keys()}
+        self.primitives: set = self.terminals | self.nonterminals
 
     def add_terminal(self, terminal: str):
-        self.terminals.append(terminal)
-        self.primitives.append(terminal)
+        self.terminals.update([terminal])
+        self.primitives.update([terminal])
 
     def add_nonterminal(self, nonterminal: str):
-        self.nonterminals.append(nonterminal)
-        self.primitives.append(nonterminal)
+        self.nonterminals.update([nonterminal])
+        self.primitives.update([nonterminal])
 
     def valid_function(self, func: list) -> bool:
 
@@ -54,6 +55,7 @@ class Grammar:
         return self.ops[oper](op1, op2)
 
     # Evaluates a whole expression
+    # TODO: punkt vor strich, digga
     def evaluate(self, func: list) -> int:
         while len(func) >= 3:
             chunk = func[:3]
@@ -62,12 +64,14 @@ class Grammar:
         return int(func[0])
 
     def reward(self, func: list) -> int:
-        assert func[0] == '<START>', 'The function should start with <START>'
-        func = func.copy()[1:]
+        # assert func[0] == '<START>', 'The function should start with <START>'
+        # func = func.copy()[1:]
 
-        # remove the stop token for evaluation
-        if func[-1] == '<STOP>':
-            func = func[:-1]
+        func = func.copy()
+
+        # # remove the stop token for evaluation
+        # if func[-1] == '<STOP>':
+        #     func = func[:-1]
 
         # We want to check whether the created function is well-defined
         if not self.valid_function(func):
@@ -87,3 +91,18 @@ class Grammar:
             print(func)
             # return max(3, 2 * max_trajectory - len(func))
             return 30
+
+    def load_grammar(self):
+        # Load the grammar from file if it exists
+        if os.path.exists(grammar_path):
+            with open(grammar_path, 'rb') as f:
+                if f.peek():
+                    terminals = pickle.load(f)
+                    print('Loaded grammar from file')
+                    return terminals
+
+    @staticmethod
+    def reset_grammar():
+        # delete the grammar file
+        if os.path.exists(grammar_path):
+            os.remove(grammar_path)

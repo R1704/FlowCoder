@@ -9,10 +9,10 @@ model_weights_path = os.path.join(checkpoints_path, 'model_weights.pth')
 grammar_path = os.path.join(current_directory, 'grammar.pkl')
 
 num_rounds = 5
-epochs = 1000
-batch_size = 1
-max_trajectory = 5
+epochs = 2000
+batch_size = 8
+max_trajectory = 7
 min_trajectory = 2
 display = True
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
 
