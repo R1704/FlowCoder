@@ -1,6 +1,8 @@
 import pickle
 from src.env import Environment
 from src.sequential.config import *
+import re
+
 
 class Grammar:
     def __init__(self, env: Environment):
@@ -49,30 +51,7 @@ class Grammar:
             return False
         return True
 
-    # Evaluates a binary expression
-    def eval_binary_expr(self, op1, oper, op2) -> int:
-        op1, op2 = int(op1), int(op2)
-        return self.ops[oper](op1, op2)
-
-    # Evaluates a whole expression
-    # TODO: punkt vor strich, digga
-    def evaluate(self, func: list) -> int:
-        while len(func) >= 3:
-            chunk = func[:3]
-            eval_chunk = self.eval_binary_expr(*chunk)
-            func = [str(eval_chunk)] + func[3:]
-        return int(func[0])
-
     def reward(self, func: list) -> int:
-        # assert func[0] == '<START>', 'The function should start with <START>'
-        # func = func.copy()[1:]
-
-        func = func.copy()
-
-        # # remove the stop token for evaluation
-        # if func[-1] == '<STOP>':
-        #     func = func[:-1]
-
         # We want to check whether the created function is well-defined
         if not self.valid_function(func):
             # print('not a valid function')
@@ -91,6 +70,54 @@ class Grammar:
             print(func)
             # return max(3, 2 * max_trajectory - len(func))
             return 30
+
+    def parse(self, func: list):
+        stack = []
+        output = []
+
+        # Helper function to check if a token is an operator
+        def is_operator(token):
+            return token in self.ops
+
+        # Helper function to check if a token is an operand (a number)
+        def is_operand(token):
+            return re.match(r'^\d+$', token)
+
+        # Helper function to get the precedence of an operator
+        def precedence(operator):
+            if operator in {'+', '-'}:
+                return 1
+            elif operator in {'*', '/'}:
+                return 2
+            return 0
+
+        for token in func:
+            if is_operand(token):
+                output.append(token)
+            elif is_operator(token):
+                while stack and is_operator(stack[-1]) and precedence(stack[-1]) >= precedence(token):
+                    output.append(stack.pop())
+                stack.append(token)
+
+        while stack:
+            output.append(stack.pop())
+
+        return output
+
+    def evaluate(self, func: list) -> int:
+        parsed_func = self.parse(func)
+
+        stack = []
+        for token in parsed_func:
+            if token.isdigit():
+                stack.append(int(token))
+            elif token in self.ops:
+                op2 = stack.pop()
+                op1 = stack.pop()
+                result = self.ops[token](op1, op2)
+                stack.append(result)
+
+        return stack[0]
 
     def load_grammar(self):
         # Load the grammar from file if it exists
