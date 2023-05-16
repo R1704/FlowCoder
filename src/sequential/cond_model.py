@@ -4,7 +4,31 @@ from src.sequential.config import *
 import math
 
 
-class FlowModel(nn.Module):
+class GFlowNet_Encoder(nn.Module):
+    def __init__(self, num_tasks, embedding_dim):
+        super(GFlowNet_Encoder, self).__init__()
+        self.embedding = nn.Embedding(num_tasks, embedding_dim)
+
+    def forward(self, x):
+        return self.embedding(x)
+
+class GFlowNet_Z(nn.Module):
+    def __init__(self):
+        super(GFlowNet_Z, self).__init__()
+
+    def forward(self, x):
+        ...
+
+class GFlowNet_Forward(nn.Module):
+    def __init__(self):
+        super(GFlowNet_Forward, self).__init__()
+
+    def forward(self, x):
+        ...
+
+
+
+class GFlowNet(nn.Module):
     def __init__(self,
                  tokenizer,
                  device,
@@ -13,16 +37,15 @@ class FlowModel(nn.Module):
                  num_heads=8,
                  dropout_prob=0.1
                  ):
-        super(FlowModel, self).__init__()
+        super(GFlowNet, self).__init__()
+
+
 
         # Define the vocabulary
         self.tokenizer = tokenizer
 
         # Define the device
         self.device = device
-
-        # Masked softmax to rule out impossible actions
-        self.masked_softmax = MaskedSoftmax(tokenizer, device)
 
         # Define the embedding layer
         self.d_model = d_model
@@ -47,7 +70,6 @@ class FlowModel(nn.Module):
         self.logZ = nn.Parameter(torch.ones(1))
 
     def forward(self):
-
         # Initialize the target tensor with a single <START> token
         start_token_idx = self.tokenizer.token_to_idx['<START>']
         target = torch.full((1, 1), start_token_idx, dtype=torch.long).to(self.device)
@@ -68,11 +90,8 @@ class FlowModel(nn.Module):
             # Decode the output encoding to logits using the linear output layer
             logits = self.output_layer(output_encoding[-1])
 
-            # Convert output_tokens to tensor
-            output_tokens_tensor = torch.tensor(output_tokens, dtype=torch.long).to(self.device)
-
             # Compute the softmax probabilities and log probabilities
-            probs = self.masked_softmax(logits, output_tokens_tensor)
+            probs = torch.softmax(logits, dim=-1)
             log_probs_tensor = torch.log(probs)
 
             # Sample the next token from the logits
@@ -85,7 +104,7 @@ class FlowModel(nn.Module):
             if next_token_idx == self.tokenizer.token_to_idx['<STOP>']:
                 break
 
-            # Add the token index to the output tokens
+            # Add the token to the output tokens
             output_tokens.append(next_token_idx)
 
             # Add the log probability to the log_probs list
@@ -120,64 +139,26 @@ class FlowModel(nn.Module):
         pos_enc = torch.zeros(position, d_model)
         for pos in range(position):
             for i in range(0, d_model, 2):
-                pos_enc[pos, i] = math.sin(pos / (10_000 ** ((2 * i) / d_model)))
-                pos_enc[pos, i + 1] = math.cos(pos / (10_000 ** ((2 * (i + 1)) / d_model)))
+                pos_enc[pos, i] = math.sin(pos / (10000 ** ((2 * i) / d_model)))
+                pos_enc[pos, i + 1] = math.cos(pos / (10000 ** ((2 * (i + 1)) / d_model)))
 
         return pos_enc.unsqueeze(0)
 
-class MaskGenerator:
-    def __init__(self, tokenizer):
-        self.tokenizer = tokenizer
-        self.grammar = tokenizer.grammar
-
-    def is_nonterminal(self, token):
-        return token in self.grammar.nonterminals
-
-    def generate(self, tokens):
-        # Initialize mask with 0s
-        mask = [0] * len(self.tokenizer.vocab)
-
-        # Special handling for <START> and <STOP> tokens
-        start_token_idx = self.tokenizer.token_to_idx['<START>']
-        stop_token_idx = self.tokenizer.token_to_idx['<STOP>']
-
-        # If the sequence is empty
-        if tokens.numel() == 0:
-            mask[start_token_idx] = 1
-            return mask
-
-        last_token = self.tokenizer.idx_to_token[tokens[-1].item()]
-        if last_token == '<START>':
-            for idx, token in enumerate(self.tokenizer.vocab):
-                if token in self.grammar.terminals:
-                    mask[self.tokenizer.token_to_idx[token]] = 1
-        elif self.is_nonterminal(last_token):
-            for idx, token in enumerate(self.tokenizer.vocab):
-                if token in self.grammar.terminals:
-                    mask[self.tokenizer.token_to_idx[token]] = 1
-        else:
-            for idx, token in enumerate(self.tokenizer.vocab):
-                if self.is_nonterminal(token):
-                    mask[self.tokenizer.token_to_idx[token]] = 1
-            mask[stop_token_idx] = 1
-
-        return mask
 
 
-class MaskedSoftmax(nn.Module):
-    def __init__(self, grammar, device):
-        super(MaskedSoftmax, self).__init__()
-        self.mask_generator = MaskGenerator(grammar)
-        self.device = device
-
-    def forward(self, logits, tokens):
-        mask = self.mask_generator.generate(tokens)
-        mask = torch.tensor(mask, device=self.device).float()  # Added .float() to ensure the mask is of the same type as logits
-        max_val = torch.max(logits)
-        logits -= max_val
-        logits_exp = torch.exp(logits)
-        logits_exp_masked = logits_exp * mask
-        probs = logits_exp_masked / torch.sum(logits_exp_masked)
-
-        return probs
+# class GFlowNet_Z(nn.Module):
+#     def __init__(self, d_model):
+#         nn.Module.__init__(self)
+#         self.to_flow = nn.Sequential(
+#             nn.LayerNorm(d_model),
+#             nn.Linear(d_model, d_model),
+#             nn.ReLU(),
+#             mup.MuReadout(d_model, 1, readout_zero_init=False),
+#         )
+#
+#     def forward(self, x, pad_mask):
+#         x = self.to_flow(x).squeeze(-1)
+#         masked_x = (x.view(-1) * pad_mask.exp().view(-1)).view(x.size())
+#         pooled_x = masked_x.sum(1)  # / pad_mask.exp().sum(dim=-1).view(-1)
+#         return pooled_x
 

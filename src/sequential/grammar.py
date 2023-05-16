@@ -16,17 +16,19 @@ class Grammar:
             '*': lambda x, y: x * y,
         }
 
-        self.terminals: set = {'2', '3'}
-        self.nonterminals: set = {k for k in self.ops.keys()}
-        self.primitives: set = self.terminals | self.nonterminals
+        self.terminals: list = ['2', '3']
+        self.nonterminals: list = list(self.ops.keys())
+        self.primitives: list = self.terminals + self.nonterminals
 
     def add_terminal(self, terminal: str):
-        self.terminals.update([terminal])
-        self.primitives.update([terminal])
+        if terminal not in self.terminals:
+            self.terminals.append(terminal)
+            self.primitives.append(terminal)
 
     def add_nonterminal(self, nonterminal: str):
-        self.nonterminals.update([nonterminal])
-        self.primitives.update([nonterminal])
+        if nonterminal not in self.nonterminals:
+            self.nonterminals.append(nonterminal)
+            self.primitives.append(nonterminal)
 
     def valid_function(self, func: list) -> bool:
 
@@ -69,7 +71,7 @@ class Grammar:
         else:
             print(func)
             # return max(3, 2 * max_trajectory - len(func))
-            return 30
+            return 100
 
     def parse(self, func: list):
         stack = []
