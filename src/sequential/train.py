@@ -110,7 +110,7 @@ class Training:
 
     def load_model(self, model):
         # TODO: check whether this is correct and if all models are loaded.
-        #  Check out this: https://pytorch.org/tutorials/beginner/saving_loading_models.html
+        #  Check this out: https://pytorch.org/tutorials/beginner/saving_loading_models.html
         #  Pay attention to DataParallel, loading on GPU/ CPU
 
 

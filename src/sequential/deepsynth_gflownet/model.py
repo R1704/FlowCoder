@@ -5,9 +5,6 @@ import mup
 from torch.nn.utils.rnn import pad_sequence
 
 
-
-
-
 class GFlowNet(nn.Module):
     def __init__(self, device, cfg, d_model=512, num_heads=8, num_layers=2):
         super(GFlowNet, self).__init__()

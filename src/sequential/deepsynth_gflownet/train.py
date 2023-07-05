@@ -1,18 +1,7 @@
-import src.sequential.deepsynth.dsl as dsl
-from src.sequential.deepsynth.dsl import *
-from src.sequential.deepsynth.DSL.list import *
-from src.sequential.deepsynth.DSL import list as list_
 from src.sequential.deepsynth.dsl import *
 from src.sequential.deepsynth.run_experiment import *
-from src.sequential.deepsynth.pcfg import *
-from src.sequential.deepsynth.Predictions.dataset_sampler import Dataset
-from src.sequential.deepsynth.model_loader import __buildintlist_model
-from src.sequential.deepsynth_gflownet.model import *
-from src.sequential.deepsynth_gflownet.dataset import *
-from src.sequential.deepsynth.experiment_helper import *
-from src.sequential.deepsynth.type_system import *
-from src.sequential.deepsynth.Predictions.embeddings import RNNEmbedding
-from src.sequential.deepsynth.Predictions.IOencodings import FixedSizeEncoding
+from src.sequential.deepsynth_gflownet.data import *
+
 from torch.distributions.categorical import Categorical
 from torch.optim import Adam
 
@@ -20,6 +9,7 @@ import matplotlib.pyplot as pp
 from dataclasses import dataclass
 
 import logging
+
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 logging.getLogger('matplotlib.font_manager').disabled = True
@@ -37,6 +27,7 @@ class Training:
         optimizer = Adam(model.parameters(), lr=self.learning_rate)
         losses = []
         logZs = []
+        rewards = 0
 
         for epoch in tqdm.tqdm(range(self.n_epochs), ncols=40):
             batch_IOs, batch_program, latent_batch_IOs = self.data.get_next_batch(self.batch_size)
@@ -50,9 +41,6 @@ class Training:
             initial_non_terminals = deque()
             initial_non_terminals.append(non_terminal)
             frontier.append((None, initial_non_terminals))
-            # A frontier is a queue of pairs (partial_program, non_terminals) describing a partial program:
-            # partial_program is the list of primitives and variables describing the leftmost derivation, and
-            # non_terminals is the queue of non-terminals appearing from left to right
 
             while len(frontier) != 0:
                 partial_program, non_terminals = frontier.pop()
@@ -72,9 +60,18 @@ class Training:
                     losses.append(loss)
                     logZs.append(logZ)
 
-                    if epoch % 100 == 0:
+                    if reward.item() == 2:
+                        rewards += 1
+
+                    if epoch % 99 == 0:
                         logging.info(
-                            f'Epoch: {epoch}\nLoss: {loss}\nLogZ: {logZ}\nforward: {total_forward}\nreward: {torch.log(reward).clip(-20)}')
+                            f'Epoch: {epoch}\n'
+                            f'Loss: {loss.item()}\n'
+                            f'LogZ: {logZ.item()}\n'
+                            f'Forward: {total_forward}\n'
+                            f'Reward: {torch.log(reward).clip(-20)}\n'
+                            f'Total Rewards: {rewards} / {self.n_epochs} = {rewards / self.n_epochs}'
+                        )
 
                 # Keep digging
                 else:
@@ -115,11 +112,38 @@ class Training:
         pp.ylabel('estimated Z')
         pp.show()
 
+
 def Reward(program: Program, batch_program, task, dsl):
     program_checker = make_program_checker(dsl, task[0])
-    # logging.debug(f'found program: {program}')
-    # logging.debug(f'actual program: {batch_program[0]}')
-
     rewrd = torch.tensor(float(program_checker(program, True)))
-    logging.debug(f'rew: {torch.log(rewrd)}')
+    if rewrd.item() == 2:
+        logging.info('-----found the correct program-----')
+        logging.info(f'found program: {program}')
+        logging.info(f'actual program: {batch_program[0]}')
+        logging.info(f'reward: {rewrd.item()}')
     return rewrd
+
+def make_program_checker(dsl: DSL, examples) -> Callable[[Program, bool], int]:
+    correct_program_rwd = 10
+    is_program_rwd = 1
+    none_rwd = 0
+    def checker(prog: Program, use_cached_evaluator: bool) -> int:
+        if use_cached_evaluator:
+            for i, example in enumerate(examples):
+                input, output = example
+                out = prog.eval(dsl, input, i)
+                if out is None or None in out:
+                    return none_rwd
+                elif output != out:
+                    return is_program_rwd
+            return correct_program_rwd
+        else:
+            for example in examples:
+                input, output = example
+                out = prog.eval_naive(dsl, input)
+                if out is None or None in out:
+                    return none_rwd
+                elif output != out:
+                    return is_program_rwd
+            return correct_program_rwd
+    return checker

@@ -5,6 +5,7 @@ from src.sequential.deepsynth.type_system import Type, PolymorphicType, Primitiv
 from src.sequential.deepsynth.cons_list import index
 
 from itertools import combinations_with_replacement
+import logging
 
 # dictionary { number of environment : value }
 # environment: a cons list
@@ -126,6 +127,7 @@ class Variable(Program):
             return result
         except (AttributeError, IndexError, ValueError, OverflowError, TypeError):
             self.evaluation[i] = None
+            logging.debug(f'variable eval: {environment}, {i}')
             return None
 
     def eval_naive(self, dsl, environment):

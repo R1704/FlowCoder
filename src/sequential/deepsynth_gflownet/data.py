@@ -5,11 +5,12 @@ from src.sequential.deepsynth.Predictions.embeddings import RNNEmbedding
 from src.sequential.deepsynth.Predictions.IOencodings import FixedSizeEncoding
 from src.sequential.deepsynth.type_system import *
 
-
 import torch
 
+
 class Data:
-    def __init__(self, device, dataset_size, nb_examples_max, max_program_depth, nb_arguments_max, lexicon, size_max, embedding_output_dimension, number_layers_RNN, size_hidden):
+    def __init__(self, device, dataset_size, nb_examples_max, max_program_depth, nb_arguments_max, lexicon, size_max,
+                 embedding_output_dimension, number_layers_RNN, size_hidden):
         self.device = device
         self.dataset_size = dataset_size
         self.nb_examples_max = nb_examples_max
@@ -37,7 +38,6 @@ class Data:
         self.cfg = self.dsl.DSL_to_CFG(
             self.type_request, max_program_depth=self.max_program_depth)
 
-
     def create_IOEncoder_and_IOEmbedder(self):
         self.IOEncoder = FixedSizeEncoding(
             nb_arguments_max=self.nb_arguments_max,
@@ -54,7 +54,8 @@ class Data:
 
     def create_latent_encoder(self):
         self.latent_encoder = torch.nn.Sequential(
-            self.__block__(self.IOEncoder.output_dimension * self.IOEmbedder.output_dimension, self.size_hidden, torch.nn.Sigmoid()),
+            self.__block__(self.IOEncoder.output_dimension * self.IOEmbedder.output_dimension, self.size_hidden,
+                           torch.nn.Sigmoid()),
             self.__block__(self.size_hidden, self.size_hidden, torch.nn.Sigmoid()),
         )
 
