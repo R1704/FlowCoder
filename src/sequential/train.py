@@ -1,4 +1,5 @@
 import tqdm
+import torch
 import torch.optim as optim
 import torch.nn as nn
 import matplotlib.pyplot as plt
@@ -69,7 +70,7 @@ class Training:
                 output_seq = self.tokenizer.decode(output_seq)
 
                 # Compute the reward
-                reward = torch.tensor(self.grammar.reward(output_seq)).float().to(self.device)
+                reward = torch.tensor(self.grammar.reward(output_seq)).float()
 
                 # Update the reward and log_prob
                 rewards[i] = reward

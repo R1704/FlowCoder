@@ -1,5 +1,5 @@
 import os
-import torch
+
 
 # Define the path to save the model weights
 current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -10,7 +10,7 @@ grammar_path = os.path.join(current_directory, 'grammar.pkl')
 
 num_rounds = 5
 epochs = 100
-batch_size = 8
+batch_size = 1
 max_trajectory = 8
 min_trajectory = 2
 display = True

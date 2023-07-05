@@ -29,7 +29,7 @@ class FlowModel(nn.Module):
         self.embeddings = nn.Embedding(len(tokenizer.vocab), d_model)
 
         # Define the positional encoding, call to staticmethod
-        self.pos_enc = self.positional_encoding(max_trajectory, d_model).to(device)
+        self.pos_enc = self.positional_encoding(max_trajectory, d_model).to(device) # FIXME: is the static method going to device :O
 
         # Define the transformer
         self.num_decoder_layers = num_decoder_layers
@@ -124,6 +124,7 @@ class FlowModel(nn.Module):
                 pos_enc[pos, i + 1] = math.cos(pos / (10_000 ** ((2 * (i + 1)) / d_model)))
 
         return pos_enc.unsqueeze(0)
+
 
 class MaskGenerator:
     def __init__(self, tokenizer):
