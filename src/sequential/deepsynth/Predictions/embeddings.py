@@ -92,7 +92,7 @@ class RNNEmbedding(nn.Module):
         # logging.debug("embedding size: {}".format(e.size()))
         assert e.size() == (len(IOs), self.IOEncoder.output_dimension, self.size_hidden),\
          "size not equal to: {} {} {}".format(len(IOs), self.IOEncoder.output_dimension, self.size_hidden)
-        e = torch.flatten(e, start_dim = 1)
+        e = torch.flatten(e, start_dim =1)
         e = torch.unsqueeze(e, 0)
         e, _ = self.RNN_layer(e)
         e = torch.squeeze(torch.squeeze(e, 0)[-1, :], 0)

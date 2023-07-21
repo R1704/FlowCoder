@@ -117,6 +117,7 @@ class Variable(Program):
         return "var" + format(self.variable)
 
     def eval(self, dsl, environment, i):
+
         if i in self.evaluation:
             # logging.debug('Already evaluated')
             return self.evaluation[i]

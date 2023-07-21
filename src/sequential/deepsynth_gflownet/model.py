@@ -1,12 +1,11 @@
 import torch
 from torch import nn
 import math
-import mup
-from torch.nn.utils.rnn import pad_sequence
+import logging
 
 
 class GFlowNet(nn.Module):
-    def __init__(self, device, cfg, d_model=512, num_heads=8, num_layers=2):
+    def __init__(self, device, cfg, d_model=512, io_dim=64, num_heads=8, num_layers=2):
         super(GFlowNet, self).__init__()
         self.device = device
         self.cfg = cfg
@@ -21,8 +20,7 @@ class GFlowNet(nn.Module):
 
         self.positional_encoding = PositionalEncoding(d_model)
 
-        io_embed_dim = 64
-        shared_dim = d_model + io_embed_dim
+        shared_dim = d_model + io_dim
 
         # Defining the transformer
         encoder_layer = nn.TransformerEncoderLayer(d_model=shared_dim, nhead=num_heads)
@@ -43,7 +41,6 @@ class GFlowNet(nn.Module):
             nn.Linear(shared_dim, 1)
         )
 
-
     def forward(self, state, S, task):
 
         # Process task (embed and encode and get latent representation)
@@ -55,7 +52,6 @@ class GFlowNet(nn.Module):
             state = self.primitives_embedding(torch.tensor([self.primitive2idx[s] for s in state], device=self.device))
             state = self.positional_encoding(state)
 
-
         # Repeat task to have same sequence length as state
         task_repeated = task.unsqueeze(0).repeat(state.shape[0], 1)
 
@@ -65,7 +61,7 @@ class GFlowNet(nn.Module):
         # pass through the transformer
         transformer_output = self.transformer_encoder(combined)
 
-        # predict the forward logits, backward logits, and total flow logZ
+        # predict the forward logits and total flow logZ
         forward_logits = self.forward_logits(transformer_output)[-1]
         logZ = self.logZ(transformer_output)[-1]
 
@@ -75,10 +71,9 @@ class GFlowNet(nn.Module):
         mask = torch.tensor(
             [0 if p in list(candidate_programs) else 1 for p in list(self.primitive2idx)], device=self.device).bool()
 
-        # apply mask on forward and backward logits
+        # apply mask on forward logits
         # we use -100 since exp(-100) is tiny, but we don't want -inf (since we're predicting log-values)
         forward_logits.masked_fill_(mask, float(-100))
-        # print('forward_logits.shape  ', forward_logits.shape, forward_logits)
 
         return forward_logits, logZ
 
@@ -96,7 +91,7 @@ class PositionalEncoding(nn.Module):
         div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-math.log(10_000.0) / d_model))
         pe[:, 0::2] = torch.sin(position * div_term)
         pe[:, 1::2] = torch.cos(position * div_term)
-        # pe = pe.unsqueeze(0).transpose(0, 1)  # i think this is for batching
+        # pe = pe.unsqueeze(0).transpose(0, 1)  # for batching
         self.register_buffer('pe', pe)
 
     def forward(self, x):
