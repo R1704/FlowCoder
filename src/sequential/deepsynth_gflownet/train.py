@@ -3,107 +3,173 @@ import torch.nn
 from src.sequential.deepsynth.dsl import *
 from src.sequential.deepsynth.run_experiment import *
 from src.sequential.deepsynth_gflownet.data import *
+from src.sequential.deepsynth_gflownet.reward import *
 
 from torch.distributions.categorical import Categorical
 from torch.optim import Adam
+import torch.nn as nn
 
 import matplotlib.pyplot as pp
 from dataclasses import dataclass
 
 import logging
 
+import random
+
+
 @dataclass
 class Training:
     n_epochs: int
     batch_size: int
     learning_rate: float
+    e_steps: int
+    m_step_threshold: float
+    m_steps: int
     model_path: str
     data: Data
+    model: nn.Module
+    reward: Reward
 
     def __post_init__(self):
         assert self.n_epochs <= self.data.dataset_size, f'not enough data for {self.n_epochs} epochs'
 
-    def train(self, model, cfg):
-        optimizer = Adam(model.parameters(), lr=self.learning_rate)
+    def sample_program(self, latent_batch_IOs):
+
+        state = []  # start with an empty state
+        total_forward = 0
+        non_terminal = self.data.cfg.start  # start with the CFGs start symbol
+
+        # keep sampling until we have a complete program
+        frontier = deque()
+        initial_non_terminals = deque()
+        initial_non_terminals.append(non_terminal)
+        frontier.append((None, initial_non_terminals))
+
+        while len(frontier) != 0:
+            partial_program, non_terminals = frontier.pop()
+
+            # # TODO: idx should be sampled by GFN
+            # # Choose a random program from the frontier
+            # idx = random.choice(range(len(frontier)))
+            #
+            # # Rotate deque by -idx, pop from right and rotate back
+            # frontier.rotate(-idx)
+            # partial_program, non_terminals = frontier.pop()
+            # frontier.rotate(idx)
+
+            # If we are finished with the trajectory/ have a constructed program, calculate loss, update GFN
+            if len(non_terminals) == 0:
+                program = reconstruct_from_compressed(partial_program, target_type=self.data.cfg.start[0])
+                return program, forward_logits, logZ, total_forward
+
+            # Keep digging
+            else:
+                non_terminal = non_terminals.pop()
+
+                forward_logits, logZ = self.model(state, non_terminal, latent_batch_IOs)
+                # print(forward_logits)
+                # forward_logits = torch.nn.Softmax(forward_logits)
+                # print(forward_logits)
+
+                cat = Categorical(logits=forward_logits)
+                action = cat.sample()  # returns idx
+
+                total_forward += cat.log_prob(action)
+
+                # use the forward logits to sample the next derivation
+                program = self.model.idx2primitive[action.item()]
+                state = state + [program]
+
+                program_args = self.data.cfg.rules[non_terminal][program]
+                new_partial_program = (program, partial_program)
+                new_non_terminals = non_terminals.copy()
+
+                for arg in program_args:
+                    new_non_terminals.append(arg)
+                frontier.append((new_partial_program, new_non_terminals))
+
+    def e_step(self, optim_gfn, epoch):
+
+        # keep track of losses and logZs
         losses = []
         logZs = []
-        rewards = 0
+        tries = 0
+        reward = torch.tensor(0)
 
-        for epoch in tqdm.tqdm(range(self.n_epochs), ncols=40):
+
+        # Sample task
+        batch_IOs, batch_program, latent_batch_IOs = self.data.get_next_batch(self.batch_size)
+
+
+        # until correct program is found or >= n_tries
+        while reward.item() != 1.0 and tries < self.e_steps:
+            program, forward_logits, logZ, total_forward = self.sample_program(latent_batch_IOs)
+            tries += 1
+            reward = self.reward_(program, batch_program, batch_IOs, self.data.dsl)
+
+        # save program, task pairs for sleep phase
+
+        # Compute loss and backpropagate
+        loss = (logZ + total_forward - torch.log(reward).clip(-20)).pow(2)
+
+        loss.backward()
+        optim_gfn.step()
+        optim_gfn.zero_grad()
+
+        losses.append(loss)
+        logZs.append(logZ)
+
+        self.print_stats(epoch, loss, logZ, total_forward, reward, forward_logits, program)
+
+        return losses, logZs
+
+
+    def m_step(self, optim):
+        losses = []
+        for _ in range(self.m_steps):
+            # Sample task
             batch_IOs, batch_program, latent_batch_IOs = self.data.get_next_batch(self.batch_size)
+            program, forward_logits, logZ, total_forward = self.sample_program(latent_batch_IOs)
+            reward = self.reward_(program, batch_program, batch_IOs, self.data.dsl)
+            print(f'reward in m_step {reward}')
+            loss = torch.tensor(-torch.log(reward).clip(-20), requires_grad=True)
+            loss.backward()
+            losses.append(loss)
+            optim.step()
+            optim.zero_grad()
 
-            state = []  # start with an empty state
-            total_forward = 0
-            non_terminal = cfg.start  # start with the CFGs start symbol
+        return losses
 
-            # keep sampling until we have a complete program
-            frontier = deque()
-            initial_non_terminals = deque()
-            initial_non_terminals.append(non_terminal)
-            frontier.append((None, initial_non_terminals))
 
-            while len(frontier) != 0:
-                partial_program, non_terminals = frontier.pop()
 
-                # If we are finished with the trajectory/ have a constructed program
-                if len(non_terminals) == 0:
-                    program = reconstruct_from_compressed(partial_program, target_type=cfg.start[0])
-                    reward = Reward(program, batch_program, batch_IOs, self.data.dsl)
+    def train(self):
 
-                    # Compute loss and backpropagate
-                    loss = (logZ + total_forward - torch.log(reward).clip(-20)).pow(2)
+        # Optimizers for generative model and GFN_Forward
+        optim_gen = Adam(self.model.parameters(), lr=self.learning_rate)
+        optim_gfn = Adam(self.model.forward_logits.parameters(), lr=self.learning_rate)
+        correct = 0
+        for epoch in tqdm.tqdm(range(self.n_epochs), ncols=40):
 
-                    loss.backward()
-                    optimizer.step()
-                    optimizer.zero_grad()
+            # Optimize GFlowNet
+            gfn_losses, logZs = self.e_step(optim_gfn, epoch)
 
-                    losses.append(loss)
-                    logZs.append(logZ)
+            # Optimize Generative Model
+            if gfn_losses[-1] < self.m_step_threshold:
+                self.m_step(optim_gen)
 
-                    if reward.item() == 2:
-                        rewards += 1
+        self.plot_results(gfn_losses, logZs)
 
-                    if epoch % 99 == 0:
-                        logging.info(
-                            f'Epoch: {epoch}\n'
-                            f'Loss: {loss.item()}\n'
-                            f'LogZ: {logZ.item()}\n'
-                            f'Forward: {total_forward}\n'
-                            f'Reward: {torch.log(reward).clip(-20)}\n'
-                            f'Total Rewards: {rewards} / {self.n_epochs} = {rewards / self.n_epochs}\n'
-                            f'Forward logits: {forward_logits}, {forward_logits.shape}\n'
-                            f'Program length: {len(state)}, {program}\n'
-                            # f'{}\n'
-                        )
+        # Save model
+        # TODO: Save models independently?
+        torch.save(self.model.state_dict(), self.model_path)
 
-                # Keep digging
-                else:
-                    non_terminal = non_terminals.pop()
+    def sleep(self):
+        ...
+        def replays(self):
+            ...
 
-                    forward_logits, logZ = model(state, non_terminal, latent_batch_IOs)
-                    # print(forward_logits)
-                    # forward_logits = torch.nn.Softmax(forward_logits)
-                    # print(forward_logits)
-
-                    cat = Categorical(logits=forward_logits)
-                    action = cat.sample()  # returns idx
-
-                    total_forward += cat.log_prob(action)
-
-                    # use the forward logits to sample the next derivation
-                    program = model.idx2primitive[action.item()]
-                    state = state + [program]
-
-                    program_args = cfg.rules[non_terminal][program]
-                    new_partial_program = (program, partial_program)
-                    new_non_terminals = non_terminals.copy()
-
-                    for arg in program_args:
-                        new_non_terminals.append(arg)
-                    frontier.append((new_partial_program, new_non_terminals))
-
-        self.plot_results(losses, logZs)
-        torch.save(model.state_dict(), self.model_path)
+        def fantasies(self):
+            ...
 
     def plot_results(self, losses, logZs):
         f, ax = pp.subplots(2, 1, figsize=(10, 6))
@@ -119,103 +185,60 @@ class Training:
         pp.show()
 
 
-def Reward(program: Program, batch_program, task, dsl):
-    program_checker = make_program_checker(dsl, task[0])
-    rewrd = torch.tensor(float(program_checker(program, True)))
-    print(f'$$$$$$$$$$$$$$$$$$$$$$$', rewrd)
-    logging.debug(f'found program: {program}')
-    logging.debug(f'actual program: {batch_program[0]}')
-    if rewrd.item() == 2:
-        logging.info('-----found the correct program-----')
-        logging.info(f'found program: {program}')
-        logging.info(f'actual program: {batch_program[0]}')
-        logging.info(f'reward: {rewrd.item()}')
-    return rewrd
+    def print_stats(self, epoch, loss, logZ, total_forward, reward, forward_logits, program):
+        if epoch % 99 == 0:
+            logging.info(
+                f'Epoch: {epoch}\n'
+                f'Loss: {loss.item()}\n'
+                f'LogZ: {logZ.item()}\n'
+                f'Forward: {total_forward}\n'
+                f'Reward: {torch.log(reward).clip(-20)}\n'
+                # f'Total Rewards: {rewards} / {self.n_epochs} = {rewards / self.n_epochs}\n'
+                f'Forward logits: {forward_logits}, {forward_logits.shape}\n'
+                # f'Program length: {len(state)}, {program}\n'
+                # f'{}\n'
+            )
 
-# import numpy as np
-# def cosine_similarity(v1, v2):
-#     # Convert lists to numpy arrays
-#     v1 = np.array(v1)
-#     v2 = np.array(v2)
-#
-#     # If both of the vectors are empty, return minimum loss
-#     if v1.size == 0 and v2.size == 0:
-#         return 1.0
-#
-#     # If one of the vectors is empty, return maximum loss
-#     if v1.size == 0 or v2.size == 0:
-#         return 0.0
-#
-#     # Pad the shorter vector with zeros
-#     if len(v1) < len(v2):
-#         v1 = np.pad(v1, (0, len(v2) - len(v1)))
-#     elif len(v2) < len(v1):
-#         v2 = np.pad(v2, (0, len(v1) - len(v2)))
-#
-#     # Compute cosine similarity
-#     dot_product = np.dot(v1, v2)
-#     norm_v1 = np.linalg.norm(v1)
-#     norm_v2 = np.linalg.norm(v2)
-#
-#     # Add a small constant to the denominator to avoid division by zero
-#     epsilon = 1e-10
-#     similarity = dot_product / (norm_v1 * norm_v2 + epsilon)
-#
-#     # Return the cosine distance (1 - similarity) as the loss
-#     return 1 - similarity
 
-import numpy as np
+    def make_program_checker(self, dsl: DSL, examples) -> Callable[[Program, bool], int]:
+        def checker(prog: Program, use_cached_evaluator: bool) -> int:
+            if use_cached_evaluator:
+                for i, example in enumerate(examples):
+                    # TODO: If a different reward is used,
+                    #  note that there may be multiple examples, so account for that
+                    input, output = example
+                    pred_out = prog.eval(dsl, input, i)
+                    logging.debug(f'\nexample nr. {i} :::::::: with io relation: \t {input} ---> {output} and prediction {pred_out}')
+                    if output != pred_out:
+                        return torch.tensor(0.0)
+                return torch.tensor(1.0)
+                # return self.reward(output, pred_out)
+            else:
+                for example in examples:
+                    input, output = example
+                    pred_out = prog.eval_naive(dsl, input)
+                    if output != pred_out:
+                        return torch.tensor(0.0)
+                return torch.tensor(1.0)
+                # return self.reward(output, pred_out)
 
-def mean_squared_error(y_true, y_pred):
-    # Convert lists to numpy arrays
-    y_true = np.array(y_true)
-    y_pred = np.array(y_pred)
+        return checker
 
-    # If one of the vectors is empty, return maximum loss
-    if y_true.size == 0 and y_pred.size == 0:
-        return 1
+    def reward_(self, program: Program, batch_program, task, dsl):
+        # program_checker = self.make_program_checker(dsl, task[0])
+        # rewrd = program_checker(program, True)
+        logging.debug(f'actual program: {batch_program[0]}')
+        logging.debug(f'found program: {program}')
+        # logging.debug(f'Same program: {batch_program[0] == program}')
+        # TODO: Looking at the actual program for comparison is a little hacky,
+        #  but otherwise we need to deal with variables, which makes the problem a lot harder.
+        rewrd = torch.tensor(batch_program[0] == program).to(torch.int8)
+        logging.debug(f'Reward: {rewrd}')
 
-    # If one of the vectors is empty, return maximum loss
-    if y_true.size == 0 or y_pred.size == 0:
-        return 0
+        # if rewrd.item() == 1:
+        #     logging.info('-----found the correct program-----')
+        #     logging.info(f'found program: {program}')
+        #     logging.info(f'actual program: {batch_program[0]}')
+        #     logging.info(f'reward: {rewrd.item()}')
+        return rewrd
 
-    # Pad the shorter vector with zeros
-    if len(y_true) < len(y_pred):
-        y_true = np.pad(y_true, (0, len(y_pred) - len(y_true)))
-    elif len(y_pred) < len(y_true):
-        y_pred = np.pad(y_pred, (0, len(y_true) - len(y_pred)))
-
-    # Compute mean squared error
-    mse = np.mean((y_true - y_pred)**2)
-    reward = np.exp(-mse)
-    return reward
-
-def make_program_checker(dsl: DSL, examples) -> Callable[[Program, bool], int]:
-    # TODO: Naive reward for now, obvs improve this. Could be parameterized.
-    correct_program_rwd = 10
-    is_program_rwd = 1
-    none_rwd = 0
-    def checker(prog: Program, use_cached_evaluator: bool) -> int:
-        if use_cached_evaluator:
-            for i, example in enumerate(examples):
-                input, output = example
-                my_out = prog.eval(dsl, input, i)
-                logging.debug(f'\nMy out: {my_out}'
-                              f'\nActual out: {output}')
-                return mean_squared_error(my_out, output)
-            #     if out is None or None in out:
-            #         return none_rwd
-            #     elif output != out:
-            #         return is_program_rwd
-            # return correct_program_rwd
-        else:
-            for example in examples:
-                input, output = example
-                my_out = prog.eval_naive(dsl, input)
-            #     if out is None or None in out:
-            #         return none_rwd
-            #     elif output != out:
-            #         return is_program_rwd
-            # return correct_program_rwd
-                return mean_squared_error(my_out, output)
-    return checker

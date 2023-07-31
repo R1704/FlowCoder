@@ -26,13 +26,10 @@ class GFlowNet(nn.Module):
         encoder_layer = nn.TransformerEncoderLayer(d_model=shared_dim, nhead=num_heads)
         self.transformer_encoder = torch.nn.TransformerEncoder(encoder_layer, num_layers)
 
+
+
         # MLPs for logits and logZ
-        self.forward_logits = nn.Sequential(
-                    nn.LayerNorm(shared_dim),
-                    nn.Linear(shared_dim, shared_dim),
-                    nn.ReLU(),
-                    nn.Linear(shared_dim, n_primitives)
-                )
+        self.forward_logits = GFlowNet_Forward(shared_dim, n_primitives)
 
         self.logZ = nn.Sequential(
             nn.LayerNorm(shared_dim),
@@ -97,3 +94,21 @@ class PositionalEncoding(nn.Module):
     def forward(self, x):
         x = x + self.pe[:x.size(0), :]
         return self.dropout(x)
+
+
+class GFlowNet_Forward(nn.Module):
+    def __init__(self, input_dim, output_dim):
+        super(GFlowNet_Forward, self).__init__()
+        self.forward_logits = nn.Sequential(
+                    nn.LayerNorm(input_dim),
+                    nn.Linear(input_dim, input_dim),
+                    nn.ReLU(),
+                    nn.Linear(input_dim, output_dim)
+                )
+    def forward(self, x):
+        return self.forward_logits(x)
+
+
+class GFlowNet_ArgSampler(nn.Module):
+    def __init__(self):
+        super(GFlowNet_ArgSampler, self).__init__()
