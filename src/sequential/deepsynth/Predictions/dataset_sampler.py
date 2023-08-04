@@ -51,7 +51,7 @@ class Dataset(torch.utils.data.IterableDataset):
         self.for_flashfill = for_flashfill
 
     def __iter__(self):
-        return (self.__single_data__() for i in range(self.size))
+        return (self.__single_data__() for _ in range(self.size))
 
     def __single_data__(self):
         # print("generating...")

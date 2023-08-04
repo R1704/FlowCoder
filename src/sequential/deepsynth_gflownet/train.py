@@ -4,6 +4,7 @@ from src.sequential.deepsynth.dsl import *
 from src.sequential.deepsynth.run_experiment import *
 from src.sequential.deepsynth_gflownet.data import *
 from src.sequential.deepsynth_gflownet.reward import *
+from src.sequential.deepsynth_gflownet.utils import *
 
 from torch.distributions.categorical import Categorical
 from torch.optim import Adam
@@ -14,7 +15,6 @@ from dataclasses import dataclass
 
 import logging
 
-import random
 
 
 @dataclass
@@ -29,64 +29,50 @@ class Training:
     data: Data
     model: nn.Module
     reward: Reward
+    device: torch
 
     def __post_init__(self):
         assert self.n_epochs <= self.data.dataset_size, f'not enough data for {self.n_epochs} epochs'
 
-    def sample_program(self, latent_batch_IOs):
+    def get_next_rules(self, S):
+        return [(S, p) for p in self.data.cfg.rules[S].keys()]
 
-        state = []  # start with an empty state
-        total_forward = 0
-        non_terminal = self.data.cfg.start  # start with the CFGs start symbol
+    def sample_program(self, batch_IOs):
+        states = [['START']] * self.batch_size
+        total_forward = torch.zeros(self.batch_size)
+        non_terminals = [self.data.cfg.start] * self.batch_size  # start with the CFGs start symbol
+        frontiers = [{nt: self.get_next_rules(nt)} for nt in non_terminals]
+        final_programs = [[]] * self.batch_size
 
-        # keep sampling until we have a complete program
-        frontier = deque()
-        initial_non_terminals = deque()
-        initial_non_terminals.append(non_terminal)
-        frontier.append((None, initial_non_terminals))
+        while any(frontiers):
 
-        while len(frontier) != 0:
-            partial_program, non_terminals = frontier.pop()
-
-            # # TODO: idx should be sampled by GFN
-            # # Choose a random program from the frontier
-            # idx = random.choice(range(len(frontier)))
-            #
-            # # Rotate deque by -idx, pop from right and rotate back
-            # frontier.rotate(-idx)
-            # partial_program, non_terminals = frontier.pop()
-            # frontier.rotate(idx)
-
-            # If we are finished with the trajectory/ have a constructed program, calculate loss, update GFN
-            if len(non_terminals) == 0:
-                program = reconstruct_from_compressed(partial_program, target_type=self.data.cfg.start[0])
-                return program, forward_logits, logZ, total_forward
-
-            # Keep digging
-            else:
-                non_terminal = non_terminals.pop()
-
-                forward_logits, logZ = self.model(state, non_terminal, latent_batch_IOs)
-                # print(forward_logits)
-                # forward_logits = torch.nn.Softmax(forward_logits)
-                # print(forward_logits)
-
-                cat = Categorical(logits=forward_logits)
+            forward_logits, logZs = self.model(states, batch_IOs)
+            mask = [[1 if rule in flatten(fr.values()) else 0 for rule in self.model.state_encoder.rules] for fr in
+                    frontiers]
+            mask = torch.tensor(mask, device=self.device)  # Convert mask to tensor
+            forward_logits = forward_logits - (1 - mask) * 100  # Subtract 100 from invalid actions
+            actions = []
+            for i in range(self.batch_size):
+                cat = Categorical(logits=forward_logits[i])
                 action = cat.sample()  # returns idx
+                total_forward[i] += cat.log_prob(action).item()
+                actions.append(action)
 
-                total_forward += cat.log_prob(action)
+            for i in range(self.batch_size):
+                if frontiers[i]:
+                    rule = self.model.state_encoder.idx2rule[actions[i].item()]
+                    nt, program = rule
+                    final_programs[i].append(program)
+                    frontiers[i].pop(nt)
 
-                # use the forward logits to sample the next derivation
-                program = self.model.idx2primitive[action.item()]
-                state = state + [program]
+                    states[i] = states[i] + [rule]
+                    program_args = self.data.cfg.rules[nt][program]
+                    frontiers[i].update({nt: self.get_next_rules(nt) for nt in program_args})
 
-                program_args = self.data.cfg.rules[non_terminal][program]
-                new_partial_program = (program, partial_program)
-                new_non_terminals = non_terminals.copy()
-
-                for arg in program_args:
-                    new_non_terminals.append(arg)
-                frontier.append((new_partial_program, new_non_terminals))
+            if not any(frontiers):
+                print('$$$$$$$$$$$$$ final_programs $$$$$$$$$$$$$')
+                print(final_programs)
+                return final_programs, forward_logits, logZs, total_forward
 
     def e_step(self, optim_gfn, epoch):
 
@@ -96,14 +82,12 @@ class Training:
         tries = 0
         reward = torch.tensor(0)
 
-
         # Sample task
-        batch_IOs, batch_program, latent_batch_IOs = self.data.get_next_batch(self.batch_size)
-
+        batch_IOs, batch_program = self.data.get_next_batch(self.batch_size)
 
         # until correct program is found or >= n_tries
         while reward.item() != 1.0 and tries < self.e_steps:
-            program, forward_logits, logZ, total_forward = self.sample_program(latent_batch_IOs)
+            program, forward_logits, logZ, total_forward = self.sample_program(batch_IOs)
             tries += 1
             reward = self.reward_(program, batch_program, batch_IOs, self.data.dsl)
 
@@ -128,8 +112,9 @@ class Training:
         losses = []
         for _ in range(self.m_steps):
             # Sample task
-            batch_IOs, batch_program, latent_batch_IOs = self.data.get_next_batch(self.batch_size)
-            program, forward_logits, logZ, total_forward = self.sample_program(latent_batch_IOs)
+            batch_IOs, batch_program = self.data.get_next_batch(self.batch_size)
+
+            # program, forward_logits, logZ, total_forward = self.sample_program(latent_batch_IOs)
             reward = self.reward_(program, batch_program, batch_IOs, self.data.dsl)
             print(f'reward in m_step {reward}')
             loss = torch.tensor(-torch.log(reward).clip(-20), requires_grad=True)
@@ -150,14 +135,19 @@ class Training:
         correct = 0
         for epoch in tqdm.tqdm(range(self.n_epochs), ncols=40):
 
-            # Optimize GFlowNet
-            gfn_losses, logZs = self.e_step(optim_gfn, epoch)
+            for i in range(self.data.dataset_size // self.batch_size):
+                batch_IOs, batch_program = self.data.get_next_batch(self.batch_size)
+                final_programs, forward_logits, logZs, total_forward = self.sample_program(batch_IOs)
 
-            # Optimize Generative Model
-            if gfn_losses[-1] < self.m_step_threshold:
-                self.m_step(optim_gen)
 
-        self.plot_results(gfn_losses, logZs)
+                # Optimize GFlowNet
+                # gfn_losses, logZs = self.e_step(optim_gfn, epoch)
+
+                # Optimize Generative Model
+                # if gfn_losses[-1] < self.m_step_threshold:
+                #     self.m_step(optim_gen)
+
+        # self.plot_results(gfn_losses, logZs)
 
         # Save model
         # TODO: Save models independently?

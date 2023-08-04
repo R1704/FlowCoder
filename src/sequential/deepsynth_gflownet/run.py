@@ -6,6 +6,9 @@ from src.sequential.deepsynth_gflownet.reward import Reward
 import torch
 
 import logging
+from src.sequential.deepsynth_gflownet.io_encoder import *
+from src.sequential.deepsynth_gflownet.state_encoder import *
+
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 logging.getLogger('matplotlib.font_manager').disabled = True
@@ -21,25 +24,38 @@ inference = False
 
 data = Data(
      device=device,
-     dataset_size=10_000,
+     dataset_size=10,#_000,
      nb_examples_max=2,
      max_program_depth=2, #4,
-     nb_arguments_max=1,
+     nb_arguments_max=3,
      lexicon=[0, 1], # [x for x in range(-2, 2)], #[x for x in range(-30, 30)],
      size_max=3, # 10,
-     embedding_output_dimension=10,
-     number_layers_RNN=1,
-     size_hidden=64
      )
 
-model = GFlowNet(
-    device=device,
+io_encoder = IOEncoder(
+    n_examples_max=data.nb_examples_max,
+    size_max=data.size_max,
+    lexicon=data.lexicon,
+    d_model=512,  # TODO: try different dimensions
+    device=device
+    )
+
+state_encoder = StateEncoder(
     cfg=data.cfg,
+    d_model=512,  # TODO: try different dimensions
+    device=device
+    )
+
+model = GFlowNet(
+    cfg=data.cfg,
+    io_encoder=io_encoder,
+    state_encoder=state_encoder,
     d_model=512,
-    io_dim=data.size_hidden,
     num_heads=8,
-    num_layers=2
-)
+    num_layers=2,
+    dropout=0.1,
+    device=device
+    )
 
 if from_checkpoint:
     print('Model parameters loaded from checkpoint.')
@@ -49,11 +65,11 @@ model.to(device)
 
 reward = Reward(
     vocab_size=10*len(data.lexicon),
-    d_model=512,
+    d_model=512,  # TODO: try different dimensions
     num_heads=8,
     num_layers=2,
     dropout=0.1
-)
+    )
 
 if train:
     training = Training(
@@ -66,7 +82,8 @@ if train:
         model_path=model_path,
         data=data,
         model=model,
-        reward=reward
+        reward=reward,
+        device=device
     )
     training.train()
 

@@ -3,98 +3,62 @@ from torch import nn
 import math
 import logging
 
+from src.sequential.deepsynth_gflownet.utils import *
 
 class GFlowNet(nn.Module):
-    def __init__(self, device, cfg, d_model=512, io_dim=64, num_heads=8, num_layers=2):
+    def __init__(self, cfg, io_encoder, state_encoder, d_model=512, num_heads=8, num_layers=2, dropout=0.1, device='cpu'):
         super(GFlowNet, self).__init__()
         self.device = device
         self.cfg = cfg
-
-        # Primitives
-        self.primitives = list(set(p for _, P in cfg.rules.items() for p, _ in P.items()))
-        self.primitive2idx = {p: i for i, p in enumerate(self.primitives)}
-        self.primitive2idx['<start>'] = len(self.primitives)
-        self.idx2primitive = {i: p for p, i in self.primitive2idx.items()}
-        n_primitives = len(self.primitive2idx)
-        self.primitives_embedding = nn.Embedding(num_embeddings=n_primitives, embedding_dim=d_model)
-
+        self.io_encoder = io_encoder
+        self.state_encoder = state_encoder
         self.positional_encoding = PositionalEncoding(d_model)
 
-        shared_dim = d_model + io_dim
 
         # Defining the transformer
-        encoder_layer = nn.TransformerEncoderLayer(d_model=shared_dim, nhead=num_heads)
-        self.transformer_encoder = torch.nn.TransformerEncoder(encoder_layer, num_layers)
-
-
+        self.transformer = nn.Transformer(
+            d_model=d_model,
+            nhead=num_heads,
+            num_encoder_layers=num_layers,
+            num_decoder_layers=num_layers,
+            dropout=dropout
+            )
 
         # MLPs for logits and logZ
-        self.forward_logits = GFlowNet_Forward(shared_dim, n_primitives)
+        self.forward_logits = GFlowNet_Forward(d_model, len(state_encoder.rules))
 
         self.logZ = nn.Sequential(
-            nn.LayerNorm(shared_dim),
-            nn.Linear(shared_dim, shared_dim),
+            nn.LayerNorm(d_model),
+            nn.Linear(d_model, d_model),
             nn.ReLU(),
-            nn.Linear(shared_dim, 1)
-        )
+            nn.Linear(d_model, 1)
+            )
 
-    def forward(self, state, S, task):
+    def forward(self, state, io):
 
-        # Process task (embed and encode and get latent representation)
-        task = task[0]  # task is a vector of dim 64
+        # Process IO
+        io = self.io_encoder(io)
+        io = self.positional_encoding(io)
 
-        if len(state) == 0:
-            state = self.primitives_embedding(torch.tensor([self.primitive2idx['<start>']], device=self.device))
-        else:
-            state = self.primitives_embedding(torch.tensor([self.primitive2idx[s] for s in state], device=self.device))
-            state = self.positional_encoding(state)
+        # Process state
+        state = self.state_encoder(state)
+        state = self.positional_encoding(state)
 
-        # Repeat task to have same sequence length as state
-        task_repeated = task.unsqueeze(0).repeat(state.shape[0], 1)
+        # Pass through the transformer
+        transformer_output = self.transformer(io, state)
 
-        # Concatenate state and task along the feature dimension
-        combined = torch.cat((state, task_repeated), dim=-1).to(self.device)
-
-        # pass through the transformer
-        transformer_output = self.transformer_encoder(combined)
-
-        # predict the forward logits and total flow logZ
+        # Predict the forward logits and total flow logZ
         forward_logits = self.forward_logits(transformer_output)[-1]
+
         logZ = self.logZ(transformer_output)[-1]
-
-        # possible programs from the last derivation S
-        candidate_programs = self.cfg.rules[S]
-
-        mask = torch.tensor(
-            [0 if p in list(candidate_programs) else 1 for p in list(self.primitive2idx)], device=self.device).bool()
-
-        # apply mask on forward logits
-        # we use -100 since exp(-100) is tiny, but we don't want -inf (since we're predicting log-values)
-        forward_logits.masked_fill_(mask, float(-100))
 
         return forward_logits, logZ
 
-    def ProgramEncoder(self, program):
-        return program
-
-class PositionalEncoding(nn.Module):
-    # https://pytorch.org/tutorials/beginner/transformer_tutorial.html
-    def __init__(self, d_model, dropout=0.1, max_len=5_000):
-        super(PositionalEncoding, self).__init__()
-        self.dropout = nn.Dropout(p=dropout)
-
-        pe = torch.zeros(max_len, d_model)
-        position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
-        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-math.log(10_000.0) / d_model))
-        pe[:, 0::2] = torch.sin(position * div_term)
-        pe[:, 1::2] = torch.cos(position * div_term)
-        # pe = pe.unsqueeze(0).transpose(0, 1)  # for batching
-        self.register_buffer('pe', pe)
-
-    def forward(self, x):
-        x = x + self.pe[:x.size(0), :]
-        return self.dropout(x)
-
+    # TODO: Do i need this?
+    def generate_square_subsequent_mask(self, sz):
+        mask = (torch.triu(torch.ones(sz, sz)) == 1).transpose(0, 1)
+        mask = mask.float().masked_fill(mask == 0, float('-inf')).masked_fill(mask == 1, float(0.0))
+        return mask.to(self.device)
 
 class GFlowNet_Forward(nn.Module):
     def __init__(self, input_dim, output_dim):
@@ -105,10 +69,6 @@ class GFlowNet_Forward(nn.Module):
                     nn.ReLU(),
                     nn.Linear(input_dim, output_dim)
                 )
+
     def forward(self, x):
         return self.forward_logits(x)
-
-
-class GFlowNet_ArgSampler(nn.Module):
-    def __init__(self):
-        super(GFlowNet_ArgSampler, self).__init__()

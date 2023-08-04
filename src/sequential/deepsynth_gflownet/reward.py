@@ -3,11 +3,13 @@ import torch
 import math
 import editdistance
 import numpy as np
+from src.sequential.deepsynth_gflownet.utils import *
 
 
 class Reward(nn.Module):
-    def __init__(self, vocab_size, d_model=512, num_heads=8, num_layers=2, dropout=0.1):
+    def __init__(self, vocab_size, d_model=512, num_heads=8, num_layers=2, dropout=0.1, device='cpu'):
         super(Reward, self).__init__()
+        self.device = device
         self.pos_encoder = PositionalEncoding(d_model, dropout)
         self.embedding = nn.Embedding(vocab_size, embedding_dim=d_model)
         encoder_layer = nn.TransformerEncoderLayer(d_model=d_model, nhead=num_heads)
@@ -17,14 +19,13 @@ class Reward(nn.Module):
 
     def forward(self, true, pred):
         if len(pred) == 0:
-            return torch.tensor(0.0)
+            return torch.tensor(0.0, device=self.device)
         # reward = self.cosine_sim(true, pred)
         reward = self.edit_distance(true, pred)
-        return reward
+        return torch.tensor(reward, device=self.device)
 
-    @staticmethod
-    def naive(true, pred):
-        return torch.tensor(true == pred).to(torch.int8)
+    def naive(self, true, pred):
+        return torch.tensor(true == pred, device=self.device).to(torch.int8)
 
     def cosine_sim(self, true, pred):
         latent_true = torch.mean(
@@ -34,7 +35,7 @@ class Reward(nn.Module):
 
         cosim = self.cosim(latent_true, latent_pred)
         norm_cosim = (cosim + 1) / 2
-        return norm_cosim
+        return torch.tensor(norm_cosim, device=self.device)
 
     def edit_distance(self, true, pred):
         def list_to_str(lst):
@@ -73,22 +74,3 @@ class Reward(nn.Module):
         if len(y_pred) == 0:
             return 0
         return sum([x == y for x, y in zip(y_pred, y_true)]) / len(y_true)
-
-
-class PositionalEncoding(nn.Module):
-    # https://pytorch.org/tutorials/beginner/transformer_tutorial.html
-    def __init__(self, d_model, dropout=0.1, max_len=5_000):
-        super(PositionalEncoding, self).__init__()
-        self.dropout = nn.Dropout(p=dropout)
-
-        pe = torch.zeros(max_len, d_model)
-        position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
-        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-math.log(10_000.0) / d_model))
-        pe[:, 0::2] = torch.sin(position * div_term)
-        pe[:, 1::2] = torch.cos(position * div_term)
-        # pe = pe.unsqueeze(0).transpose(0, 1)  # for batching
-        self.register_buffer('pe', pe)
-
-    def forward(self, x):
-        x = x + self.pe[:x.size(0), :]
-        return self.dropout(x)

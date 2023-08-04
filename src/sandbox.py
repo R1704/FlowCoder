@@ -1,75 +1,91 @@
-add = lambda x, y: x + y
-sub = lambda x, y: x - y
-mul = lambda x, y: x * y
-div = lambda x, y: x / y
-functions: dict = {'+': add, '-': sub, '*': mul, '/': div}
+from src.sequential.deepsynth_gflownet.data import Data
+from src.sequential.deepsynth.pcfg import PCFG
+from src.sequential.deepsynth.run_experiment import *
+from src.sequential.deepsynth_gflownet.data import *
+from src.sequential.deepsynth_gflownet.state_encoder import *
+from collections import deque
+import torch
 
-# print(functions['+'](1, 2))
-
-triple = lambda x, y, z: x + y + z
-# print(triple(1, 2, 3))
-
-curr = lambda x, y: x(y)
-# print(curr(lambda x: x + 1, 2))
-
-loop = lambda f, x: list(map(f, x))
-
-# loop = lambda f, n: [f for _ in range(n)]
-
-from src.tree.AST import Node
-
-from src.tree.utils import *
-
-primitives = [
-    *[Node(symbol=i) for i in range(10)],
-    Node(symbol='+', arity=2, function=lambda x, y: x + y),
-    Node(symbol='-', arity=2, function=lambda x, y: x - y),
-    Node(symbol='*', arity=2, function=lambda x, y: x * y),
-    # Node(symbol='/', arity=2, function=lambda x, y: x / y),
-]
-
-max_depth = 5
-d_model = 64
-ast = Node.create_tree(primitives, depth=max_depth)
-ast.print()
-print(ast.evaluate())
-
-from src.tree.positional_encoding import *
-position_encoder = PositionalEncoding(d_model=d_model, max_depth=max_depth, max_arity=2)
-
-position_encoding = position_encoder.encode_position(ast)
-
-for node, encoding in position_encoding.items():
-    print(node, encoding)
+from src.sequential.deepsynth_gflownet.io_encoder import *
 
 
-# encoded = encode_tree(tree, primitives)
-# print(encoded)
+data = Data(
+     device=torch.device('cuda' if torch.cuda.is_available() else 'cpu'),
+     dataset_size=10_000,
+     nb_examples_max=2,
+     max_program_depth=2,
+     nb_arguments_max=3,
+     lexicon=[0, 1], # [x for x in range(-2, 2)], #[x for x in range(-30, 30)],
+     size_max=3 # 10,
+     )
 
-# token_1 = Node(symbol='+', arity=2, function=lambda x, y: x + y)
-# token_1.attach(Node(symbol='-', arity=2, function=lambda x, y: x - y), 0)
-# token_1.attach(Node(symbol='+', arity=2, function=lambda x, y: x + y), 1)
-#
-# token_2 = Node(symbol='-', arity=2, function=lambda x, y: x - y)
-# token_2.attach(Node(symbol='-', arity=2, function=lambda x, y: x - y), 0)
-# token_2.attach(Node(symbol='+', arity=2, function=lambda x, y: x + y), 1)
-#
-# # token_1.print()
-# # token_2.print()
-# tokens = primitives + [token_1, token_2]
-#
-#
-# tree = Node(symbol='+', arity=2, function=lambda x, y: x + y)
-# tree.attach(Node(symbol='-', arity=2, function=lambda x, y: x - y), 0)
-# tree.attach(Node(symbol='+', arity=2, function=lambda x, y: x + y), 1)
-# tree.children[0].attach(Node(symbol='-', arity=2, function=lambda x, y: x - y), 0)
-# tree.children[0].attach(Node(symbol='+', arity=2, function=lambda x, y: x + y), 1)
-# # tree.print()
-#
-# from src.tree.ASTTokenizer import ASTTokenizer
-# tokenizer = ASTTokenizer(tokens)
-# tokenized_tree = tokenizer.tokenize(tree)
-#
-# for t in tokenized_tree:
-#     t.print()
-#     print('\n')
+def dfs(G : PCFG):
+    '''
+    A generator that enumerates all programs using a DFS.
+    '''
+
+    # We need to reverse the rules:
+    new_rules = {}
+    for S in G.rules:
+        new_rules[S] = {}
+        sorted_derivation_list = sorted(
+            G.rules[S], key=lambda P: G.rules[S][P][1]
+        )
+        for P in sorted_derivation_list:
+            new_rules[S][P] = G.rules[S][P]
+    G = PCFG(start = G.start,
+        rules = new_rules,
+        max_program_depth = G.max_program_depth)
+
+    frontier = deque()
+    initial_non_terminals = deque()
+    initial_non_terminals.append(G.start)
+    frontier.append((None, initial_non_terminals))
+    # A frontier is a queue of pairs (partial_program, non_terminals) describing a partial program:
+    # partial_program is the list of primitives and variables describing the leftmost derivation, and
+    # non_terminals is the queue of non-terminals appearing from left to right
+
+    while len(frontier) != 0:
+        partial_program, non_terminals = frontier.pop()
+        print(f'partial program in dfs: {partial_program}')
+        print(f'non_terminals in dfs: {non_terminals}')
+        if len(non_terminals) == 0:
+            yield partial_program
+        else:
+            S = non_terminals.pop()
+            for P in G.rules[S]:
+                args_P, w = G.rules[S][P]
+                new_partial_program = (P, partial_program)
+                new_non_terminals = non_terminals.copy()
+                for arg in args_P:
+                    new_non_terminals.append(arg)
+                frontier.append((new_partial_program, new_non_terminals))
+
+
+print(data.cfg)
+rules = data.cfg.rules
+S = data.cfg.start
+
+first = rules[S]
+
+print('-------Rules--------')
+for rule, v in rules.items():
+    print(rule, v)
+print()
+
+print('-------start and its programs--------')
+print(S, first, '\n')
+
+pcfg = data.cfg.CFG_to_Uniform_PCFG()
+program_generator = dfs(pcfg)
+partial_program = next(program_generator)
+print(f'partial program: {partial_program}')
+
+program = reconstruct_from_compressed(partial_program, target_type=data.cfg.start[0])
+print(f'program: {program}')
+
+print('-----------------------------')
+
+
+state_encoder = StateEncoder(cfg=data.cfg)
+print(state_encoder.rules)
