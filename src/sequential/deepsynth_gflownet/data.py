@@ -1,8 +1,6 @@
 import src.sequential.deepsynth.dsl as dsl
 from src.sequential.deepsynth.DSL.list import *
 from src.sequential.deepsynth.Predictions.dataset_sampler import Dataset
-from src.sequential.deepsynth.Predictions.embeddings import RNNEmbedding
-from src.sequential.deepsynth.Predictions.IOencodings import FixedSizeEncoding
 from src.sequential.deepsynth.type_system import *
 
 import torch

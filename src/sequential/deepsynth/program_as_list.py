@@ -38,6 +38,7 @@ def evaluation_from_compressed(program_compressed, dsl, environment, target_type
 def reconstruct_from_compressed(program, target_type):
     program_as_list = []
     list_from_compressed(program, program_as_list)
+    # print(f'list from compressed {program_as_list}')
     program_as_list.reverse()
     return reconstruct_from_list(program_as_list, target_type)
 

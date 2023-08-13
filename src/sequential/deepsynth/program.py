@@ -150,6 +150,7 @@ class Function(Program):
         self.arguments = arguments
         self.type = type_
         self.hash = hash(tuple([arg.hash for arg in self.arguments] + [self.function.hash]))
+        # self.hash = hash(tuple([arg.hash if arg is not None else -1 for arg in self.arguments] + [self.function.hash]))
 
         self.probability = probability
         self.evaluation = {}

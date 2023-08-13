@@ -10,18 +10,19 @@ from torch.distributions.categorical import Categorical
 from torch.optim import Adam
 import torch.nn as nn
 
-import matplotlib.pyplot as pp
+import matplotlib.pyplot as plt
 from dataclasses import dataclass
 
 import logging
 
+import time
 
 
 @dataclass
 class Training:
-    n_epochs: int
     batch_size: int
-    learning_rate: float
+    learning_rate_trn: float
+    learning_rate_gfn: float
     e_steps: int
     m_step_threshold: float
     m_steps: int
@@ -32,126 +33,142 @@ class Training:
     device: torch
 
     def __post_init__(self):
-        assert self.n_epochs <= self.data.dataset_size, f'not enough data for {self.n_epochs} epochs'
+        self.epochs = self.data.dataset_size // (self.e_steps * self.m_steps * self.batch_size)
+        self.optimizer_transformer = Adam(self.model.parameters(), lr=self.learning_rate_trn)
+        self.optimizer_GFlowNet = Adam(self.model.forward_logits.parameters(), lr=self.learning_rate_gfn)
 
     def get_next_rules(self, S):
         return [(S, p) for p in self.data.cfg.rules[S].keys()]
 
-    def sample_program(self, batch_IOs):
-        states = [['START']] * self.batch_size
-        total_forward = torch.zeros(self.batch_size)
-        non_terminals = [self.data.cfg.start] * self.batch_size  # start with the CFGs start symbol
-        frontiers = [{nt: self.get_next_rules(nt)} for nt in non_terminals]
-        final_programs = [[]] * self.batch_size
+    def get_mask(self, rules: list):
+        mask = [1 if rule in rules else 0 for rule in self.model.state_encoder.rules]
+        mask = torch.tensor(mask, device=self.device)
+        return mask
+
+    def sample_program_dfs(self, batch_IOs):
+        states = [['START'] for _ in range(self.batch_size)]
+
+        # Initialise container for forward logits accumulation
+        total_forwards = torch.zeros(self.batch_size, device=self.device)
+
+        frontiers = [deque([self.data.cfg.start]) for _ in range(self.batch_size)]
+
+        programs = [[] for _ in range(self.batch_size)]
 
         while any(frontiers):
 
             forward_logits, logZs = self.model(states, batch_IOs)
-            mask = [[1 if rule in flatten(fr.values()) else 0 for rule in self.model.state_encoder.rules] for fr in
-                    frontiers]
-            mask = torch.tensor(mask, device=self.device)  # Convert mask to tensor
-            forward_logits = forward_logits - (1 - mask) * 100  # Subtract 100 from invalid actions
-            actions = []
-            for i in range(self.batch_size):
-                cat = Categorical(logits=forward_logits[i])
-                action = cat.sample()  # returns idx
-                total_forward[i] += cat.log_prob(action).item()
-                actions.append(action)
 
             for i in range(self.batch_size):
                 if frontiers[i]:
-                    rule = self.model.state_encoder.idx2rule[actions[i].item()]
+
+                    next_nt = frontiers[i].pop()
+                    rules = self.get_next_rules(next_nt)
+                    mask = self.get_mask(rules)
+                    forward_logits[i] = forward_logits[i] - (1 - mask) * 100
+                    cat = Categorical(logits=forward_logits[i])
+                    action = cat.sample()
+                    total_forwards[i] += cat.log_prob(action).item()
+                    rule = self.model.state_encoder.idx2rule[action.item()]
                     nt, program = rule
-                    final_programs[i].append(program)
-                    frontiers[i].pop(nt)
+                    programs[i] = (program, programs[i])
 
                     states[i] = states[i] + [rule]
                     program_args = self.data.cfg.rules[nt][program]
-                    frontiers[i].update({nt: self.get_next_rules(nt) for nt in program_args})
+                    frontiers[i].extend(program_args)
 
-            if not any(frontiers):
-                print('$$$$$$$$$$$$$ final_programs $$$$$$$$$$$$$')
-                print(final_programs)
-                return final_programs, forward_logits, logZs, total_forward
-
-    def e_step(self, optim_gfn, epoch):
-
-        # keep track of losses and logZs
-        losses = []
-        logZs = []
-        tries = 0
-        reward = torch.tensor(0)
-
-        # Sample task
-        batch_IOs, batch_program = self.data.get_next_batch(self.batch_size)
-
-        # until correct program is found or >= n_tries
-        while reward.item() != 1.0 and tries < self.e_steps:
-            program, forward_logits, logZ, total_forward = self.sample_program(batch_IOs)
-            tries += 1
-            reward = self.reward_(program, batch_program, batch_IOs, self.data.dsl)
-
-        # save program, task pairs for sleep phase
-
-        # Compute loss and backpropagate
-        loss = (logZ + total_forward - torch.log(reward).clip(-20)).pow(2)
-
-        loss.backward()
-        optim_gfn.step()
-        optim_gfn.zero_grad()
-
-        losses.append(loss)
-        logZs.append(logZ)
-
-        self.print_stats(epoch, loss, logZ, total_forward, reward, forward_logits, program)
-
-        return losses, logZs
-
-
-    def m_step(self, optim):
-        losses = []
-        for _ in range(self.m_steps):
-            # Sample task
-            batch_IOs, batch_program = self.data.get_next_batch(self.batch_size)
-
-            # program, forward_logits, logZ, total_forward = self.sample_program(latent_batch_IOs)
-            reward = self.reward_(program, batch_program, batch_IOs, self.data.dsl)
-            print(f'reward in m_step {reward}')
-            loss = torch.tensor(-torch.log(reward).clip(-20), requires_grad=True)
-            loss.backward()
-            losses.append(loss)
-            optim.step()
-            optim.zero_grad()
-
-        return losses
+        if not any(frontiers):
+            reconstructed = [reconstruct_from_compressed(program, target_type=self.data.cfg.start[0])
+                             for program in programs]
+            return logZs, total_forwards, reconstructed
 
 
 
     def train(self):
 
-        # Optimizers for generative model and GFN_Forward
-        optim_gen = Adam(self.model.parameters(), lr=self.learning_rate)
-        optim_gfn = Adam(self.model.forward_logits.parameters(), lr=self.learning_rate)
-        correct = 0
-        for epoch in tqdm.tqdm(range(self.n_epochs), ncols=40):
+        start_time = time.time()  # to store the starting time of the training
+        program_counter = 0
 
-            for i in range(self.data.dataset_size // self.batch_size):
-                batch_IOs, batch_program = self.data.get_next_batch(self.batch_size)
-                final_programs, forward_logits, logZs, total_forward = self.sample_program(batch_IOs)
+        # total_rewards = torch.zeros(self.batch_size, device=self.device)
+        total_rewards = []
+
+        # keep track of losses and logZs
+        e_step_losses = []
+        m_step_losses = []
+
+        total_logZs = []
 
 
-                # Optimize GFlowNet
-                # gfn_losses, logZs = self.e_step(optim_gfn, epoch)
+        for epoch in tqdm.tqdm(range(self.epochs), ncols=40):
 
-                # Optimize Generative Model
-                # if gfn_losses[-1] < self.m_step_threshold:
-                #     self.m_step(optim_gen)
+            logging.info(f'Computing E-step')
+            # Optimize GFlowNet
+            self.unfreeze_parameters(self.model.forward_logits)  # Unfreeze GFlowNet parameters
+            self.freeze_parameters(self.model.transformer)  # Freeze transformer parameters
+            for _ in range(self.e_steps):
 
-        # self.plot_results(gfn_losses, logZs)
+                # Sample tasks
+                batch_IOs, batch_programs = self.data.get_next_batch(self.batch_size)
+                program_counter += self.batch_size
+                logZs, total_forwards, programs = self.sample_program_dfs(batch_IOs)
+
+                rewards = self.rewards(programs, batch_programs, batch_IOs, self.data.dsl)
+                total_rewards.append(rewards.sum().item() / rewards.size(0))
+
+                # Compute loss and backpropagate
+                e_loss = (logZs + total_forwards - torch.log(rewards).clip(-20)).pow(2)
+                e_loss = e_loss.mean()
+                e_loss.backward()
+
+                self.optimizer_GFlowNet.step()  # (E-step)
+                self.optimizer_GFlowNet.zero_grad()
+
+                e_step_losses.append(e_loss.item())
+                total_logZs.append(logZs.mean().item())
+
+            # Optimize Generative Model
+            if True: #e_step_losses[-1] < self.m_step_threshold:
+                self.unfreeze_parameters(self.model.transformer)  # Unfreeze transformer parameters
+                self.freeze_parameters(self.model.forward_logits)  # Freeze GFlowNet parameters
+
+                logging.info(f'Computing M-step')
+                for _ in range(self.m_steps):
+                    batch_IOs, batch_programs = self.data.get_next_batch(self.batch_size)
+                    program_counter += self.batch_size
+                    _, _, programs = self.sample_program_dfs(batch_IOs)
+                    rewards = self.rewards(programs, batch_programs, batch_IOs, self.data.dsl)
+                    total_rewards.append(rewards.sum().item() / rewards.size(0))
+                    m_loss = -torch.log(rewards).clip(-20).mean()
+                    m_loss.backward()
+                    m_step_losses.append(m_loss.item())
+                    self.optimizer_transformer.step()  # (M-step)
+                    self.optimizer_transformer.zero_grad()
+
+            if epoch % 5 == 0:
+                avg_programs_per_sec = self.calculate_programs_per_second(start_time, program_counter)
+
+                logging.info(
+                    f'total rewards {sum(total_rewards) / ((epoch + 1) * self.e_steps * self.m_steps * self.batch_size)}\n'
+                    f'last e_loss: {e_step_losses[-1]}\n'
+                    f'last m_loss: {m_step_losses[-1]}\n'
+                    f'last logZ: {total_logZs[-1]}\n'
+                    f'Programs created per second on average: {avg_programs_per_sec:.2f}\n'
+                    f'Total programs created: {program_counter}'
+                    )
+
+                self.plot_results(e_step_losses, m_step_losses, total_logZs, total_rewards)
+        self.plot_results(e_step_losses, m_step_losses, total_logZs, total_rewards)
 
         # Save model
-        # TODO: Save models independently?
         torch.save(self.model.state_dict(), self.model_path)
+
+    def freeze_parameters(self, model):
+        for param in model.parameters():
+            param.requires_grad = False
+
+    def unfreeze_parameters(self, model):
+        for param in model.parameters():
+            param.requires_grad = True
 
     def sleep(self):
         ...
@@ -161,33 +178,47 @@ class Training:
         def fantasies(self):
             ...
 
-    def plot_results(self, losses, logZs):
-        f, ax = pp.subplots(2, 1, figsize=(10, 6))
-        losses = [l.cpu().detach().numpy() for l in losses]
-        logZs = [z.cpu().detach().numpy() for z in logZs]
-        pp.sca(ax[0])
-        pp.plot(losses)
-        pp.yscale('log')
-        pp.ylabel('loss')
-        pp.sca(ax[1])
-        pp.plot(logZs)
-        pp.ylabel('estimated Z')
-        pp.show()
+    @staticmethod
+    def plot_results(e_step_losses, m_step_losses, all_logZs, program_ratios):
+
+        plt.figure(figsize=(15, 15))
+        plt.subplot(4, 1, 1)
+        plt.plot(e_step_losses)
+        plt.title('E-step Losses Over Time')
+        plt.xlabel('epochs')
+        plt.ylabel('e loss')
+
+        plt.subplot(4, 1, 2)
+        plt.plot(m_step_losses)
+        plt.title('M-step Losses Over Time')
+        plt.xlabel('epochs')
+        plt.ylabel('m loss')
+
+        plt.subplot(4, 1, 3)
+        plt.plot(np.exp(all_logZs))
+        plt.title('Z Over Time')
+        plt.xlabel('epochs')
+        plt.ylabel('Z')
+
+        plt.subplot(4, 1, 4)
+        plt.plot(program_ratios)
+        plt.title('Correct Program Ratios Over Time')
+        plt.xlabel('epochs')
+        plt.ylabel('ratio')
+
+        plt.tight_layout()
+        plt.show()
+
+    @staticmethod
+    def calculate_programs_per_second(start_time, program_counter):
+        elapsed_time = time.time() - start_time
+        avg_programs_per_sec = program_counter / elapsed_time
+        return avg_programs_per_sec
 
 
-    def print_stats(self, epoch, loss, logZ, total_forward, reward, forward_logits, program):
-        if epoch % 99 == 0:
-            logging.info(
-                f'Epoch: {epoch}\n'
-                f'Loss: {loss.item()}\n'
-                f'LogZ: {logZ.item()}\n'
-                f'Forward: {total_forward}\n'
-                f'Reward: {torch.log(reward).clip(-20)}\n'
-                # f'Total Rewards: {rewards} / {self.n_epochs} = {rewards / self.n_epochs}\n'
-                f'Forward logits: {forward_logits}, {forward_logits.shape}\n'
-                # f'Program length: {len(state)}, {program}\n'
-                # f'{}\n'
-            )
+
+
+
 
 
     def make_program_checker(self, dsl: DSL, examples) -> Callable[[Program, bool], int]:
@@ -214,21 +245,262 @@ class Training:
 
         return checker
 
-    def reward_(self, program: Program, batch_program, task, dsl):
+    def rewards(self, programs, batch_program, task, dsl):
         # program_checker = self.make_program_checker(dsl, task[0])
         # rewrd = program_checker(program, True)
-        logging.debug(f'actual program: {batch_program[0]}')
-        logging.debug(f'found program: {program}')
-        # logging.debug(f'Same program: {batch_program[0] == program}')
+        # logging.debug(f'actual programs: {batch_program}')
+        # logging.debug(f'found programs: {programs}')
+        # logging.debug(f'Same program: {batch_program == program}')
         # TODO: Looking at the actual program for comparison is a little hacky,
         #  but otherwise we need to deal with variables, which makes the problem a lot harder.
-        rewrd = torch.tensor(batch_program[0] == program).to(torch.int8)
-        logging.debug(f'Reward: {rewrd}')
+        rewrd = torch.tensor([a == b for a, b in zip(programs, batch_program)], device=self.device).float()
+        rewrd.requires_grad_()
 
-        # if rewrd.item() == 1:
-        #     logging.info('-----found the correct program-----')
-        #     logging.info(f'found program: {program}')
-        #     logging.info(f'actual program: {batch_program[0]}')
-        #     logging.info(f'reward: {rewrd.item()}')
+
+
         return rewrd
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ #
+    #
+    # def sample_program_top_down(self, batch_IOs, s=None):
+    #
+    #     # The top is either defined by s if it is given or by the start symbol of the cfg
+    #     s = self.data.cfg.start if s is None else s
+    #
+    #     # Initialise trajectories
+    #     states = [['START'] for _ in range(self.batch_size)]
+    #
+    #     # Initialise container for forward logits accumulation
+    #     total_forwards = torch.zeros(self.batch_size, device=self.device)
+    #
+    #     # A frontier is a queue of lists of dictionaries. A dictionary consists of non-terminal: [rules(non-terminal)] pairs
+    #     # frontiers = [deque([{s: self.get_next_rules(s)}]) for _ in range(self.batch_size)]
+    #     # frontiers = [deque([[s]]) for _ in range(self.batch_size)]
+    #
+    #     # Actual program constructions
+    #     # argument_stack = [[] for _ in range(self.batch_size)]
+    #     # program_stack = [[] for _ in range(self.batch_size)]
+    #
+    #
+    #
+    #     while any(frontiers):
+    #
+    #         forward_logits, logZs = self.model(states, batch_IOs)
+    #         mask = self.get_mask(frontiers)
+    #         forward_logits = forward_logits - (1 - mask) * 100
+    #         cat = Categorical(logits=forward_logits)
+    #         actions = cat.sample()
+    #         total_forwards += cat.log_prob(actions)
+    #
+    #         for i in range(self.batch_size):
+    #             if frontiers[i]:
+    #
+    #                 front = frontiers[i].pop()
+    #
+    #                 print(f'front: {front}')
+    #
+    #                 candidate_rules = [self.get_next_rules(nt) for nt in front]
+    #                 print(f'candidate_rules: {candidate_rules}')
+    #
+    #
+    #
+    #                 # If we popped from the frontier and we made a prediction
+    #
+    #
+    #
+    #     if not any(frontiers):
+    #         print('$$$$$$$$$$$$$ final_programs $$$$$$$$$$$$$')
+    #         # print(arguments)
+
+
+    # def top_down_v2(self, nt, states, batch_IOs):
+    #     next_rules = self.get_next_rules(nt)
+    #     forward_logits, logZ = self.model(states, batch_IOs)
+    #     mask = self.get_mask(next_rules)
+    #     forward_logits = forward_logits - (1 - mask) * 100
+    #     cat = Categorical(logits=forward_logits)
+    #     action = cat.sample()
+    #     rule = self.model.state_encoder.idx2rule[action.item()]
+    #     nt, program = rule
+    #
+    #     frontier = self.data.cfg[nt][program]
+    #     arguments = []
+
+
+
+    # def top_down(self, arguments, frontiers, states, batch_IOs, total_forward):
+    #     # Frontiers is a list of size batch_size.
+    #     # Each element in that list is a queue which contains dictionaries of nt: [rules]
+    #
+    #     forward_logits, logZs = self.model(states, batch_IOs)
+    #
+    #     for i in range(self.batch_size):
+    #         if frontiers[i]:
+    #
+    #             # Get the latest dictionary, containing the arguments of the parent function
+    #             # We need to pick one rule for each nt
+    #             nts_dict = frontiers[i].pop()
+    #
+    #             # Get the mask and mask the forward logits
+    #             mask = self.get_mask(flatten(nts_dict.values()))
+    #             forward_logits[i] = forward_logits[i] - (1 - mask) * 100
+    #
+    #             # Predict next rule
+    #             cat = Categorical(logits=forward_logits[i])
+    #             action = cat.sample()  # returns idx
+    #             total_forward[i] += cat.log_prob(action).item()
+    #             rule = self.model.state_encoder.idx2rule[action.item()]
+    #             nt, program = rule
+    #             print()
+    #             print(nt, program, rule)
+    #
+    #             # update state
+    #             states[i].append(rule)
+    #
+    #             # # Append program to arguments
+    #             # arguments[i].append(rule)
+    #
+    #             # Remove nt from frontier
+    #             nts_dict.pop(nt)
+    #
+    #             # If we still have nts in the remaining dict, restack the frontier
+    #             if len(nts_dict) != 0:
+    #                 frontiers[i].append(nts_dict)
+    #
+    #             # If the program can't be expanded further, return it
+    #             if isinstance(program, Variable) or rule in self.model.state_encoder.terminal_rules:
+    #                 print(f'arguments {arguments}')
+    #                 arguments = sorted(arguments, key=lambda x: x[0][1][1])
+    #                 arguments = [p for nt, p in arguments]
+    #
+    #             # get all args of the program that still need to be expanded
+    #             # and put them in the frontier
+    #             args = self.data.cfg.rules[nt][program]
+    #             frontiers[i].append({nt: self.get_next_rules(nt) for nt in args})
+    #
+    #             arguments, frontiers, states, batch_IOs, total_forward = self.top_down(arguments, frontiers, states, batch_IOs, total_forward)
+    #             # print(f'arguments {arguments}')
+    #             # return the function
+    #             # return [Function(program, [arg for arg in sorted(arguments, key=lambda x: x[0][1][1])])], frontiers, states, batch_IOs, total_forward
+    #             return Function(program, arguments), frontiers, states, batch_IOs, total_forward
+
+
+
+    # def sample_program_bottom_up(self, batch_IOs):
+    #     states = [['START'] for _ in range(self.batch_size)]
+    #     total_forward = torch.zeros(self.batch_size, device=self.device)
+    #     frontiers = [deque({'START': self.model.state_encoder.terminal_rules}) for _ in range(self.batch_size)]
+    #     programs = [[] for _ in range(self.batch_size)]
+    #
+    #     while any(frontiers):
+    #         forward_logits, logZs = self.model(states, batch_IOs)
+    #         mask = self.get_mask(frontiers)
+    #         forward_logits = forward_logits - (1 - mask) * 100
+    #
+    #         cat = Categorical(logits=forward_logits)
+    #         actions = cat.sample()
+    #         total_forward += cat.log_prob(actions)
+    #
+    #         for i in range(self.batch_size):
+    #             if frontiers[i]:
+    #                 rule = self.model.state_encoder.idx2rule[actions[i].item()]
+    #                 nt, program = rule
+    #
+    #                 # parents = self.model.state_encoder.get_parents(rule)
+    #                 # # Finish program
+    #                 # programs[i] = (program, programs[i])
+    #                 frontiers[i].pop(nt)
+    #                 states[i] = states[i] + [rule]
+    #                 program_args = self.data.cfg.rules[nt][program]
+    #                 frontiers[i].update({nt: self.get_next_rules(nt) for nt in program_args})
+    #
+    #         if not any(frontiers):
+    #             print('$$$$$$$$$$$$$ final_programs $$$$$$$$$$$$$')
+    #             print(programs)
+    #             return programs, forward_logits, logZs, total_forward
+
+
+    # def reconstruct_from_list(self, program_list, target_type):
+    #     if len(program_list) == 1:
+    #         return program_list.pop()
+    #     else:
+    #         p = program_list.pop()
+    #         if isinstance(p, (New, BasicPrimitive)):
+    #             list_arguments = p.type.ends_with(target_type)
+    #             arguments = [None] * len(list_arguments)
+    #             for i in range(len(list_arguments)):
+    #                 arguments[len(list_arguments) - i - 1] = reconstruct_from_list(
+    #                     program_list, list_arguments[len(list_arguments) - i - 1]
+    #                     )
+    #             return Function(p, arguments)
+    #         if isinstance(p, Variable):
+    #             return p
+    #         assert False
+
+    # def e_step(self, optim_gfn, epoch):
+    #
+    #     # keep track of losses and logZs
+    #     losses = []
+    #     logZs = []
+    #     tries = 0
+    #     reward = torch.tensor(0)
+    #
+    #     # Sample task
+    #     batch_IOs, batch_program = self.data.get_next_batch(self.batch_size)
+    #
+    #     # until correct program is found or >= n_tries
+    #     while reward.item() != 1.0 and tries < self.e_steps:
+    #         forward_logits, logZs, total_forwards, programs = self.sample_program_dfs(batch_IOs)
+    #         tries += 1
+    #         reward = self.reward_(program, batch_program, batch_IOs, self.data.dsl)
+    #
+    #     # save program, task pairs for sleep phase
+    #
+    #     # Compute loss and backpropagate
+    #     loss = (logZ + total_forward - torch.log(reward).clip(-20)).pow(2)
+    #
+    #     loss.backward()
+    #     optim_gfn.step()
+    #     optim_gfn.zero_grad()
+    #
+    #     losses.append(loss)
+    #     logZs.append(logZ)
+    #
+    #     self.print_stats(epoch, loss, logZ, total_forward, reward, forward_logits, program)
+    #
+    #     return losses, logZs
+
+    #
+    # def m_step(self, optim):
+    #     losses = []
+    #     for _ in range(self.m_steps):
+    #         # Sample task
+    #         batch_IOs, batch_program = self.data.get_next_batch(self.batch_size)
+    #
+    #         # program, forward_logits, logZ, total_forward = self.sample_program(latent_batch_IOs)
+    #         reward = self.reward_(program, batch_program, batch_IOs, self.data.dsl)
+    #         print(f'reward in m_step {reward}')
+    #         loss = torch.tensor(-torch.log(reward).clip(-20), requires_grad=True)
+    #         loss.backward()
+    #         losses.append(loss)
+    #         optim.step()
+    #         optim.zero_grad()
+    #
+    #     return losses

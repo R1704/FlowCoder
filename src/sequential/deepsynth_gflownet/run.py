@@ -24,12 +24,15 @@ inference = False
 
 data = Data(
      device=device,
-     dataset_size=10,#_000,
+     dataset_size=1_000_000,
      nb_examples_max=2,
-     max_program_depth=2, #4,
+     max_program_depth=2,
+     # max_program_depth=4,
      nb_arguments_max=3,
      lexicon=[0, 1], # [x for x in range(-2, 2)], #[x for x in range(-30, 30)],
-     size_max=3, # 10,
+     # lexicon=[x for x in range(-30, 30)],
+     size_max=3,
+     # size_max=10,
      )
 
 io_encoder = IOEncoder(
@@ -40,7 +43,7 @@ io_encoder = IOEncoder(
     device=device
     )
 
-state_encoder = StateEncoder(
+state_encoder = RuleEncoder(
     cfg=data.cfg,
     d_model=512,  # TODO: try different dimensions
     device=device
@@ -73,12 +76,12 @@ reward = Reward(
 
 if train:
     training = Training(
-        n_epochs=min(1, data.dataset_size),
-        batch_size=2,
-        learning_rate=3e-4,
+        batch_size=32,
+        learning_rate_trn=1e-3,
+        learning_rate_gfn=1e-4,
         e_steps=10,
-        m_step_threshold=2,
-        m_steps=1,
+        m_step_threshold=10,
+        m_steps=10,
         model_path=model_path,
         data=data,
         model=model,

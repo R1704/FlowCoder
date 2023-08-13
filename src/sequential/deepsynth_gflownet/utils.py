@@ -2,6 +2,8 @@ import torch
 import torch.nn as nn
 import math
 
+from collections import defaultdict, deque
+
 class PositionalEncoding(nn.Module):
     # https://pytorch.org/tutorials/beginner/transformer_tutorial.html
     def __init__(self, d_model, dropout=0.1, max_len=5_000):
@@ -23,7 +25,3 @@ class PositionalEncoding(nn.Module):
 
 def flatten(lst):
     return [element for sublist in lst for element in sublist]
-
-
-def index_sublists(lst):
-    return [i for i, sublist in enumerate(lst) for _ in sublist]

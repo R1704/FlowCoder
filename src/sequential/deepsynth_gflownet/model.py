@@ -5,6 +5,7 @@ import logging
 
 from src.sequential.deepsynth_gflownet.utils import *
 
+
 class GFlowNet(nn.Module):
     def __init__(self, cfg, io_encoder, state_encoder, d_model=512, num_heads=8, num_layers=2, dropout=0.1, device='cpu'):
         super(GFlowNet, self).__init__()
@@ -13,7 +14,6 @@ class GFlowNet(nn.Module):
         self.io_encoder = io_encoder
         self.state_encoder = state_encoder
         self.positional_encoding = PositionalEncoding(d_model)
-
 
         # Defining the transformer
         self.transformer = nn.Transformer(
@@ -26,6 +26,12 @@ class GFlowNet(nn.Module):
 
         # MLPs for logits and logZ
         self.forward_logits = GFlowNet_Forward(d_model, len(state_encoder.rules))
+        # self.forward_logits = self.forward_logits = nn.Sequential(
+        #             nn.LayerNorm(d_model),
+        #             nn.Linear(d_model, d_model),
+        #             nn.ReLU(),
+        #             nn.Linear(d_model, len(state_encoder.rules))
+        #         )
 
         self.logZ = nn.Sequential(
             nn.LayerNorm(d_model),
@@ -44,8 +50,11 @@ class GFlowNet(nn.Module):
         state = self.state_encoder(state)
         state = self.positional_encoding(state)
 
+        # Generate mask
+        mask = self.generate_square_subsequent_mask(len(state))
+
         # Pass through the transformer
-        transformer_output = self.transformer(io, state)
+        transformer_output = self.transformer(io, state, tgt_mask=mask)
 
         # Predict the forward logits and total flow logZ
         forward_logits = self.forward_logits(transformer_output)[-1]
@@ -54,7 +63,6 @@ class GFlowNet(nn.Module):
 
         return forward_logits, logZ
 
-    # TODO: Do i need this?
     def generate_square_subsequent_mask(self, sz):
         mask = (torch.triu(torch.ones(sz, sz)) == 1).transpose(0, 1)
         mask = mask.float().masked_fill(mask == 0, float('-inf')).masked_fill(mask == 1, float(0.0))

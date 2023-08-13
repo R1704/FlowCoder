@@ -134,3 +134,20 @@ class CFG:
                     rules=new_rules,
                     max_program_depth=self.max_program_depth,
                     clean=True)
+
+    def get_terminals(self):
+        '''
+        Get all terminal symbols in the CFG
+
+        Returns:
+        A set containing all terminal symbols
+        '''
+        non_terminals = set(self.rules.keys())
+        terminals = set()
+
+        for S in self.rules:
+            for P in self.rules[S]:
+                args_P = self.rules[S][P]
+                if args_P == []:
+                    terminals.add(P)
+        return terminals
