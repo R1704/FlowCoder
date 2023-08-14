@@ -15,7 +15,7 @@ class GFlowNet(nn.Module):
         self.state_encoder = state_encoder
         self.positional_encoding = PositionalEncoding(d_model)
 
-        # Defining the transformer
+        # Defining the transformer (generative model)
         self.transformer = nn.Transformer(
             d_model=d_model,
             nhead=num_heads,
@@ -26,12 +26,6 @@ class GFlowNet(nn.Module):
 
         # MLPs for logits and logZ
         self.forward_logits = GFlowNet_Forward(d_model, len(state_encoder.rules))
-        # self.forward_logits = self.forward_logits = nn.Sequential(
-        #             nn.LayerNorm(d_model),
-        #             nn.Linear(d_model, d_model),
-        #             nn.ReLU(),
-        #             nn.Linear(d_model, len(state_encoder.rules))
-        #         )
 
         self.logZ = nn.Sequential(
             nn.LayerNorm(d_model),
@@ -58,7 +52,6 @@ class GFlowNet(nn.Module):
 
         # Predict the forward logits and total flow logZ
         forward_logits = self.forward_logits(transformer_output)[-1]
-
         logZ = self.logZ(transformer_output)[-1]
 
         return forward_logits, logZ
@@ -68,6 +61,7 @@ class GFlowNet(nn.Module):
         mask = mask.float().masked_fill(mask == 0, float('-inf')).masked_fill(mask == 1, float(0.0))
         return mask.to(self.device)
 
+# Forward policy
 class GFlowNet_Forward(nn.Module):
     def __init__(self, input_dim, output_dim):
         super(GFlowNet_Forward, self).__init__()

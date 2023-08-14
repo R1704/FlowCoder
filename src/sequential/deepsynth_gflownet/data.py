@@ -42,6 +42,9 @@ class Data:
         )
         self.batch_generator = self.dataset.__iter__()
 
+    # def make_new_dataset(self):
+    #     self.create_dataset_and_generator()
+
     def get_next_batch(self, batch_size):
         batch_IOs, batch_program = [], []
         for _ in range(batch_size):

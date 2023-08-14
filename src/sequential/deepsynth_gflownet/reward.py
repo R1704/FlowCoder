@@ -42,8 +42,8 @@ class Reward(nn.Module):
             return ''.join(map(str, lst))
 
         ed = editdistance.eval(list_to_str(true), list_to_str(pred))
-        print(f'edit distance {ed}')
-        return torch.tensor(len(true) - ed)
+        return float(len(true) - ed)
+
 
     def mean_squared_error(self, y_true, y_pred):
         # Convert lists to numpy arrays

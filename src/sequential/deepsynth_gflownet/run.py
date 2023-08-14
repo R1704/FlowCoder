@@ -29,8 +29,8 @@ data = Data(
      max_program_depth=2,
      # max_program_depth=4,
      nb_arguments_max=3,
-     lexicon=[0, 1], # [x for x in range(-2, 2)], #[x for x in range(-30, 30)],
-     # lexicon=[x for x in range(-30, 30)],
+     # lexicon=[0, 1], # [x for x in range(-2, 2)], #[x for x in range(-30, 30)],
+     lexicon=[x for x in range(-30, 30)],
      size_max=3,
      # size_max=10,
      )
@@ -77,7 +77,7 @@ reward = Reward(
 if train:
     training = Training(
         batch_size=32,
-        learning_rate_trn=1e-3,
+        learning_rate_trn=1e-4, #1e-3,
         learning_rate_gfn=1e-4,
         e_steps=10,
         m_step_threshold=10,

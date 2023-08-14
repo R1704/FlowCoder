@@ -1,5 +1,7 @@
 import torch.nn
 
+from src.config import *
+
 from src.sequential.deepsynth.dsl import *
 from src.sequential.deepsynth.run_experiment import *
 from src.sequential.deepsynth_gflownet.data import *
@@ -11,11 +13,13 @@ from torch.optim import Adam
 import torch.nn as nn
 
 import matplotlib.pyplot as plt
+
 from dataclasses import dataclass
 
 import logging
 
 import time
+import random
 
 
 @dataclass
@@ -34,8 +38,9 @@ class Training:
 
     def __post_init__(self):
         self.epochs = self.data.dataset_size // (self.e_steps * self.m_steps * self.batch_size)
-        self.optimizer_transformer = Adam(self.model.parameters(), lr=self.learning_rate_trn)
-        self.optimizer_GFlowNet = Adam(self.model.forward_logits.parameters(), lr=self.learning_rate_gfn)
+        self.optimizer_generative = Adam(self.model.parameters(), lr=self.learning_rate_trn)
+        self.optimizer_policy = Adam(self.model.forward_logits.parameters(), lr=self.learning_rate_gfn)
+        self.criterion = nn.NLLLoss()
 
     def get_next_rules(self, S):
         return [(S, p) for p in self.data.cfg.rules[S].keys()]
@@ -45,21 +50,37 @@ class Training:
         mask = torch.tensor(mask, device=self.device)
         return mask
 
-    def sample_program_dfs(self, batch_IOs):
-        states = [['START'] for _ in range(self.batch_size)]
+    def sample_program_dfs(self, batch_IOs, epsilon=0., beta=1.):
+        """
+
+        :param batch_IOs:
+        :param epsilon:
+        :param beta: beta should be < 1
+        :return:
+        """
+        states = [['START'] for _ in range(len(batch_IOs))]
 
         # Initialise container for forward logits accumulation
         total_forwards = torch.zeros(self.batch_size, device=self.device)
 
-        frontiers = [deque([self.data.cfg.start]) for _ in range(self.batch_size)]
+        frontiers = [deque([self.data.cfg.start]) for _ in range(len(batch_IOs))]
 
-        programs = [[] for _ in range(self.batch_size)]
+        programs = [[] for _ in range(len(batch_IOs))]
 
         while any(frontiers):
 
             forward_logits, logZs = self.model(states, batch_IOs)
 
-            for i in range(self.batch_size):
+            # Tempering with the policy for exploration purposes
+            if random.random() < epsilon:
+                # Uniform sampling if random is smaller than epsilon
+                forward_logits = torch.full(forward_logits.shape, fill_value=1.0 / forward_logits.shape[1],
+                                            device=self.device)
+            # Exponentiate by beta (we are multiplying since we are in log space)
+            if beta != 1:
+                forward_logits *= beta
+
+            for i in range(len(batch_IOs)):
                 if frontiers[i]:
 
                     next_nt = frontiers[i].pop()
@@ -80,16 +101,54 @@ class Training:
         if not any(frontiers):
             reconstructed = [reconstruct_from_compressed(program, target_type=self.data.cfg.start[0])
                              for program in programs]
-            return logZs, total_forwards, reconstructed
+            return logZs, total_forwards, reconstructed, states
 
+    def sleep(self, correct_programs):
+        """
+        The sleep phase for refining the forward_logits using saved correct programs.
+        :param correct_programs: List of tuples containing (program, batch_IOs, states) for each correct program.
+        """
 
+        # Prepare the batch from correct_programs
+        batch_programs, batch_IOs, states = zip(*correct_programs)
+
+        # Convert them to tensor format (or the appropriate data format for your model)
+        # For this example, I'm assuming they are already in the correct format
+
+        # Forward the states and tasks through the model
+        forward_logits, _ = self.model(states, batch_IOs)
+
+        # Compute the loss. This requires converting the trajectory (states) into target indices for the forward_logits.
+        target_indices = self.states_to_target_indices(
+            states)  # This function needs to be defined to map states to the correct rule index.
+        loss = self.criterion(forward_logits, target_indices)
+
+        # Backpropagate and update
+        loss.backward()
+        self.optimizer_policy.step()
+        self.optimizer_policy.zero_grad()
+
+    def states_to_target_indices(self, states):
+        """
+        Convert a batch of state trajectories to a tensor of target indices.
+        :param states: Batch of state trajectories.
+        :return: Tensor of target indices.
+        """
+
+        # This function would convert each state in the trajectory to the corresponding rule index.
+        # The exact implementation depends on how your states and rules are represented.
+        target_indices = []
+        for trajectory in states:
+            index_sequence = [self.model.state_encoder.rule2idx[rule] for rule in trajectory]
+            target_indices.append(index_sequence)
+
+        return torch.tensor(target_indices, dtype=torch.long)
 
     def train(self):
 
         start_time = time.time()  # to store the starting time of the training
         program_counter = 0
 
-        # total_rewards = torch.zeros(self.batch_size, device=self.device)
         total_rewards = []
 
         # keep track of losses and logZs
@@ -98,9 +157,11 @@ class Training:
 
         total_logZs = []
 
+        correct_programs = []
+
 
         for epoch in tqdm.tqdm(range(self.epochs), ncols=40):
-
+            print()
             logging.info(f'Computing E-step')
             # Optimize GFlowNet
             self.unfreeze_parameters(self.model.forward_logits)  # Unfreeze GFlowNet parameters
@@ -110,8 +171,11 @@ class Training:
                 # Sample tasks
                 batch_IOs, batch_programs = self.data.get_next_batch(self.batch_size)
                 program_counter += self.batch_size
-                logZs, total_forwards, programs = self.sample_program_dfs(batch_IOs)
 
+                # Predict programs
+                logZs, total_forwards, programs, states = self.sample_program_dfs(batch_IOs, epsilon=0.05, beta=0.8)
+
+                # Calculate rewards
                 rewards = self.rewards(programs, batch_programs, batch_IOs, self.data.dsl)
                 total_rewards.append(rewards.sum().item() / rewards.size(0))
 
@@ -120,11 +184,24 @@ class Training:
                 e_loss = e_loss.mean()
                 e_loss.backward()
 
-                self.optimizer_GFlowNet.step()  # (E-step)
-                self.optimizer_GFlowNet.zero_grad()
+                self.optimizer_policy.step()  # (E-step)
+                self.optimizer_policy.zero_grad()
 
+                # Bookkeeping
                 e_step_losses.append(e_loss.item())
                 total_logZs.append(logZs.mean().item())
+
+                # Collect good programs
+                for i in range(self.batch_size):
+                    if rewards[i] == 1.:
+                        correct_programs.append((programs[i], batch_IOs[i], states[i]))
+
+                # If we have enough for a batch, sleep
+                if len(correct_programs) == self.batch_size:
+                    self.sleep(correct_programs)
+
+                # Reset
+                correct_programs = []
 
             # Optimize Generative Model
             if True: #e_step_losses[-1] < self.m_step_threshold:
@@ -135,29 +212,29 @@ class Training:
                 for _ in range(self.m_steps):
                     batch_IOs, batch_programs = self.data.get_next_batch(self.batch_size)
                     program_counter += self.batch_size
-                    _, _, programs = self.sample_program_dfs(batch_IOs)
+                    _, _, programs, _ = self.sample_program_dfs(batch_IOs)
                     rewards = self.rewards(programs, batch_programs, batch_IOs, self.data.dsl)
                     total_rewards.append(rewards.sum().item() / rewards.size(0))
                     m_loss = -torch.log(rewards).clip(-20).mean()
                     m_loss.backward()
                     m_step_losses.append(m_loss.item())
-                    self.optimizer_transformer.step()  # (M-step)
-                    self.optimizer_transformer.zero_grad()
+                    self.optimizer_generative.step()  # (M-step)
+                    self.optimizer_generative.zero_grad()
 
             if epoch % 5 == 0:
                 avg_programs_per_sec = self.calculate_programs_per_second(start_time, program_counter)
 
                 logging.info(
                     f'total rewards {sum(total_rewards) / ((epoch + 1) * self.e_steps * self.m_steps * self.batch_size)}\n'
-                    f'last e_loss: {e_step_losses[-1]}\n'
-                    f'last m_loss: {m_step_losses[-1]}\n'
-                    f'last logZ: {total_logZs[-1]}\n'
+                    f'e_loss: {e_step_losses[-1]}\n'
+                    f'm_loss: {m_step_losses[-1]}\n'
+                    f'Z: {np.exp(total_logZs[-1])}\n'
                     f'Programs created per second on average: {avg_programs_per_sec:.2f}\n'
                     f'Total programs created: {program_counter}'
                     )
 
-                self.plot_results(e_step_losses, m_step_losses, total_logZs, total_rewards)
-        self.plot_results(e_step_losses, m_step_losses, total_logZs, total_rewards)
+                self.plot_results(e_step_losses, m_step_losses, total_logZs, total_rewards, epoch)
+        self.plot_results(e_step_losses, m_step_losses, total_logZs, total_rewards, epoch)
 
         # Save model
         torch.save(self.model.state_dict(), self.model_path)
@@ -179,7 +256,7 @@ class Training:
             ...
 
     @staticmethod
-    def plot_results(e_step_losses, m_step_losses, all_logZs, program_ratios):
+    def plot_results(e_step_losses, m_step_losses, all_logZs, program_ratios, epoch):
 
         plt.figure(figsize=(15, 15))
         plt.subplot(4, 1, 1)
@@ -207,6 +284,7 @@ class Training:
         plt.ylabel('ratio')
 
         plt.tight_layout()
+        plt.savefig(os.path.join(RESULTS_DIR, f'epoch {epoch}'))
         plt.show()
 
     @staticmethod
@@ -221,44 +299,66 @@ class Training:
 
 
 
-    def make_program_checker(self, dsl: DSL, examples) -> Callable[[Program, bool], int]:
-        def checker(prog: Program, use_cached_evaluator: bool) -> int:
-            if use_cached_evaluator:
-                for i, example in enumerate(examples):
-                    # TODO: If a different reward is used,
-                    #  note that there may be multiple examples, so account for that
-                    input, output = example
-                    pred_out = prog.eval(dsl, input, i)
-                    logging.debug(f'\nexample nr. {i} :::::::: with io relation: \t {input} ---> {output} and prediction {pred_out}')
-                    if output != pred_out:
-                        return torch.tensor(0.0)
-                return torch.tensor(1.0)
-                # return self.reward(output, pred_out)
-            else:
-                for example in examples:
-                    input, output = example
-                    pred_out = prog.eval_naive(dsl, input)
-                    if output != pred_out:
-                        return torch.tensor(0.0)
-                return torch.tensor(1.0)
-                # return self.reward(output, pred_out)
+    # def make_program_checker(self, dsl: DSL, examples) -> Callable[[Program, bool], int]:
+    #     def checker(prog: Program, use_cached_evaluator: bool) -> int:
+    #         if use_cached_evaluator:
+    #             for i, example in enumerate(examples):
+    #                 # TODO: If a different reward is used,
+    #                 #  note that there may be multiple examples, so account for that
+    #                 input, output = example
+    #                 pred_out = prog.eval(dsl, input, i)
+    #                 logging.debug(f'\nexample nr. {i} :::::::: with io relation: \t {input} ---> {output} and prediction {pred_out}')
+    #                 if output != pred_out:
+    #                     return torch.tensor(0.0)
+    #             return torch.tensor(1.0)
+    #             # return self.reward(output, pred_out)
+    #         else:
+    #             for example in examples:
+    #                 input, output = example
+    #                 pred_out = prog.eval_naive(dsl, input)
+    #                 if output != pred_out:
+    #                     return torch.tensor(0.0)
+    #             return torch.tensor(1.0)
+    #             # return self.reward(output, pred_out)
+    #
+    #     return checker
 
-        return checker
+    def get_edit_distance(self, program, ios, dsl):
+        for i, io in enumerate(ios):
+            input, output = io
+            predicted_output = program.eval(dsl, input, i)
+            edit_distance = self.reward.edit_distance(output, predicted_output)
+            return np.exp(edit_distance)
+    def compare_outputs(self, program, ios, dsl):
+        for x, io in enumerate(ios):
+            i, o = io
+            predicted_output = program.eval(dsl, i, x)
+            if o != predicted_output:
+                return 0.0
+            return 1.0
 
-    def rewards(self, programs, batch_program, task, dsl):
+
+
+
+
+    def rewards(self, programs, batch_program, batch_ios, dsl):
         # program_checker = self.make_program_checker(dsl, task[0])
         # rewrd = program_checker(program, True)
-        # logging.debug(f'actual programs: {batch_program}')
-        # logging.debug(f'found programs: {programs}')
-        # logging.debug(f'Same program: {batch_program == program}')
+
+
         # TODO: Looking at the actual program for comparison is a little hacky,
         #  but otherwise we need to deal with variables, which makes the problem a lot harder.
-        rewrd = torch.tensor([a == b for a, b in zip(programs, batch_program)], device=self.device).float()
-        rewrd.requires_grad_()
+        # rewrd = torch.tensor([a == b for a, b in zip(programs, batch_program)], device=self.device).float()
+        # rewrd.requires_grad_()
 
+        # rewrd = torch.tensor([self.check(dsl, ios, program) for program, ios in zip(programs, batch_ios)], requires_grad=True, device=self.device).exp()
 
-
+        rewrd = torch.tensor([self.compare_outputs(program, ios, dsl) for program, ios in zip(programs, batch_ios)], requires_grad=True, device=self.device)
+        # print(rewrd)
+        # print(list(zip(programs, batch_program)))
+        # print(rewrd == torch.tensor([a == b for a, b in zip(programs, batch_program)], device=self.device).float())
         return rewrd
+
 
 
 
