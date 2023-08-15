@@ -82,7 +82,6 @@ class Training:
 
             for i in range(len(batch_IOs)):
                 if frontiers[i]:
-
                     next_nt = frontiers[i].pop()
                     rules = self.get_next_rules(next_nt)
                     mask = self.get_mask(rules)
@@ -108,47 +107,142 @@ class Training:
         The sleep phase for refining the forward_logits using saved correct programs.
         :param correct_programs: List of tuples containing (program, batch_IOs, states) for each correct program.
         """
+        print('SLEEP PHASE')
 
         # Prepare the batch from correct_programs
-        batch_programs, batch_IOs, states = zip(*correct_programs)
+        batch_programs, batch_IOs, correct_states = zip(*correct_programs)
+        correct_states = [state[1:] for state in correct_states]
+        states = [['START'] for _ in range(len(batch_IOs))]
 
-        # Convert them to tensor format (or the appropriate data format for your model)
-        # For this example, I'm assuming they are already in the correct format
+        # Initialise container for forward logits accumulation
+        total_forwards = torch.zeros(self.batch_size, device=self.device)
 
-        # Forward the states and tasks through the model
-        forward_logits, _ = self.model(states, batch_IOs)
+        frontiers = [deque([self.data.cfg.start]) for _ in range(len(batch_IOs))]
 
-        # Compute the loss. This requires converting the trajectory (states) into target indices for the forward_logits.
-        target_indices = self.states_to_target_indices(
-            states)  # This function needs to be defined to map states to the correct rule index.
-        loss = self.criterion(forward_logits, target_indices)
+        programs = [[] for _ in range(len(batch_IOs))]
 
-        # Backpropagate and update
-        loss.backward()
-        self.optimizer_policy.step()
-        self.optimizer_policy.zero_grad()
+        while any(frontiers):
+            forward_logits, logZs = self.model(states, batch_IOs)
+            for i in range(len(batch_IOs)):
+                if frontiers[i]:
+                    next_nt = frontiers[i].pop()
+                    correct_rule_idx = self.model.state_encoder.rule2idx[
+                        correct_states[i].pop(0)]  # pop the next correct rule from the list
+                    total_forwards[i] += forward_logits[i][correct_rule_idx]
+                    rule = self.model.state_encoder.idx2rule[correct_rule_idx]
 
-    def states_to_target_indices(self, states):
-        """
-        Convert a batch of state trajectories to a tensor of target indices.
-        :param states: Batch of state trajectories.
-        :return: Tensor of target indices.
-        """
+                    nt, program = rule
+                    programs[i] = (program, programs[i])
 
-        # This function would convert each state in the trajectory to the corresponding rule index.
-        # The exact implementation depends on how your states and rules are represented.
+                    states[i] = states[i] + [rule]
+                    program_args = self.data.cfg.rules[nt][program]
+                    frontiers[i].extend(program_args)
+
+        if not any(frontiers):
+            # reconstructed = [reconstruct_from_compressed(program, target_type=self.data.cfg.start[0])
+            #                  for program in programs]
+
+            sleep_loss = -total_forwards.mean()
+            sleep_loss.backward()
+
+            self.optimizer_policy.step()  # (E-step)
+            self.optimizer_policy.zero_grad()
+
+        # def sleep(self, correct_programs):
+    #     """
+    #     The sleep phase for refining the forward_logits using saved correct programs.
+    #     :param correct_programs: List of tuples containing (program, batch_IOs, states) for each correct program.
+    #     """
+    #     print('SLEEP PHASE')
+    #
+    #     # Prepare the batch from correct_programs
+    #     batch_programs, batch_IOs, correct_states = zip(*correct_programs)
+    #
+    #     states = [['START'] for _ in range(len(batch_IOs))]
+    #
+    #     # Initialise container for forward logits accumulation
+    #     total_forwards = torch.zeros(self.batch_size, device=self.device)
+    #
+    #     frontiers = [deque([self.data.cfg.start]) for _ in range(len(batch_IOs))]
+    #
+    #     programs = [[] for _ in range(len(batch_IOs))]
+    #
+    #
+    #     while any(frontiers):
+    #         forward_logits, logZs = self.model(states, batch_IOs)
+    #         for i in range(len(batch_IOs)):
+    #             j = 1
+    #             if frontiers[i]:
+    #                 next_nt = frontiers[i].pop()
+    #                 print(next_nt)
+    #                 mask = torch.zeros(len(self.model.state_encoder.rules), device=self.device)
+    #                 print(self.model.state_encoder.rule2idx[correct_states[i][j]])
+    #                 mask[self.model.state_encoder.rule2idx[correct_states[i][j]]] = 1
+    #                 forward_logits[i] = forward_logits[i] - (1 - mask) * 100
+    #                 cat = Categorical(logits=forward_logits[i])
+    #                 action = cat.sample()
+    #                 assert action == self.model.state_encoder.rule2idx[correct_states[i][j]]
+    #                 total_forwards[i] += cat.log_prob(action).item()
+    #                 rule = self.model.state_encoder.idx2rule[action.item()]
+    #
+    #                 nt, program = rule
+    #                 programs[i] = (program, programs[i])
+    #
+    #                 states[i] = states[i] + [rule]
+    #                 program_args = self.data.cfg.rules[nt][program]
+    #                 frontiers[i].extend(program_args)
+    #
+    #     if not any(frontiers):
+    #         reconstructed = [reconstruct_from_compressed(program, target_type=self.data.cfg.start[0])
+    #                          for program in programs]
+    #
+    #         sleep_loss = -total_forwards.mean()
+    #         sleep_loss.backward()
+    #
+    #
+    #         self.optimizer_policy.step()  # (E-step)
+    #         self.optimizer_policy.zero_grad()
+
+
+
+
+
+        sleep_batch = []
+        # for batch_idx, ios in enumerate(correct_program_ios):
+
+    #         new_ios = []
+    #         for ios_idx, io in enumerate(ios):
+    #             i, o = io
+    #             predicted_output = programs[batch_idx].eval(self.data.dsl, i, ios_idx)
+    #             new_ios.append([i, predicted_output])
+    #         sleep_batch.append(new_ios)
+    #     for _ in range(5):
+    #         logZs, total_forwards, programs = self.sample_program_dfs(sleep_batch)
+    #         rewards = self.rewards(programs, batch_programs, batch_IOs, self.data.dsl)
+    #
+    #         # Compute loss and backpropagate
+    #         e_loss = -torch.log(total_forwards)
+    #         e_loss = e_loss.mean()
+    #         e_loss.backward()
+    #
+    #         self.optimizer_policy.step()  # (E-step)
+    #         self.optimizer_policy.zero_grad()
+    #
+    #     correct_programs = []
+    #     correct_program_ios =
+
+    def states_to_target_indices(self, trajectory):
         target_indices = []
-        for trajectory in states:
-            index_sequence = [self.model.state_encoder.rule2idx[rule] for rule in trajectory]
+        for state in trajectory:
+            index_sequence = [self.model.state_encoder.rule2idx[rule] for rule in state]
             target_indices.append(index_sequence)
 
-        return torch.tensor(target_indices, dtype=torch.long)
+        return torch.tensor(target_indices, dtype=torch.long, device=self.device)
 
     def train(self):
 
         start_time = time.time()  # to store the starting time of the training
         program_counter = 0
-
         total_rewards = []
 
         # keep track of losses and logZs
@@ -161,6 +255,8 @@ class Training:
 
 
         for epoch in tqdm.tqdm(range(self.epochs), ncols=40):
+            correct_programs_per_epoch = 0
+            nr_of_programs_per_epoch = 0
             print()
             logging.info(f'Computing E-step')
             # Optimize GFlowNet
@@ -178,9 +274,13 @@ class Training:
                 # Calculate rewards
                 rewards = self.rewards(programs, batch_programs, batch_IOs, self.data.dsl)
                 total_rewards.append(rewards.sum().item() / rewards.size(0))
+                correct_programs_per_epoch += rewards.sum().item()
+                nr_of_programs_per_epoch += rewards.size(0)
 
                 # Compute loss and backpropagate
-                e_loss = (logZs + total_forwards - torch.log(rewards).clip(-20)).pow(2)
+                # Trajectory balance
+                e_loss = (logZs + total_forwards / len(max(states, key=len)) - torch.log(rewards).clip(-20)).pow(2)
+                # TODO: Check that max(states, key=len) makes sense
                 e_loss = e_loss.mean()
                 e_loss.backward()
 
@@ -194,14 +294,15 @@ class Training:
                 # Collect good programs
                 for i in range(self.batch_size):
                     if rewards[i] == 1.:
+                        # print(f'found correct program {programs[i]}, {batch_programs[i]}, {len(correct_programs)}')
                         correct_programs.append((programs[i], batch_IOs[i], states[i]))
 
                 # If we have enough for a batch, sleep
-                if len(correct_programs) == self.batch_size:
-                    self.sleep(correct_programs)
+                if len(correct_programs) >= self.batch_size:
+                    self.sleep(correct_programs[:self.batch_size])
 
-                # Reset
-                correct_programs = []
+                    # Reset
+                    correct_programs = correct_programs[self.batch_size:]
 
             # Optimize Generative Model
             if True: #e_step_losses[-1] < self.m_step_threshold:
@@ -221,11 +322,15 @@ class Training:
                     self.optimizer_generative.step()  # (M-step)
                     self.optimizer_generative.zero_grad()
 
+                    correct_programs_per_epoch += rewards.sum().item()
+                    nr_of_programs_per_epoch += rewards.size(0)
+
             if epoch % 5 == 0:
                 avg_programs_per_sec = self.calculate_programs_per_second(start_time, program_counter)
 
                 logging.info(
-                    f'total rewards {sum(total_rewards) / ((epoch + 1) * self.e_steps * self.m_steps * self.batch_size)}\n'
+                    f'total rewards: {sum(total_rewards) / ((epoch + 1) * self.e_steps * self.m_steps * self.batch_size)}\n'
+                    f'correct_programs_per_epoch: {correct_programs_per_epoch} out of {nr_of_programs_per_epoch} = {correct_programs_per_epoch/nr_of_programs_per_epoch}\n'
                     f'e_loss: {e_step_losses[-1]}\n'
                     f'm_loss: {m_step_losses[-1]}\n'
                     f'Z: {np.exp(total_logZs[-1])}\n'
@@ -233,7 +338,7 @@ class Training:
                     f'Total programs created: {program_counter}'
                     )
 
-                self.plot_results(e_step_losses, m_step_losses, total_logZs, total_rewards, epoch)
+                # self.plot_results(e_step_losses, m_step_losses, total_logZs, total_rewards, epoch)
         self.plot_results(e_step_losses, m_step_losses, total_logZs, total_rewards, epoch)
 
         # Save model
@@ -247,13 +352,6 @@ class Training:
         for param in model.parameters():
             param.requires_grad = True
 
-    def sleep(self):
-        ...
-        def replays(self):
-            ...
-
-        def fantasies(self):
-            ...
 
     @staticmethod
     def plot_results(e_step_losses, m_step_losses, all_logZs, program_ratios, epoch):
@@ -296,33 +394,6 @@ class Training:
 
 
 
-
-
-
-    # def make_program_checker(self, dsl: DSL, examples) -> Callable[[Program, bool], int]:
-    #     def checker(prog: Program, use_cached_evaluator: bool) -> int:
-    #         if use_cached_evaluator:
-    #             for i, example in enumerate(examples):
-    #                 # TODO: If a different reward is used,
-    #                 #  note that there may be multiple examples, so account for that
-    #                 input, output = example
-    #                 pred_out = prog.eval(dsl, input, i)
-    #                 logging.debug(f'\nexample nr. {i} :::::::: with io relation: \t {input} ---> {output} and prediction {pred_out}')
-    #                 if output != pred_out:
-    #                     return torch.tensor(0.0)
-    #             return torch.tensor(1.0)
-    #             # return self.reward(output, pred_out)
-    #         else:
-    #             for example in examples:
-    #                 input, output = example
-    #                 pred_out = prog.eval_naive(dsl, input)
-    #                 if output != pred_out:
-    #                     return torch.tensor(0.0)
-    #             return torch.tensor(1.0)
-    #             # return self.reward(output, pred_out)
-    #
-    #     return checker
-
     def get_edit_distance(self, program, ios, dsl):
         for i, io in enumerate(ios):
             input, output = io
@@ -348,12 +419,12 @@ class Training:
 
         # TODO: Looking at the actual program for comparison is a little hacky,
         #  but otherwise we need to deal with variables, which makes the problem a lot harder.
-        # rewrd = torch.tensor([a == b for a, b in zip(programs, batch_program)], device=self.device).float()
-        # rewrd.requires_grad_()
+        rewrd = torch.tensor([a == b for a, b in zip(programs, batch_program)], device=self.device).float()
+        rewrd.requires_grad_()
 
         # rewrd = torch.tensor([self.check(dsl, ios, program) for program, ios in zip(programs, batch_ios)], requires_grad=True, device=self.device).exp()
 
-        rewrd = torch.tensor([self.compare_outputs(program, ios, dsl) for program, ios in zip(programs, batch_ios)], requires_grad=True, device=self.device)
+        # rewrd = torch.tensor([self.compare_outputs(program, ios, dsl) for program, ios in zip(programs, batch_ios)], requires_grad=True, device=self.device)
         # print(rewrd)
         # print(list(zip(programs, batch_program)))
         # print(rewrd == torch.tensor([a == b for a, b in zip(programs, batch_program)], device=self.device).float())

@@ -36,6 +36,9 @@ class GFlowNet(nn.Module):
 
     def forward(self, state, io):
 
+
+        # TODO: The IO stays the same for the whole duration of the trajectory.
+        #  We mustn't recompute it every time
         # Process IO
         io = self.io_encoder(io)
         io = self.positional_encoding(io)

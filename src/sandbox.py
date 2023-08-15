@@ -82,6 +82,5 @@ print(f'parent_args: {parent_args}')
 parents = state_encoder.get_parent_rule(parent_rule)
 print(f'parents: {parents}')
 
-print(state_encoder.terminal_rules)
-print(Function(list(rules[S].keys())[0], [None]))
-
+ls = [[1,2,3], [12,3], [2,3,4,5 ]]
+print(len(max(ls, key=len)))
