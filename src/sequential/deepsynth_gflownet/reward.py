@@ -16,12 +16,11 @@ class Reward(nn.Module):
         self.transformer_encoder = torch.nn.TransformerEncoder(encoder_layer, num_layers)
         self.cosim = nn.CosineSimilarity(dim=0, eps=1e-6)
 
-
     def forward(self, true, pred):
         if len(pred) == 0:
             return torch.tensor(0.0, device=self.device)
-        # reward = self.cosine_sim(true, pred)
-        reward = self.edit_distance(true, pred)
+        reward = self.cosine_sim(true, pred)
+        # reward = self.edit_distance(true, pred)
         return torch.tensor(reward, device=self.device)
 
     def naive(self, true, pred):
@@ -35,14 +34,15 @@ class Reward(nn.Module):
 
         cosim = self.cosim(latent_true, latent_pred)
         norm_cosim = (cosim + 1) / 2
-        return torch.tensor(norm_cosim, device=self.device)
+        return norm_cosim
 
     def edit_distance(self, true, pred):
         def list_to_str(lst):
             return ''.join(map(str, lst))
 
         ed = editdistance.eval(list_to_str(true), list_to_str(pred))
-        return float(len(true) - ed)
+        print(true, pred, ed, len(true) - ed)
+        return float(ed / (len(true) + len(pred)))
 
 
     def mean_squared_error(self, y_true, y_pred):

@@ -42,7 +42,6 @@ class RuleEncoder(nn.Module):
         states_encoded = states_encoded.transpose(0, 1)
         return states_encoded
 
-    # TODO: can there only be one parent?
     def get_parent_rule(self, rule):
         parents = []
         (_, (my_p, _), my_depth), _ = rule

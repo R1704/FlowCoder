@@ -27,12 +27,7 @@ class GFlowNet(nn.Module):
         # MLPs for logits and logZ
         self.forward_logits = GFlowNet_Forward(d_model, len(state_encoder.rules))
 
-        self.logZ = nn.Sequential(
-            nn.LayerNorm(d_model),
-            nn.Linear(d_model, d_model),
-            nn.ReLU(),
-            nn.Linear(d_model, 1)
-            )
+        self.logZ = self.forward_logits.logZ
 
     def forward(self, state, io):
 
@@ -75,5 +70,21 @@ class GFlowNet_Forward(nn.Module):
                     nn.Linear(input_dim, output_dim)
                 )
 
+        self.logZ = GFlowNet_LogZ(input_dim)
+
     def forward(self, x):
         return self.forward_logits(x)
+
+
+class GFlowNet_LogZ(nn.Module):
+    def __init__(self, d_model):
+        super(GFlowNet_LogZ, self).__init__()
+        self.logZ = nn.Sequential(
+            nn.LayerNorm(d_model),
+            nn.Linear(d_model, d_model),
+            nn.ReLU(),
+            nn.Linear(d_model, 1)
+            )
+
+    def forward(self, x):
+        return self.logZ(x)

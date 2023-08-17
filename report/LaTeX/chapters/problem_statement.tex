@@ -1,0 +1,168 @@
+
+
+
+\section{Computation and the Computational Mind}
+\section{Language of Thought}
+\section{Grammar}
+- GOFAI
+- Connectionism
+- Hybrid
+\section{Syntax vs Semantics}
+
+
+
+Let's assume the premise that the mind is computational, in one form or another. 
+and we are building a world model which can be thought of as probabilistic programs. 
+
+\section{Program Synthesis}
+
+Probabilistic programs, in essence, represent a form of causal reasoning. By representing beliefs as probability distributions and reasoning patterns as programmatic structures, they offer a nuanced way of modeling complex real-world systems. Given the inherently uncertain nature of our environment and the myriad possible interpretations of sensory data, a probabilistic approach is naturally aligned with the cognitive demands of building accurate and adaptable world models.
+
+**3. Program Synthesis: A Key to Unlocking Cognition**
+
+Program synthesis refers to the automatic generation of programs from a higher-level specification. In the context of cognition, it implies a process where an agent—human or machine—generates a novel programmatic structure to represent or reason about its environment. Understanding this synthesis process becomes crucial for several reasons:
+
+* *Generativity and Flexibility:* Human cognition is not merely reactive. It proactively creates, hypothesizes, and experiments. By studying how programs are synthesized, we might glean insights into the generative aspects of thought.
+
+* *Abstraction:* At the heart of program synthesis is the ability to abstract away from particulars and generate general rules or patterns. This mirrors cognitive abilities like generalization and analogy-making.
+
+* *Efficiency:* Just as efficient algorithms are prized in computing, efficient cognitive strategies are essential for survival. Program synthesis might hold the key to understanding how humans prune vast possibility spaces to arrive at functional solutions quickly.
+
+Certainly! Here's the problem statement with LaTeX formatting for mathematical expressions:
+
+---
+
+**Problem Statement: Navigating the Vast Program Search Space Within Context-Free Grammars**
+
+---
+
+**1. Background and Introduction**
+
+The field of programming has always been underpinned by the intricacies of formal grammars. Context-Free Grammars (CFGs), a subset of formal grammar, are essential in defining the syntactical structures of many programming languages. However, given the generative nature of CFGs, the potential program space defined by even a modestly complex grammar can be immensely vast. Searching for a specific program within this space, or ensuring that a particular space is sufficiently explored, poses significant computational challenges.
+
+**2. Problem Definition**
+
+**2.1 CFG and Program Space**
+
+Let \( G = (N, \Sigma, P, S) \) be a Context-Free Grammar, where:
+\begin{itemize}
+    \item \( N \) is a finite set of non-terminal symbols.
+    \item \( \Sigma \) is a finite set of terminal symbols with \newline \( N \cap \Sigma = \emptyset \)
+    \item \( P \) is a finite set of production rules, where each rule is of the form \( N \rightarrow (N \cup \Sigma)^* \)
+    \item \( S \) is the start symbol, with \( S \in N \)
+\end{itemize}
+
+Given such a CFG, the derived program space \( \Pi(G) \) is the set of all possible strings (or sequences of symbols) derivable from \( S \).
+
+**2.2 Problem Statement**
+
+Given a Context-Free Grammar \( G \) and a defined objective function \( f \) that maps any program \( p \in \Pi(G) \) to a real value representing its desirability or fitness:
+
+*Find \( p^* \) such that:*
+\[ p^* = \arg\max_{p \in \Pi(G)} f(p) \]
+
+In other words, the problem is to locate a program \( p^* \) within the vast program space \( \Pi(G) \) defined by \( G \) that maximizes (or, alternatively, minimizes) the objective function \( f \).
+
+**3. Challenges and Complications**
+
+**3.1 Size of the Search Space**
+
+The generative capacity of CFGs means that even grammars of moderate complexity can define immensely vast program spaces. The sheer size of these spaces poses computational and search challenges.
+
+**3.2 Non-Linearity and Discontinuities**
+
+The mapping between programs and their fitness as defined by \( f \) might be non-linear with multiple local maxima, making search strategies based on gradient ascent or other linear heuristics suboptimal.
+
+**3.3 Generalization vs Specialization**
+
+While CFGs provide a generalized representation of possible programs, the objective function might lead to highly specialized solutions. Balancing between the two is non-trivial.
+
+**3.4 Syntactic vs Semantic Validity**
+
+A CFG ensures syntactic validity but does not guarantee semantic correctness. Ensuring that a program derived from a CFG is semantically meaningful or error-free in a given context is an additional layer of complexity.
+
+**4. Significance**
+
+Solving or even approximating solutions for this problem has far-reaching consequences. It touches on fields from program synthesis, where specific algorithms or code snippets are automatically generated to meet specific requirements, to genetic programming, where evolutionary methods are employed to 'evolve' optimal or near-optimal solutions.
+
+Additionally, insights from this exploration can impact compiler design, optimization strategies in high-performance computing, and even areas like natural language processing, where CFGs have historically played a foundational role.
+
+**5. Conclusion**
+
+The exploration of the vast program space generated by CFGs and efficiently searching within it for optimal programs represents a formidable challenge. It is a nexus of computational theory, practical programming, and numerous applied domains. Addressing it promises not just solutions to specific computational problems but also deeper insights into the nature of computation, representation, and optimization.
+
+**4. Techniques in Program Synthesis**
+
+Several techniques have emerged as pivotal in the domain of program synthesis:
+
+* *Deductive Synthesis:* Rooted in formal logic, this method transforms specifications into programs. The use of logic mirrors certain cognitive tasks, especially those demanding strict reasoning.
+
+* *Stochastic Search:* By randomly exploring the space of possible programs, these methods mirror heuristic-based cognitive processes. Genetic algorithms, for instance, mimic evolutionary processes to evolve optimal or near-optimal solutions.
+
+* *Neural Program Synthesis:* Neural networks, especially recurrent ones, have shown promise in generating programmatic structures. The parallels between neural networks and neural structures in the brain offer tantalizing possibilities for cognitive science.
+
+* *Example-Based Synthesis:* Drawing inspiration from how humans often learn—from examples—these methods generate programs by generalizing from provided instances. This mirrors pedagogical processes and experiential learning.
+
+
+
+\section{DreamCoder}
+A Bayesian View
+--> What exactly happens?
+\section{DeepSynth}
+--> Introducing different search strategies.
+\section{GFlowNet}
+A generative policy
+
+
+
+
+(Probabilistic) Context free grammar. 
+\subsection{Previous work on program synthesis.}
+Check out microsoft paper.
+DreamCoder
+DeepSynth
+\section{Search space}
+\section{Program space}
+- How can we calculate the size of that space?
+- Hierarchical structure 
+- Abstract Syntax Trees
+
+\section{GFlowNet}
+-
+
+
+
+
+
+
+
+In a probabilistic programming representation of world models and thoughts, as a type of Language of Thought, which aligns with constructivism we can conceive of the problem statement as 
+We want to construct objects.
+
+In a language of thought, regardless of most details, we tend to think in a paradigm in which thoughts are compositional. In one way or another, thoughts are hierarchical.
+Both in ontologies, i.e. the way concepts are structured, (animal -> bird -> fink) but also in the sequential nature of thought construction (as in natural language, reasoning tasks, etc.). We are creating parse trees, or abstract syntax trees. 
+
+In a probabilistic programming paradigm, we view this as compositional functions, with the many properties of functional programming analogous to currying, etc. 
+
+[Thoughts as trajectories]
+
+We can formalise this as a hierarchical latent structure Z.
+
+Framing the problem.
+
+Combinatorial search problem. 
+
+- If we are using encoder + decoder, are we violating the Markovian Flow assumption?
+    Look at the smiley example. If the NN would get [[left brow], [left brow, right brow], [left brow, right brow, smile]] as input, i.e. the sequence of the states, it would violate the assumption. but it only gets the current state, e.g. [left brow, right brow], and from that it has to infer the next step. 
+    When using a decoder, we would indeed give it the whole trajectory of states, so it would violate the assumption.
+    But even now i am encoding the sequence and giving the whole trajectory as input. and since the CFG is essentially a tree, there is only one parent for each state. 
+
+It would probably be faster to do it bottom up like in HEAP search from Nathanael and from GFN-EM, then we could also use sub-trajectory balance, i.e. calculate intermediate Rewards. 
+
+Another thing we could do is predict a bunch of terminals at once, and then combine in each step. 
+
+Other ideas: wave function collapse
+
+\section{assumptions}
+\section{limitations}
+\section{biological plausibility}

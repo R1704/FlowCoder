@@ -1,0 +1,82 @@
+\contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Problem Statement}{5}{subsection.1.1}%
+\contentsline {section}{\numberline {2}Computation and the Computational Mind}{6}{section.2}%
+\contentsline {section}{\numberline {3}Language of Thought}{6}{section.3}%
+\contentsline {section}{\numberline {4}Grammar}{6}{section.4}%
+\contentsline {section}{\numberline {5}Syntax vs Semantics}{6}{section.5}%
+\contentsline {section}{\numberline {6}Program Synthesis}{6}{section.6}%
+\contentsline {section}{\numberline {7}DreamCoder}{7}{section.7}%
+\contentsline {section}{\numberline {8}DeepSynth}{7}{section.8}%
+\contentsline {section}{\numberline {9}GFlowNet}{8}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Previous work on program synthesis.}{8}{subsection.9.1}%
+\contentsline {section}{\numberline {10}Search space}{8}{section.10}%
+\contentsline {section}{\numberline {11}Program space}{8}{section.11}%
+\contentsline {section}{\numberline {12}GFlowNet}{8}{section.12}%
+\contentsline {section}{\numberline {13}assumptions}{8}{section.13}%
+\contentsline {section}{\numberline {14}limitations}{8}{section.14}%
+\contentsline {section}{\numberline {15}biological plausibility}{8}{section.15}%
+\contentsline {subsection}{\numberline {15.1}Purpose of the Study}{9}{subsection.15.1}%
+\contentsline {subsection}{\numberline {15.2}Relevance of the Study}{9}{subsection.15.2}%
+\contentsline {section}{\numberline {16}Theoretical Framework}{9}{section.16}%
+\contentsline {subsection}{\numberline {16.1}Definitions}{9}{subsection.16.1}%
+\contentsline {subsection}{\numberline {16.2}The Need for Discernment in Cognitive Agents}{9}{subsection.16.2}%
+\contentsline {subsection}{\numberline {16.3}The Concept of Identity and Attribution of Cause and Effect, in relation to the self}{9}{subsection.16.3}%
+\contentsline {subsubsection}{\numberline {16.3.1}Karl Friston's perspective}{9}{subsubsection.16.3.1}%
+\contentsline {subsubsection}{\numberline {16.3.2}Michael Levin's perspective}{9}{subsubsection.16.3.2}%
+\contentsline {subsection}{\numberline {16.4}The Necessity of World Modeling}{9}{subsection.16.4}%
+\contentsline {paragraph}{Representationalism}{9}{section*.3}%
+\contentsline {paragraph}{Contrast to Statistical Pattern Recognition}{9}{section*.4}%
+\contentsline {subsection}{\numberline {16.5}Alternative Approaches to Cognition}{9}{subsection.16.5}%
+\contentsline {subsubsection}{\numberline {16.5.1}Enactivism}{9}{subsubsection.16.5.1}%
+\contentsline {subsubsection}{\numberline {16.5.2}Embodiment}{9}{subsubsection.16.5.2}%
+\contentsline {subsection}{\numberline {16.6}Analogy as the Core of Cognition: Douglas Hofstadter's Ideas}{10}{subsection.16.6}%
+\contentsline {subsection}{\numberline {16.7}Virtualism and the "Game Engine in the Head": Perspectives of Joscha Bach and Josh Tenenbaum}{10}{subsection.16.7}%
+\contentsline {section}{\numberline {17}The Art and Science of Model-making}{10}{section.17}%
+\contentsline {subsection}{\numberline {17.1}Symbolic vs. Sub-symbolic Approaches}{10}{subsection.17.1}%
+\contentsline {subsection}{\numberline {17.2}Analytic vs. Geometric Solutions}{10}{subsection.17.2}%
+\contentsline {subsection}{\numberline {17.3}System 1 \& 2: Daniel Kahneman's theories and relation to Models}{10}{subsection.17.3}%
+\contentsline {subsection}{\numberline {17.4}Hemispheric Lateralization: Iain McGilchrist's Theory}{10}{subsection.17.4}%
+\contentsline {section}{\numberline {18}Spaces in Cognition}{10}{section.18}%
+\contentsline {subsection}{\numberline {18.1}Latent Spaces}{10}{subsection.18.1}%
+\contentsline {subsection}{\numberline {18.2}Cognitive and Conceptual Spaces}{10}{subsection.18.2}%
+\contentsline {subsubsection}{\numberline {18.2.1}Peter Gärdenfors's Perspective}{10}{subsubsection.18.2.1}%
+\contentsline {subsection}{\numberline {18.3}The Geometry of Cognitive Spaces}{10}{subsection.18.3}%
+\contentsline {subsubsection}{\numberline {18.3.1}Hyperbolic Spaces}{10}{subsubsection.18.3.1}%
+\contentsline {section}{\numberline {19}Computationalism and Computational Theories of the Universe}{10}{section.19}%
+\contentsline {subsection}{\numberline {19.1}Computational Mind}{10}{subsection.19.1}%
+\contentsline {subsection}{\numberline {19.2}Theories of Stephen Wolfram and David Deutsch}{10}{subsection.19.2}%
+\contentsline {subsection}{\numberline {19.3}Discussion on the Nature of Reality: Continuous vs. Discrete}{10}{subsection.19.3}%
+\contentsline {section}{\numberline {20}The Language of Thought}{10}{section.20}%
+\contentsline {subsection}{\numberline {20.1}Gödel's Incompleteness Theorem and Turing's Extensions}{10}{subsection.20.1}%
+\contentsline {subsection}{\numberline {20.2}Chomsky's Hierarchy}{10}{subsection.20.2}%
+\contentsline {subsection}{\numberline {20.3}Computational Irreducibility}{10}{subsection.20.3}%
+\contentsline {subsection}{\numberline {20.4}Constructivism}{10}{subsection.20.4}%
+\contentsline {subsection}{\numberline {20.5}Syntax vs. Semantics in Language}{10}{subsection.20.5}%
+\contentsline {subsection}{\numberline {20.6}Semiotics}{10}{subsection.20.6}%
+\contentsline {subsection}{\numberline {20.7}The Notion of a Semantic Grammar}{10}{subsection.20.7}%
+\contentsline {section}{\numberline {21}The Nature of Meaning}{10}{section.21}%
+\contentsline {subsection}{\numberline {21.1}Meaning in the context of Modeling Approaches}{10}{subsection.21.1}%
+\contentsline {subsection}{\numberline {21.2}The Grounding Problem: Harnard's perspective}{10}{subsection.21.2}%
+\contentsline {subsection}{\numberline {21.3}Concept of Meaningfulness}{10}{subsection.21.3}%
+\contentsline {section}{\numberline {22}The Formation and Representation of Concepts}{10}{section.22}%
+\contentsline {subsection}{\numberline {22.1}Approaches to Representation}{10}{subsection.22.1}%
+\contentsline {subsection}{\numberline {22.2}The Theory of Memes: Richard Dawkins's perspective}{10}{subsection.22.2}%
+\contentsline {subsection}{\numberline {22.3}Concepts as a Self-Organizing System}{10}{subsection.22.3}%
+\contentsline {subsection}{\numberline {22.4}Connection to Cellular Automata}{10}{subsection.22.4}%
+\contentsline {section}{\numberline {23}Representation of Concepts as Probabilistic Programs}{10}{section.23}%
+\contentsline {subsection}{\numberline {23.1}Overview of Probabilistic Programs}{10}{subsection.23.1}%
+\contentsline {subsection}{\numberline {23.2}Role of Program Synthesis}{10}{subsection.23.2}%
+\contentsline {section}{\numberline {24}Conclusion}{10}{section.24}%
+\contentsline {subsection}{\numberline {24.1}Summary of Findings}{10}{subsection.24.1}%
+\contentsline {subsection}{\numberline {24.2}Implications for the Field}{10}{subsection.24.2}%
+\contentsline {subsection}{\numberline {24.3}Recommendations for Future Research}{10}{subsection.24.3}%
+\contentsline {subsection}{\numberline {24.4}Background}{11}{subsection.24.4}%
+\contentsline {subsubsection}{\numberline {24.4.1}Research Question}{11}{subsubsection.24.4.1}%
+\contentsline {subsubsection}{\numberline {24.4.2}Motivation}{11}{subsubsection.24.4.2}%
+\contentsline {subsubsection}{\numberline {24.4.3}Impact and Importance}{11}{subsubsection.24.4.3}%
+\contentsline {subsubsection}{\numberline {24.4.4}Methods}{11}{subsubsection.24.4.4}%
+\contentsline {subsubsection}{\numberline {24.4.5}Design}{11}{subsubsection.24.4.5}%
+\contentsline {subsubsection}{\numberline {24.4.6}Analysis}{11}{subsubsection.24.4.6}%
+\contentsline {section}{\numberline {25}Scientific and Societal Relevance}{11}{section.25}%
+\contentsline {section}{\numberline {26}Conclusion}{11}{section.26}%
+\contentsline {section}{\numberline {27}Discussion}{11}{section.27}%

@@ -31,8 +31,8 @@ data = Data(
      nb_arguments_max=3,
      # lexicon=[0, 1], # [x for x in range(-2, 2)], #[x for x in range(-30, 30)],
      lexicon=[x for x in range(-30, 30)],
-     size_max=3,
-     # size_max=10,
+     # size_max=3,
+     size_max=10,
      )
 
 io_encoder = IOEncoder(

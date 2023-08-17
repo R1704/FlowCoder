@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 import math
 
-from collections import defaultdict, deque
 
 class PositionalEncoding(nn.Module):
     # https://pytorch.org/tutorials/beginner/transformer_tutorial.html

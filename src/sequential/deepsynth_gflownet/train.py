@@ -1,23 +1,18 @@
+import difflib
 import torch.nn
-
+from rapidfuzz.distance import Levenshtein
 from src.config import *
-
 from src.sequential.deepsynth.dsl import *
 from src.sequential.deepsynth.run_experiment import *
 from src.sequential.deepsynth_gflownet.data import *
 from src.sequential.deepsynth_gflownet.reward import *
 from src.sequential.deepsynth_gflownet.utils import *
-
 from torch.distributions.categorical import Categorical
 from torch.optim import Adam
 import torch.nn as nn
-
 import matplotlib.pyplot as plt
-
 from dataclasses import dataclass
-
 import logging
-
 import time
 import random
 
@@ -38,9 +33,11 @@ class Training:
 
     def __post_init__(self):
         self.epochs = self.data.dataset_size // (self.e_steps * self.m_steps * self.batch_size)
-        self.optimizer_generative = Adam(self.model.parameters(), lr=self.learning_rate_trn)
+        # Extract parameters that are NOT part of forward_logits
+        generative_params = (p for n, p in self.model.named_parameters() if "forward_logits" not in n)
+        self.optimizer_generative = Adam(generative_params, lr=self.learning_rate_trn)
         self.optimizer_policy = Adam(self.model.forward_logits.parameters(), lr=self.learning_rate_gfn)
-        self.criterion = nn.NLLLoss()
+        # self.criterion = nn.NLLLoss()
 
     def get_next_rules(self, S):
         return [(S, p) for p in self.data.cfg.rules[S].keys()]
@@ -85,11 +82,13 @@ class Training:
                     next_nt = frontiers[i].pop()
                     rules = self.get_next_rules(next_nt)
                     mask = self.get_mask(rules)
-                    forward_logits[i] = forward_logits[i] - (1 - mask) * 100
+                    forward_logits[i] = forward_logits[i] - (1 - mask) * 1000
                     cat = Categorical(logits=forward_logits[i])
                     action = cat.sample()
                     total_forwards[i] += cat.log_prob(action).item()
                     rule = self.model.state_encoder.idx2rule[action.item()]
+                    if len(rule) != 2:
+                        print(rule)
                     nt, program = rule
                     programs[i] = (program, programs[i])
 
@@ -102,142 +101,141 @@ class Training:
                              for program in programs]
             return logZs, total_forwards, reconstructed, states
 
-    def sleep(self, correct_programs):
+
+    def replay(self, correct_programs):
         """
         The sleep phase for refining the forward_logits using saved correct programs.
         :param correct_programs: List of tuples containing (program, batch_IOs, states) for each correct program.
         """
-        print('SLEEP PHASE')
+        print('REPLAY')
 
         # Prepare the batch from correct_programs
-        batch_programs, batch_IOs, correct_states = zip(*correct_programs)
-        correct_states = [state[1:] for state in correct_states]
-        states = [['START'] for _ in range(len(batch_IOs))]
+        batch_programs, batch_IOs, correct_states_list = zip(*correct_programs)
 
         # Initialise container for forward logits accumulation
         total_forwards = torch.zeros(self.batch_size, device=self.device)
 
-        frontiers = [deque([self.data.cfg.start]) for _ in range(len(batch_IOs))]
+        # Initial state
+        states = [['START'] for _ in range(len(batch_IOs))]
 
-        programs = [[] for _ in range(len(batch_IOs))]
+        # Maximum trajectory length
+        max_traj_length = max([len(correct_states) for correct_states in correct_states_list])
 
-        while any(frontiers):
-            forward_logits, logZs = self.model(states, batch_IOs)
-            for i in range(len(batch_IOs)):
-                if frontiers[i]:
-                    next_nt = frontiers[i].pop()
-                    correct_rule_idx = self.model.state_encoder.rule2idx[
-                        correct_states[i].pop(0)]  # pop the next correct rule from the list
+        # Process each step of each trajectory
+        for t in range(max_traj_length - 1):  # adjusted for -1 as we're skipping the first token for prediction
+
+            forward_logits, _ = self.model(states, batch_IOs)
+
+            for i, correct_states in enumerate(correct_states_list):
+                if t + 1 < len(correct_states):  # using t + 1 to get the next state/token for prediction
+                    rule = correct_states[t + 1]
+                    correct_rule_idx = self.model.state_encoder.rule2idx[rule]
                     total_forwards[i] += forward_logits[i][correct_rule_idx]
-                    rule = self.model.state_encoder.idx2rule[correct_rule_idx]
 
-                    nt, program = rule
-                    programs[i] = (program, programs[i])
+                    # Update the state for the next prediction
+                    states[i].append(rule)
 
-                    states[i] = states[i] + [rule]
-                    program_args = self.data.cfg.rules[nt][program]
-                    frontiers[i].extend(program_args)
+        sleep_loss = -total_forwards.mean()
+        self.optimizer_policy.zero_grad()
+        sleep_loss.backward()
+        self.optimizer_policy.step()  # (E-step sleep)
 
-        if not any(frontiers):
-            # reconstructed = [reconstruct_from_compressed(program, target_type=self.data.cfg.start[0])
-            #                  for program in programs]
+    def fantasy(self, correct_programs):
+        """
+        The sleep phase for refining the forward_logits using saved correct programs.
+        :param correct_programs: List of tuples containing (program, batch_IOs, states) for each correct program.
+        """
+        print('FANTASY')
+
+        # Prepare the batch from correct_programs
+        batch_programs, batch_IOs, correct_states_list = zip(*correct_programs)
+
+        all_fantasy_batches = []
+        for program in batch_programs:
+            fantasy_batch = []
+            for batch_idx, ios in enumerate(batch_IOs):
+
+                new_ios = []
+                for ios_idx, io in enumerate(ios):
+                    i, o = io
+                    predicted_output = program.eval(self.data.dsl, i, ios_idx)
+                    new_ios.append([i, predicted_output])
+                fantasy_batch.append(new_ios)
+            all_fantasy_batches.append(fantasy_batch)
+
+
+        for prog_idx, fantasy_batch in enumerate(all_fantasy_batches):
+
+            # Initialise container for forward logits accumulation
+            total_forwards = torch.zeros(self.batch_size, device=self.device)
+
+            # Initial state
+            states = [['START'] for _ in range(len(fantasy_batch))]
+
+            # Maximum trajectory length
+            max_traj_length = len(correct_states_list[prog_idx])
+
+            # Process each step of each trajectory
+            for t in range(max_traj_length - 1):  # adjusted for -1 as we're skipping the first token for prediction
+
+                forward_logits, _ = self.model(states, fantasy_batch)
+
+                for i in range(self.batch_size):
+                    rule = correct_states_list[prog_idx][t+1]
+                    correct_rule_idx = self.model.state_encoder.rule2idx[rule]
+                    total_forwards[i] += forward_logits[i][correct_rule_idx]
+
+                    # Update the state for the next prediction
+                    states[i].append(rule)
 
             sleep_loss = -total_forwards.mean()
-            sleep_loss.backward()
-
-            self.optimizer_policy.step()  # (E-step)
             self.optimizer_policy.zero_grad()
-
-        # def sleep(self, correct_programs):
-    #     """
-    #     The sleep phase for refining the forward_logits using saved correct programs.
-    #     :param correct_programs: List of tuples containing (program, batch_IOs, states) for each correct program.
-    #     """
-    #     print('SLEEP PHASE')
-    #
-    #     # Prepare the batch from correct_programs
-    #     batch_programs, batch_IOs, correct_states = zip(*correct_programs)
-    #
-    #     states = [['START'] for _ in range(len(batch_IOs))]
-    #
-    #     # Initialise container for forward logits accumulation
-    #     total_forwards = torch.zeros(self.batch_size, device=self.device)
-    #
-    #     frontiers = [deque([self.data.cfg.start]) for _ in range(len(batch_IOs))]
-    #
-    #     programs = [[] for _ in range(len(batch_IOs))]
-    #
-    #
-    #     while any(frontiers):
-    #         forward_logits, logZs = self.model(states, batch_IOs)
-    #         for i in range(len(batch_IOs)):
-    #             j = 1
-    #             if frontiers[i]:
-    #                 next_nt = frontiers[i].pop()
-    #                 print(next_nt)
-    #                 mask = torch.zeros(len(self.model.state_encoder.rules), device=self.device)
-    #                 print(self.model.state_encoder.rule2idx[correct_states[i][j]])
-    #                 mask[self.model.state_encoder.rule2idx[correct_states[i][j]]] = 1
-    #                 forward_logits[i] = forward_logits[i] - (1 - mask) * 100
-    #                 cat = Categorical(logits=forward_logits[i])
-    #                 action = cat.sample()
-    #                 assert action == self.model.state_encoder.rule2idx[correct_states[i][j]]
-    #                 total_forwards[i] += cat.log_prob(action).item()
-    #                 rule = self.model.state_encoder.idx2rule[action.item()]
-    #
-    #                 nt, program = rule
-    #                 programs[i] = (program, programs[i])
-    #
-    #                 states[i] = states[i] + [rule]
-    #                 program_args = self.data.cfg.rules[nt][program]
-    #                 frontiers[i].extend(program_args)
-    #
-    #     if not any(frontiers):
-    #         reconstructed = [reconstruct_from_compressed(program, target_type=self.data.cfg.start[0])
-    #                          for program in programs]
-    #
-    #         sleep_loss = -total_forwards.mean()
-    #         sleep_loss.backward()
-    #
-    #
-    #         self.optimizer_policy.step()  # (E-step)
-    #         self.optimizer_policy.zero_grad()
+            sleep_loss.backward()
+            self.optimizer_policy.step()  # (E-step sleep)
 
 
-
-
-
-        sleep_batch = []
-        # for batch_idx, ios in enumerate(correct_program_ios):
-
+    # def fantasy(self, programs, batch_IOs, correct_states):
+    #     print('FANTASY')
+    #
+    #     fantasy_batch = []
+    #     for batch_idx, ios in enumerate(batch_IOs):
+    #
     #         new_ios = []
     #         for ios_idx, io in enumerate(ios):
     #             i, o = io
     #             predicted_output = programs[batch_idx].eval(self.data.dsl, i, ios_idx)
     #             new_ios.append([i, predicted_output])
-    #         sleep_batch.append(new_ios)
-    #     for _ in range(5):
-    #         logZs, total_forwards, programs = self.sample_program_dfs(sleep_batch)
-    #         rewards = self.rewards(programs, batch_programs, batch_IOs, self.data.dsl)
+    #         fantasy_batch.append(new_ios)
+    #     # print(fantasy_batch.shape)
+    #     # fantasy_batch = torch.tensor(fantasy_batch, device=self.device)
     #
-    #         # Compute loss and backpropagate
-    #         e_loss = -torch.log(total_forwards)
-    #         e_loss = e_loss.mean()
-    #         e_loss.backward()
+    #     # Initialise container for forward logits accumulation
+    #     total_forwards = torch.zeros(self.batch_size, device=self.device)
     #
-    #         self.optimizer_policy.step()  # (E-step)
-    #         self.optimizer_policy.zero_grad()
+    #     # Initial state
+    #     states = [['START'] for _ in range(len(batch_IOs))]
     #
-    #     correct_programs = []
-    #     correct_program_ios =
-
-    def states_to_target_indices(self, trajectory):
-        target_indices = []
-        for state in trajectory:
-            index_sequence = [self.model.state_encoder.rule2idx[rule] for rule in state]
-            target_indices.append(index_sequence)
-
-        return torch.tensor(target_indices, dtype=torch.long, device=self.device)
+    #     # Maximum trajectory length
+    #     max_traj_length = max([len(state) for state in correct_states])
+    #
+    #     # Process each step of each trajectory
+    #     for t in range(max_traj_length - 1):  # adjusted for -1 as we're skipping the first token for prediction
+    #
+    #         forward_logits, _ = self.model(states, fantasy_batch)
+    #
+    #         for i, state in enumerate(correct_states):
+    #             if t + 1 < len(state):  # using t + 1 to get the next state/token for prediction
+    #                 rule = state[t + 1]
+    #                 correct_rule_idx = self.model.state_encoder.rule2idx[rule]
+    #                 total_forwards[i] += forward_logits[i][correct_rule_idx]
+    #
+    #                 # Update the state for the next prediction
+    #                 states[i].append(rule)
+    #
+    #     sleep_loss = -total_forwards.mean()
+    #     self.optimizer_policy.zero_grad()
+    #     sleep_loss.backward()
+    #     self.optimizer_policy.step()  # (E-step sleep)
 
     def train(self):
 
@@ -252,7 +250,6 @@ class Training:
         total_logZs = []
 
         correct_programs = []
-
 
         for epoch in tqdm.tqdm(range(self.epochs), ncols=40):
             correct_programs_per_epoch = 0
@@ -269,23 +266,25 @@ class Training:
                 program_counter += self.batch_size
 
                 # Predict programs
-                logZs, total_forwards, programs, states = self.sample_program_dfs(batch_IOs, epsilon=0.05, beta=0.8)
+                logZs, total_forwards, programs, states = self.sample_program_dfs(batch_IOs, epsilon=0.2, beta=0.8)
 
                 # Calculate rewards
                 rewards = self.rewards(programs, batch_programs, batch_IOs, self.data.dsl)
                 total_rewards.append(rewards.sum().item() / rewards.size(0))
-                correct_programs_per_epoch += rewards.sum().item()
+                # print(rewards)
+                correct_programs_per_epoch += (rewards == 30.).sum().item()
+
+                # correct_programs_per_epoch += rewards.sum().item()
                 nr_of_programs_per_epoch += rewards.size(0)
 
                 # Compute loss and backpropagate
                 # Trajectory balance
-                e_loss = (logZs + total_forwards / len(max(states, key=len)) - torch.log(rewards).clip(-20)).pow(2)
+                e_loss = (logZs + total_forwards - torch.log(rewards).clip(-20)).pow(2)
                 # TODO: Check that max(states, key=len) makes sense
                 e_loss = e_loss.mean()
-                e_loss.backward()
-
-                self.optimizer_policy.step()  # (E-step)
                 self.optimizer_policy.zero_grad()
+                e_loss.backward()
+                self.optimizer_policy.step()  # (E-step)
 
                 # Bookkeeping
                 e_step_losses.append(e_loss.item())
@@ -293,19 +292,22 @@ class Training:
 
                 # Collect good programs
                 for i in range(self.batch_size):
-                    if rewards[i] == 1.:
+                    if rewards[i] == 30.:
                         # print(f'found correct program {programs[i]}, {batch_programs[i]}, {len(correct_programs)}')
                         correct_programs.append((programs[i], batch_IOs[i], states[i]))
 
                 # If we have enough for a batch, sleep
                 if len(correct_programs) >= self.batch_size:
-                    self.sleep(correct_programs[:self.batch_size])
+                    self.replay(correct_programs[:self.batch_size])
+                    self.fantasy(correct_programs[:self.batch_size])
 
                     # Reset
                     correct_programs = correct_programs[self.batch_size:]
 
+
             # Optimize Generative Model
-            if True: #e_step_losses[-1] < self.m_step_threshold:
+            # if e_step_losses[-1] < self.m_step_threshold:
+            if True:
                 self.unfreeze_parameters(self.model.transformer)  # Unfreeze transformer parameters
                 self.freeze_parameters(self.model.forward_logits)  # Freeze GFlowNet parameters
 
@@ -321,8 +323,8 @@ class Training:
                     m_step_losses.append(m_loss.item())
                     self.optimizer_generative.step()  # (M-step)
                     self.optimizer_generative.zero_grad()
-
-                    correct_programs_per_epoch += rewards.sum().item()
+                    correct_programs_per_epoch += (rewards == 30.).sum().item()
+                    # correct_programs_per_epoch += rewards.sum().item()
                     nr_of_programs_per_epoch += rewards.size(0)
 
             if epoch % 5 == 0:
@@ -332,7 +334,7 @@ class Training:
                     f'total rewards: {sum(total_rewards) / ((epoch + 1) * self.e_steps * self.m_steps * self.batch_size)}\n'
                     f'correct_programs_per_epoch: {correct_programs_per_epoch} out of {nr_of_programs_per_epoch} = {correct_programs_per_epoch/nr_of_programs_per_epoch}\n'
                     f'e_loss: {e_step_losses[-1]}\n'
-                    f'm_loss: {m_step_losses[-1]}\n'
+                    f'm_loss: {m_step_losses[-1] if m_step_losses else None}\n'
                     f'Z: {np.exp(total_logZs[-1])}\n'
                     f'Programs created per second on average: {avg_programs_per_sec:.2f}\n'
                     f'Total programs created: {program_counter}'
@@ -352,34 +354,21 @@ class Training:
         for param in model.parameters():
             param.requires_grad = True
 
-
     @staticmethod
     def plot_results(e_step_losses, m_step_losses, all_logZs, program_ratios, epoch):
-
         plt.figure(figsize=(15, 15))
-        plt.subplot(4, 1, 1)
-        plt.plot(e_step_losses)
-        plt.title('E-step Losses Over Time')
-        plt.xlabel('epochs')
-        plt.ylabel('e loss')
 
-        plt.subplot(4, 1, 2)
-        plt.plot(m_step_losses)
-        plt.title('M-step Losses Over Time')
-        plt.xlabel('epochs')
-        plt.ylabel('m loss')
+        data = [(e_step_losses, 'E-step Losses Over Time', 'e loss'),
+                (m_step_losses, 'M-step Losses Over Time', 'm loss'),
+                (np.exp(all_logZs), 'Z Over Time', 'Z'),
+                (program_ratios, 'Correct Program Ratios Over Time', 'ratio')]
 
-        plt.subplot(4, 1, 3)
-        plt.plot(np.exp(all_logZs))
-        plt.title('Z Over Time')
-        plt.xlabel('epochs')
-        plt.ylabel('Z')
-
-        plt.subplot(4, 1, 4)
-        plt.plot(program_ratios)
-        plt.title('Correct Program Ratios Over Time')
-        plt.xlabel('epochs')
-        plt.ylabel('ratio')
+        for i, (d, title, ylabel) in enumerate(data, start=1):
+            plt.subplot(4, 1, i)
+            plt.plot(d)
+            plt.title(title)
+            plt.xlabel('epochs')
+            plt.ylabel(ylabel)
 
         plt.tight_layout()
         plt.savefig(os.path.join(RESULTS_DIR, f'epoch {epoch}'))
@@ -392,15 +381,16 @@ class Training:
         return avg_programs_per_sec
 
 
-
-
     def get_edit_distance(self, program, ios, dsl):
+        # FIXME: we're looping but returning directly. is this intended?
         for i, io in enumerate(ios):
             input, output = io
             predicted_output = program.eval(dsl, input, i)
             edit_distance = self.reward.edit_distance(output, predicted_output)
             return np.exp(edit_distance)
     def compare_outputs(self, program, ios, dsl):
+        # For any of the examples,
+        # if the output isn't as predicted, return 0, else 1
         for x, io in enumerate(ios):
             i, o = io
             predicted_output = program.eval(dsl, i, x)
@@ -408,9 +398,25 @@ class Training:
                 return 0.0
             return 1.0
 
+    import difflib
 
+    def normalized_edit_distance(self, seq1, seq2):
+        sm = difflib.SequenceMatcher(None, seq1, seq2)
+        max_len = max(len(seq1), len(seq2))
 
+        # Calculating the sum of lengths of the edited portions
+        # Using max to account for 'replace' which affects both sequences.
+        edit_distance = sum([max(i2 - i1, j2 - j1) for tag, i1, i2, j1, j2 in sm.get_opcodes() if tag != "equal"])
 
+        normalized_distance = edit_distance / max_len
+        return 1 - normalized_distance
+
+    import Levenshtein
+
+    def normalized_similarity(self, seq1, seq2):
+        # print(seq1, seq2)
+        # Levenshtein.normalized_distance computes the normalized edit distance
+        return 1 - Levenshtein.distance(seq1, seq2) / max(len(seq1), len(seq2))
 
     def rewards(self, programs, batch_program, batch_ios, dsl):
         # program_checker = self.make_program_checker(dsl, task[0])
@@ -419,10 +425,43 @@ class Training:
 
         # TODO: Looking at the actual program for comparison is a little hacky,
         #  but otherwise we need to deal with variables, which makes the problem a lot harder.
-        rewrd = torch.tensor([a == b for a, b in zip(programs, batch_program)], device=self.device).float()
-        rewrd.requires_grad_()
+        # rewrd = torch.tensor([a == b for a, b in zip(programs, batch_program)], device=self.device).float()
+        # rewrd.requires_grad_()
 
-        # rewrd = torch.tensor([self.check(dsl, ios, program) for program, ios in zip(programs, batch_ios)], requires_grad=True, device=self.device).exp()
+        # rewrd = torch.tensor([self.get_edit_distance(program, ios, dsl) for program, ios in zip(programs, batch_ios)], requires_grad=True, device=self.device).exp()
+        # print(rewrd)
+        # rewrd = rewrd - rewrd.min()
+        # rewrd = rewrd / rewrd.max()
+
+        rewrd = []
+        for x, ios in enumerate(batch_ios):
+            rs = []
+            if programs[x] == batch_program[x]:
+                rewrd.append(100.)
+                print("Program:", programs[x])
+                print("Batch Program:", batch_program[x])
+            else:
+                for i, io in enumerate(ios):
+                    input, output = io
+                    predicted_output = programs[x].eval(dsl, input, i)
+                    if predicted_output is None:
+                        rs.append(0)
+                        continue
+                    r = self.normalized_similarity(output, predicted_output)
+                    # if r == 1:
+                    #     print(programs[x], batch_program[x], output, predicted_output, r)
+                    rs.append(r)
+                rewrd.append(np.mean(rs)**2)
+        rewrd = torch.tensor(rewrd, requires_grad=True, device=self.device)
+        # print(rewrd.shape, rewrd)
+
+        # Find indices where rewrd is 1
+        # indices = (rewrd == 1).nonzero(as_tuple=True)[0]
+
+        # Print programs and batch_program for those indices
+        # for idx in indices:
+        #     print("Program:", programs[idx])
+        #     print("Batch Program:", batch_program[idx])
 
         # rewrd = torch.tensor([self.compare_outputs(program, ios, dsl) for program, ios in zip(programs, batch_ios)], requires_grad=True, device=self.device)
         # print(rewrd)

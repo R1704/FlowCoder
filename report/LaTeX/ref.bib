@@ -1,0 +1,291 @@
+@InCollection{sep-leibniz-logic-influence,  
+author       =	{Peckhaus, Volker},  
+title        =	{{Leibniz's Influence on 19th Century Logic}},  
+booktitle    =	{The {Stanford} Encyclopedia of Philosophy},  
+editor       =	{Edward N. Zalta},  
+howpublished =	{\url{[https://plato.stanford.edu/archives/win2018/entries/leibniz-logic-influence/](https://plato.stanford.edu/archives/win2018/entries/leibniz-logic-influence/)}},  
+year         =	{2018},  
+edition      =	{{W}inter 2018},  
+publisher    =	{Metaphysics Research Lab, Stanford University}  
+}
+
+@InCollection{sep-language-thought,  
+author = {Rescorla, Michael},  
+title = {{The Language of Thought Hypothesis}},  
+booktitle = {The {Stanford} Encyclopedia of Philosophy},  
+editor = {Edward N. Zalta},  
+howpublished = {\url{https:[//plato.stanford.edu/archives/sum2019/entries/language-thought/](https:////plato.stanford.edu/archives/sum2019/entries/language-thought/)}},  
+year = {2019},  
+edition = {{S}ummer 2019},  
+publisher =	{Metaphysics Research Lab, Stanford University}  
+}
+
+@inproceedings{ellis_dreamcoder_2021,  
+address = {Virtual Canada},  
+title = {{DreamCoder}: bootstrapping inductive program synthesis with wake-sleep library learning},  
+isbn = {978-1-4503-8391-2},  
+shorttitle = {{DreamCoder}},  
+url = {[https://dl.acm.org/doi/10.1145/3453483.3454080](https://dl.acm.org/doi/10.1145/3453483.3454080)},  
+doi = {10.1145/3453483.3454080},  
+abstract = {We present a system for inductive program synthesis called DreamCoder, which inputs a corpus of synthesis problems each specified by one or a few examples, and automatically derives a library of program components and a neural search policy that can be used to efficiently solve other similar synthesis problems. The library and search policy bootstrap each other iteratively through a variant of łwake-sleepž approximate Bayesian learning. A new refactoring algorithm based on E-graph matching identifies common sub-components across synthesized programs, building a progressively deepening library of abstractions capturing the structure of the input domain. We evaluate on eight domains including classic program synthesis areas and AI tasks such as planning, inverse graphics, and equation discovery. We show that jointly learning the library and neural search policy leads to solving more problems, and solving them more quickly.},  
+language = {en},  
+urldate = {2022-05-04},  
+booktitle = {Proceedings of the 42nd {ACM} {SIGPLAN} {International} {Conference} on {Programming} {Language} {Design} and {Implementation}},  
+publisher = {ACM},  
+author = {Ellis, Kevin and Wong, Catherine and Nye, Maxwell and Sablé-Meyer, Mathias and Morales, Lucas and Hewitt, Luke and Cary, Luc and Solar-Lezama, Armando and Tenenbaum, Joshua B.},  
+month = jun,  
+year = {2021},  
+pages = {835--850},  
+file = {Ellis et al. - 2021 - DreamCoder bootstrapping inductive program synthe.pdf:/Users/ron/Zotero/storage/IADX3AGN/Ellis et al. - 2021 - DreamCoder bootstrapping inductive program synthe.pdf:application/pdf},  
+}
+
+@article{dehaene_symbols_2022,  
+title = {Symbols and mental programs: a hypothesis about human singularity},  
+volume = {26},  
+issn = {13646613},  
+shorttitle = {Symbols and mental programs},  
+url = {[https://linkinghub.elsevier.com/retrieve/pii/S1364661322001413](https://linkinghub.elsevier.com/retrieve/pii/S1364661322001413)},  
+doi = {10.1016/j.tics.2022.06.010},  
+language = {en},  
+number = {9},  
+urldate = {2022-08-22},  
+journal = {Trends in Cognitive Sciences},  
+author = {Dehaene, Stanislas and Al Roumi, Fosca and Lakretz, Yair and Planton, Samuel and Sablé-Meyer, Mathias},  
+month = sep,  
+year = {2022},  
+pages = {751--766},  
+file = {Dehaene et al. - 2022 - Symbols and mental programs a hypothesis about hu.pdf:/Users/ron/Zotero/storage/3QSTG9EM/Dehaene et al. - 2022 - Symbols and mental programs a hypothesis about hu.pdf:application/pdf},  
+}
+
+@inproceedings{bengio_flow_2021,  
+title = {Flow {Network} based {Generative} {Models} for {Non}-{Iterative} {Diverse} {Candidate} {Generation}},  
+volume = {34},  
+url = {[https://papers.nips.cc/paper/2021/hash/e614f646836aaed9f89ce58e837e2310-Abstract.html](https://papers.nips.cc/paper/2021/hash/e614f646836aaed9f89ce58e837e2310-Abstract.html)},  
+abstract = {This paper is about the problem of learning a stochastic policy for generating an object (like a molecular graph) from a sequence of actions, such that the probability of generating an object is proportional to a given positive reward for that object. Whereas standard return maximization tends to converge to a single return-maximizing sequence, there are cases where we would like to sample a diverse set of high-return solutions. These arise, for example, in black-box function optimization when few rounds are possible, each with large batches of queries, where the batches should be diverse, e.g., in the design of new molecules. One can also see this as a problem of approximately converting an energy function to a generative distribution. While MCMC methods can achieve that, they are expensive and generally only perform local exploration. Instead, training a generative policy amortizes the cost of search during training and yields to fast generation.  Using insights from Temporal Difference learning, we propose GFlowNet, based on a view of the generative process as a flow network, making it possible to handle the tricky case where different trajectories can yield the same final state, e.g., there are many ways to sequentially add atoms to generate some molecular graph. We cast the set of trajectories as a flow and convert the flow consistency equations into a learning objective, akin to the casting of the Bellman equations into Temporal Difference methods. We prove that any global minimum of the proposed objectives yields a policy which samples from the desired distribution, and demonstrate the improved performance and diversity of GFlowNet on a simple domain where there are many modes to the reward function, and on a molecule synthesis task.},  
+urldate = {2022-04-13},  
+booktitle = {Advances in {Neural} {Information} {Processing} {Systems}},  
+publisher = {Curran Associates, Inc.},  
+author = {Bengio, Emmanuel and Jain, Moksh and Korablyov, Maksym and Precup, Doina and Bengio, Yoshua},  
+year = {2021},  
+pages = {27381--27394},  
+file = {Full Text PDF:/Users/ron/Zotero/storage/RXZEKNQV/Bengio et al. - 2021 - Flow Network based Generative Models for Non-Itera.pdf:application/pdf},  
+}
+
+@article{bengio_gflownet_2022,  
+title = {{GFlowNet} {Foundations}},  
+url = {[http://arxiv.org/abs/2111.09266](http://arxiv.org/abs/2111.09266)},  
+abstract = {Generative Flow Networks (GFlowNets) have been introduced as a method to sample a diverse set of candidates in an active learning context, with a training objective that makes them approximately sample in proportion to a given reward function. In this paper, we show a number of additional theoretical properties of GFlowNets. They can be used to estimate joint probability distributions and the corresponding marginal distributions where some variables are unspecified and, of particular interest, can represent distributions over composite objects like sets and graphs. GFlowNets amortize the work typically done by computationally expensive MCMC methods in a single but trained generative pass. They could also be used to estimate partition functions and free energies, conditional probabilities of supersets (supergraphs) given a subset (subgraph), as well as marginal distributions over all supersets (supergraphs) of a given set (graph). We introduce variations enabling the estimation of entropy and mutual information, sampling from a Pareto frontier, connections to reward-maximizing policies, and extensions to stochastic environments, continuous actions and modular energy functions.},  
+urldate = {2022-04-13},  
+journal = {arXiv:2111.09266 [cs, stat]},  
+author = {Bengio, Yoshua and Deleu, Tristan and Hu, Edward J. and Lahlou, Salem and Tiwari, Mo and Bengio, Emmanuel},  
+month = apr,  
+year = {2022},  
+note = {arXiv: 2111.09266},  
+keywords = {Computer Science - Artificial Intelligence, Computer Science - Machine Learning, Statistics - Machine Learning},  
+file = {arXiv Fulltext PDF:/Users/ron/Zotero/storage/JWITNEXM/Bengio et al. - 2022 - GFlowNet Foundations.pdf:application/pdf;[arXiv.org](http://arXiv.org) Snapshot:/Users/ron/Zotero/storage/VNGUT7WA/2111.html:text/html},  
+}
+
+@book{JCopeland2004-JCOTET,  
+	title = {The Essential Turing},  
+	year = {2004},  
+	publisher = {Oxford University Press UK},  
+	author = {B. J. Copeland}  
+}  
+
+@article{rule_child_2020,  
+title = {The {Child} as {Hacker}},  
+volume = {24},  
+issn = {13646613},  
+url = {[https://linkinghub.elsevier.com/retrieve/pii/S1364661320301741](https://linkinghub.elsevier.com/retrieve/pii/S1364661320301741)},  
+doi = {10.1016/j.tics.2020.07.005},  
+language = {en},  
+number = {11},  
+urldate = {2022-05-03},  
+journal = {Trends in Cognitive Sciences},  
+author = {Rule, Joshua S. and Tenenbaum, Joshua B. and Piantadosi, Steven T.},  
+month = nov,  
+year = {2020},  
+pages = {900--915},  
+file = {Rule et al. - 2020 - The Child as Hacker.pdf:/Users/ron/Zotero/storage/TVAQQX5F/Rule et al. - 2020 - The Child as Hacker.pdf:application/pdf},  
+}
+
+@article{al_roumi_mental_2021,  
+title = {Mental compression of spatial sequences in human working memory using numerical and geometrical primitives},  
+volume = {109},  
+issn = {0896-6273},  
+url = {[https://www.sciencedirect.com/science/article/pii/S0896627321004244](https://www.sciencedirect.com/science/article/pii/S0896627321004244)},  
+doi = {10.1016/j.neuron.2021.06.009},  
+abstract = {How does the human brain store sequences of spatial locations? We propose that each sequence is internally compressed using an abstract, language-like code that captures its numerical and geometrical regularities. We exposed participants to spatial sequences of fixed length but variable regularity while their brain activity was recorded using magneto-encephalography. Using multivariate decoders, each successive location could be decoded from brain signals, and upcoming locations were anticipated prior to their actual onset. Crucially, sequences with lower complexity, defined as the minimal description length provided by the formal language, led to lower error rates and to increased anticipations. Furthermore, neural codes specific to the numerical and geometrical primitives of the postulated language could be detected, both in isolation and within the sequences. These results suggest that the human brain detects sequence regularities at multiple nested levels and uses them to compress long sequences in working memory.},  
+language = {en},  
+number = {16},  
+urldate = {2022-10-29},  
+journal = {Neuron},  
+author = {Al Roumi, Fosca and Marti, Sébastien and Wang, Liping and Amalric, Marie and Dehaene, Stanislas},  
+month = aug,  
+year = {2021},  
+keywords = {Geometry, Language of Thought, Magnetoencephalography, Memory, Ordinal Knowledge, Primitive Operations, Sequence Processing, Sequence Structure, Syntax},  
+pages = {2627--2639.e4},  
+}
+
+@article{piantadosi2021computational,  
+  title={The computational origin of representation},  
+  author={Piantadosi, Steven T},  
+  journal={Minds and machines},  
+  volume={31},  
+  number={1},  
+  pages={1--58},  
+  year={2021},  
+  publisher={Springer}  
+}
+
+@article{piantasodi2022meaning,  
+  title={Meaning without reference in large language models},  
+  author={Piantasodi, Steven T and Hill, Felix},  
+  journal={arXiv preprint arXiv:2208.02957},  
+  year={2022}  
+}
+
+@article{do2021neural,  
+  title={Neural circuits and symbolic processing},  
+  author={Do, Quan and Hasselmo, Michael E},  
+  journal={Neurobiology of Learning and Memory},  
+  volume={186},  
+  pages={107552},  
+  year={2021},  
+  publisher={Elsevier}  
+}
+
+@article{santoro2021symbolic,  
+  title={Symbolic behaviour in artificial intelligence},  
+  author={Santoro, Adam and Lampinen, Andrew and Mathewson, Kory and Lillicrap, Timothy and Raposo, David},  
+  journal={arXiv preprint arXiv:2102.03406},  
+  year={2021}  
+}
+
+@article{allamanis2017learning,  
+  title={Learning to represent programs with graphs},  
+  author={Allamanis, Miltiadis and Brockschmidt, Marc and Khademi, Mahmoud},  
+  journal={arXiv preprint arXiv:1711.00740},  
+  year={2017}  
+}
+
+@article{wang2017dynamic,  
+title={Dynamic neural program embedding for program repair},  
+author={Wang, Ke and Singh, Rishabh and Su, Zhendong},  
+journal={arXiv preprint arXiv:1711.07163},  
+year={2017}  
+}
+
+@article{ibarz2022generalist,  
+  title={A generalist neural algorithmic learner},  
+  author={Ibarz, Borja and Kurin, Vitaly and Papamakarios, George and Nikiforou, Kyriacos and Bennani, Mehdi and Csord{\'a}s, R{\'o}bert and Dudzik, Andrew and Bo{\v{s}}njak, Matko and Vitvitskyi, Alex and Rubanova, Yulia and others},  
+  journal={arXiv preprint arXiv:2209.11142},  
+  year={2022}  
+}
+
+@book{zadra_stickgold_2022,   
+place={New York, NY},   
+title={When brains dream: Understanding the science and Mystery of our dreaming minds}, 
+publisher={W.W. Norton \& Company, Inc.},   
+author={Zadra, Antonio and Stickgold, R.},   
+year={2022}  
+} 
+
+@article{zhang2020connecting,  
+  title={Connecting concepts in the brain by mapping cortical representations of semantic relations},
+  author={Zhang, Yizhen and Han, Kuan and Worth, Robert and Liu, Zhongming},  
+  journal={Nature communications},  
+  volume={11},  
+  number={1},  
+  pages={1--13},  
+  year={2020},  
+  publisher={Nature Publishing Group}  
+}
+
+@article{lewis_how_2018,  
+title = {How {Memory} {Replay} in {Sleep} {Boosts} {Creative} {Problem}-{Solving}},  
+volume = {22},  
+issn = {13646613},  
+url = {[https://linkinghub.elsevier.com/retrieve/pii/S1364661318300706](https://linkinghub.elsevier.com/retrieve/pii/S1364661318300706)},  
+doi = {10.1016/j.tics.2018.03.009},  
+language = {en},  
+number = {6},  
+urldate = {2022-05-04},  
+journal = {Trends in Cognitive Sciences},  
+author = {Lewis, Penelope A. and Knoblich, Günther and Poe, Gina},  
+month = jun,  
+year = {2018},  
+pages = {491--503},
+}
+
+@InCollection{sep-goedel-incompleteness,
+	author       =	{Raatikainen, Panu},
+	title        =	{{Gödel’s Incompleteness Theorems}},
+	booktitle    =	{The {Stanford} Encyclopedia of Philosophy},
+	editor       =	{Edward N. Zalta},
+	howpublished =	{\url{https://plato.stanford.edu/archives/spr2022/entries/goedel-incompleteness/}},
+	year         =	{2022},
+	edition      =	{{S}pring 2022},
+	publisher    =	{Metaphysics Research Lab, Stanford University}
+}
+
+@article{chomsky1959certain,
+  title={On certain formal properties of grammars},
+  author={Chomsky, Noam},
+  journal={Information and control},
+  volume={2},
+  number={2},
+  pages={137--167},
+  year={1959},
+  publisher={Elsevier}
+}
+
+@book{hofstadter_gdel_1979,
+  added-at = {2009-02-19T14:19:12.000+0100},
+  author = {Hofstadter, Douglas R.},
+  biburl = {https://www.bibsonomy.org/bibtex/28e4bfa972541e430f9520006e053ef9b/ivan},
+  interhash = {311d5d81ee9dfd0fccabd4beafdc671c},
+  intrahash = {8e4bfa972541e430f9520006e053ef9b},
+  keywords = {logic mathematics},
+  publisher = {Basic Books Inc.},
+  timestamp = {2009-02-19T14:19:14.000+0100},
+  title = {Gödel, Escher, Bach: an Eternal Golden Braid},
+  year = 1979
+}
+
+@article{garcez2020neurosymbolic,
+  title={Neurosymbolic AI: the 3rd wave},
+  author={Garcez, Artur d'Avila and Lamb, Luis C},
+  journal={arXiv preprint arXiv:2012.05876},
+  year={2020}
+}
+
+@article{hinton1995wake,
+  title={The" wake-sleep" algorithm for unsupervised neural networks},
+  author={Hinton, Geoffrey E and Dayan, Peter and Frey, Brendan J and Neal, Radford M},
+  journal={Science},
+  volume={268},
+  number={5214},
+  pages={1158--1161},
+  year={1995},
+  publisher={American Association for the Advancement of Science}
+}
+
+@book{10.5555/1593511, 
+ author = {Van Rossum, Guido and Drake, Fred L.}, 
+ title = {Python 3 Reference Manual}, 
+ year = {2009}, 
+ isbn = {1441412697}, 
+ publisher = {CreateSpace}, 
+ address = {Scotts Valley, CA} 
+}
+
+@incollection{NEURIPS2019_9015, 
+title = {PyTorch: An Imperative Style, High-Performance Deep Learning Library}, 
+author = {Paszke, Adam and Gross, Sam and Massa, Francisco and Lerer, Adam and Bradbury, James and Chanan, Gregory and Killeen, Trevor and Lin, Zeming and Gimelshein, Natalia and Antiga, Luca and Desmaison, Alban and Kopf, Andreas and Yang, Edward and DeVito, Zachary and Raison, Martin and Tejani, Alykhan and Chilamkurthy, Sasank and Steiner, Benoit and Fang, Lu and Bai, Junjie and Chintala, Soumith}, 
+booktitle = {Advances in Neural Information Processing Systems 32}, 
+pages = {8024--8035}, 
+year = {2019}, 
+publisher = {Curran Associates, Inc.}, 
+url = {http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf} 
+}

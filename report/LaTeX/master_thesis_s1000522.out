@@ -1,0 +1,80 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Problem Statement}{section.1}% 2
+\BOOKMARK [1][-]{section.2}{Computation and the Computational Mind}{}% 3
+\BOOKMARK [1][-]{section.3}{Language of Thought}{}% 4
+\BOOKMARK [1][-]{section.4}{Grammar}{}% 5
+\BOOKMARK [1][-]{section.5}{Syntax vs Semantics}{}% 6
+\BOOKMARK [1][-]{section.6}{Program Synthesis}{}% 7
+\BOOKMARK [1][-]{section.7}{DreamCoder}{}% 8
+\BOOKMARK [1][-]{section.8}{DeepSynth}{}% 9
+\BOOKMARK [1][-]{section.9}{GFlowNet}{}% 10
+\BOOKMARK [2][-]{subsection.9.1}{Previous work on program synthesis.}{section.9}% 11
+\BOOKMARK [1][-]{section.10}{Search space}{}% 12
+\BOOKMARK [1][-]{section.11}{Program space}{}% 13
+\BOOKMARK [1][-]{section.12}{GFlowNet}{}% 14
+\BOOKMARK [1][-]{section.13}{assumptions}{}% 15
+\BOOKMARK [1][-]{section.14}{limitations}{}% 16
+\BOOKMARK [1][-]{section.15}{biological plausibility}{}% 17
+\BOOKMARK [2][-]{subsection.15.1}{Purpose of the Study}{section.15}% 18
+\BOOKMARK [2][-]{subsection.15.2}{Relevance of the Study}{section.15}% 19
+\BOOKMARK [1][-]{section.16}{Theoretical Framework}{}% 20
+\BOOKMARK [2][-]{subsection.16.1}{Definitions}{section.16}% 21
+\BOOKMARK [2][-]{subsection.16.2}{The Need for Discernment in Cognitive Agents}{section.16}% 22
+\BOOKMARK [2][-]{subsection.16.3}{The Concept of Identity and Attribution of Cause and Effect, in relation to the self}{section.16}% 23
+\BOOKMARK [3][-]{subsubsection.16.3.1}{Karl Friston's perspective}{subsection.16.3}% 24
+\BOOKMARK [3][-]{subsubsection.16.3.2}{Michael Levin's perspective}{subsection.16.3}% 25
+\BOOKMARK [2][-]{subsection.16.4}{The Necessity of World Modeling}{section.16}% 26
+\BOOKMARK [2][-]{subsection.16.5}{Alternative Approaches to Cognition}{section.16}% 27
+\BOOKMARK [3][-]{subsubsection.16.5.1}{Enactivism}{subsection.16.5}% 28
+\BOOKMARK [3][-]{subsubsection.16.5.2}{Embodiment}{subsection.16.5}% 29
+\BOOKMARK [2][-]{subsection.16.6}{Analogy as the Core of Cognition: Douglas Hofstadter's Ideas}{section.16}% 30
+\BOOKMARK [2][-]{subsection.16.7}{Virtualism and the "Game Engine in the Head": Perspectives of Joscha Bach and Josh Tenenbaum}{section.16}% 31
+\BOOKMARK [1][-]{section.17}{The Art and Science of Model-making}{}% 32
+\BOOKMARK [2][-]{subsection.17.1}{Symbolic vs. Sub-symbolic Approaches}{section.17}% 33
+\BOOKMARK [2][-]{subsection.17.2}{Analytic vs. Geometric Solutions}{section.17}% 34
+\BOOKMARK [2][-]{subsection.17.3}{System 1 \046 2: Daniel Kahneman's theories and relation to Models}{section.17}% 35
+\BOOKMARK [2][-]{subsection.17.4}{Hemispheric Lateralization: Iain McGilchrist's Theory}{section.17}% 36
+\BOOKMARK [1][-]{section.18}{Spaces in Cognition}{}% 37
+\BOOKMARK [2][-]{subsection.18.1}{Latent Spaces}{section.18}% 38
+\BOOKMARK [2][-]{subsection.18.2}{Cognitive and Conceptual Spaces}{section.18}% 39
+\BOOKMARK [3][-]{subsubsection.18.2.1}{Peter G\344rdenfors's Perspective}{subsection.18.2}% 40
+\BOOKMARK [2][-]{subsection.18.3}{The Geometry of Cognitive Spaces}{section.18}% 41
+\BOOKMARK [3][-]{subsubsection.18.3.1}{Hyperbolic Spaces}{subsection.18.3}% 42
+\BOOKMARK [1][-]{section.19}{Computationalism and Computational Theories of the Universe}{}% 43
+\BOOKMARK [2][-]{subsection.19.1}{Computational Mind}{section.19}% 44
+\BOOKMARK [2][-]{subsection.19.2}{Theories of Stephen Wolfram and David Deutsch}{section.19}% 45
+\BOOKMARK [2][-]{subsection.19.3}{Discussion on the Nature of Reality: Continuous vs. Discrete}{section.19}% 46
+\BOOKMARK [1][-]{section.20}{The Language of Thought}{}% 47
+\BOOKMARK [2][-]{subsection.20.1}{G\366del's Incompleteness Theorem and Turing's Extensions}{section.20}% 48
+\BOOKMARK [2][-]{subsection.20.2}{Chomsky's Hierarchy}{section.20}% 49
+\BOOKMARK [2][-]{subsection.20.3}{Computational Irreducibility}{section.20}% 50
+\BOOKMARK [2][-]{subsection.20.4}{Constructivism}{section.20}% 51
+\BOOKMARK [2][-]{subsection.20.5}{Syntax vs. Semantics in Language}{section.20}% 52
+\BOOKMARK [2][-]{subsection.20.6}{Semiotics}{section.20}% 53
+\BOOKMARK [2][-]{subsection.20.7}{The Notion of a Semantic Grammar}{section.20}% 54
+\BOOKMARK [1][-]{section.21}{The Nature of Meaning}{}% 55
+\BOOKMARK [2][-]{subsection.21.1}{Meaning in the context of Modeling Approaches}{section.21}% 56
+\BOOKMARK [2][-]{subsection.21.2}{The Grounding Problem: Harnard's perspective}{section.21}% 57
+\BOOKMARK [2][-]{subsection.21.3}{Concept of Meaningfulness}{section.21}% 58
+\BOOKMARK [1][-]{section.22}{The Formation and Representation of Concepts}{}% 59
+\BOOKMARK [2][-]{subsection.22.1}{Approaches to Representation}{section.22}% 60
+\BOOKMARK [2][-]{subsection.22.2}{The Theory of Memes: Richard Dawkins's perspective}{section.22}% 61
+\BOOKMARK [2][-]{subsection.22.3}{Concepts as a Self-Organizing System}{section.22}% 62
+\BOOKMARK [2][-]{subsection.22.4}{Connection to Cellular Automata}{section.22}% 63
+\BOOKMARK [1][-]{section.23}{Representation of Concepts as Probabilistic Programs}{}% 64
+\BOOKMARK [2][-]{subsection.23.1}{Overview of Probabilistic Programs}{section.23}% 65
+\BOOKMARK [2][-]{subsection.23.2}{Role of Program Synthesis}{section.23}% 66
+\BOOKMARK [1][-]{section.24}{Conclusion}{}% 67
+\BOOKMARK [2][-]{subsection.24.1}{Summary of Findings}{section.24}% 68
+\BOOKMARK [2][-]{subsection.24.2}{Implications for the Field}{section.24}% 69
+\BOOKMARK [2][-]{subsection.24.3}{Recommendations for Future Research}{section.24}% 70
+\BOOKMARK [2][-]{subsection.24.4}{Background}{section.24}% 71
+\BOOKMARK [3][-]{subsubsection.24.4.1}{Research Question}{subsection.24.4}% 72
+\BOOKMARK [3][-]{subsubsection.24.4.2}{Motivation}{subsection.24.4}% 73
+\BOOKMARK [3][-]{subsubsection.24.4.3}{Impact and Importance}{subsection.24.4}% 74
+\BOOKMARK [3][-]{subsubsection.24.4.4}{Methods}{subsection.24.4}% 75
+\BOOKMARK [3][-]{subsubsection.24.4.5}{Design}{subsection.24.4}% 76
+\BOOKMARK [3][-]{subsubsection.24.4.6}{Analysis}{subsection.24.4}% 77
+\BOOKMARK [1][-]{section.25}{Scientific and Societal Relevance}{}% 78
+\BOOKMARK [1][-]{section.26}{Conclusion}{}% 79
+\BOOKMARK [1][-]{section.27}{Discussion}{}% 80

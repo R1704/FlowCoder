@@ -3,6 +3,7 @@ from src.sequential.deepsynth.pcfg import PCFG
 from src.sequential.deepsynth.run_experiment import *
 from src.sequential.deepsynth_gflownet.data import *
 from src.sequential.deepsynth_gflownet.state_encoder import *
+from src.sequential.deepsynth_gflownet.reward import *
 from collections import deque
 import torch
 
@@ -81,6 +82,3 @@ parent_args = state_encoder.get_parent_args(parent_rule)
 print(f'parent_args: {parent_args}')
 parents = state_encoder.get_parent_rule(parent_rule)
 print(f'parents: {parents}')
-
-ls = [[1,2,3], [12,3], [2,3,4,5 ]]
-print(len(max(ls, key=len)))
