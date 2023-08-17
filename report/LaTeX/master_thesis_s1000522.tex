@@ -1,3 +1,4 @@
+% !TeX TXS-program:bibliography = txs:///biber
 \documentclass[twocolumn]{article}
 
 \usepackage[colorlinks = true,
@@ -10,9 +11,12 @@
 \usepackage{url}
 \usepackage{color}
 \usepackage{enumitem}
+\usepackage[margin=2cm]{geometry}
+\setlength {\marginparwidth}{2cm}
 \usepackage{todonotes}
 \usepackage{float}
 \hyphenation{Media-Eval}
+\usepackage{amsmath, amssymb} % for mathy stuff
 
 % For making fixed-width aligned columns
 \usepackage{array}
@@ -76,19 +80,6 @@
             \emph{Supervision type:} & \textsc{Internal} \\
             % internal / affiliated / external
     \end{tabular}
-
-    \vspace{0.5cm}
-
-    \begin{tabular}{L{3cm}l}
-            \emph{Role:} & \textsc{Supervisor 2} \\
-            \emph{Surname:} & \textsc{} \\
-            \emph{First name:} & \textsc{} \\
-            \emph{Institute:} & \textsc{Radboud University} \\
-            \emph{E-mail address:} & \textsc{} \\
-            \emph{Supervision type:} & \textsc{Internal} \\
-            % internal / affiliated / external
-    \end{tabular}
-
 ]
 \clearpage
 
@@ -99,144 +90,97 @@
 
 \tableofcontents
 
-\section{Introduction}
 \include{chapters/introduction}
-
-\subsection{Problem Statement}
 \include{chapters/problem_statement}
+\include{chapters/gflownet}
+% \subsection{Purpose of the Study}
 
-\subsection{Purpose of the Study}
-\subsection{Relevance of the Study}
+% \subsection{Relevance of the Study}
 
-\section{Theoretical Framework}
-\subsection{Definitions}
-\begin{itemize}
-        \item What is a cognitive agent?
-        \item What is the mind?
-        \item What is the self?
-        \item What is the "I"?
-        \item What is a thought? (GFN trajectory, GPT trajectory, trajectory of some sort)
-\end{itemize}
-\subsection{The Need for Discernment in Cognitive Agents}
-The concept of discernment in cognitive agents is fundamental to understanding cognition. In essence, discernment is the ability of an agent to differentiate and distinguish between various elements within its environment. Without discernment, an agent would be unable to make sense of its world or make decisions to optimize its performance within that world. Discernment, therefore, lies at the foundation of cognition, allowing the agent to separate itself from its surroundings and engage meaningfully with the world.
-\subsection{The Concept of Identity and Attribution of Cause and Effect, in relation to the self}
-\subsubsection{Karl Friston's perspective}
-\subsubsection{Michael Levin's perspective}
-\subsection{The Necessity of World Modeling}
-\paragraph{Representationalism}
-Representationalism suggests that cognitive agents create internal representations or models of the world to understand and interact effectively with their environment. These models, while never fully capturing the complexity of the external world, provide a means for the agent to anticipate and respond to future scenarios.
-\paragraph{Contrast to Statistical Pattern Recognition}
-Unlike statistical pattern recognition, which involves extracting patterns and regularities from data without necessarily understanding the underlying structures, model-based reasoning involves creating and manipulating symbolic models of the world. The advantage of this approach is that it allows for a more comprehensive understanding of the world and more flexible and adaptive behavior.
-\subsection{Alternative Approaches to Cognition}
-\subsubsection{Enactivism}
-Enactivism posits that cognition arises from the dynamic interaction between an organism and its environment. Rather than relying on internal representations, cognition is seen as a process of embodied action, where knowledge is gained through physical interaction with the world.
-\subsubsection{Embodiment}
-The theory of embodiment emphasizes the role of the body in shaping the mind. According to this view, many features of cognition are shaped by aspects of the body beyond the brain, including sensory and motor systems. This perspective encourages a holistic view of cognition, bridging the mind-body divide.
-\subsection{Analogy as the Core of Cognition: Douglas Hofstadter's Ideas}
-\subsection{Virtualism and the "Game Engine in the Head": Perspectives of Joscha Bach and Josh Tenenbaum}
 
-\section{The Art and Science of Model-making}
-\subsection{Symbolic vs. Sub-symbolic Approaches}
-\subsection{Analytic vs. Geometric Solutions}
-\subsection{System 1 \& 2: Daniel Kahneman's theories and relation to Models}
-\subsection{Hemispheric Lateralization: Iain McGilchrist's Theory}
+% \section{Theoretical Framework}
+% \section{Model-making}
+% \subsection{Symbolic vs. Sub-symbolic Approaches}
+% \subsection{Analytic vs. Geometric Solutions}
+% \subsection{System 1 \& 2: Daniel Kahneman's theories and relation to Models}
+% \subsection{Hemispheric Lateralization: Iain McGilchrist's Theory}
 
-\section{Spaces in Cognition}
-\subsection{Latent Spaces}
-\subsection{Cognitive and Conceptual Spaces}
-\subsubsection{Peter Gärdenfors's Perspective}
-\subsection{The Geometry of Cognitive Spaces}
-\subsubsection{Hyperbolic Spaces}
+% \section{Spaces in Cognition}
+% \subsection{Latent Spaces}
+% \subsection{Cognitive and Conceptual Spaces}
+% \subsubsection{Peter Gärdenfors's Perspective}
+% \subsection{The Geometry of Cognitive Spaces}
+% \subsubsection{Hyperbolic Spaces}
 
-\section{Computationalism and Computational Theories of the Universe}
-\subsection{Computational Mind}
-\subsection{Theories of Stephen Wolfram and David Deutsch}
-\subsection{Discussion on the Nature of Reality: Continuous vs. Discrete}
+% \section{Computationalism and Computational Theories of the Universe}
+% \subsection{Computational Mind}
+% \subsection{Theories of Stephen Wolfram and David Deutsch}
+% \subsection{Discussion on the Nature of Reality: Continuous vs. Discrete}
 
-\section{The Language of Thought}
-\subsection{Gödel's Incompleteness Theorem and Turing's Extensions}
-\subsection{Chomsky's Hierarchy}
-\subsection{Computational Irreducibility}
-\subsection{Constructivism}
-\subsection{Syntax vs. Semantics in Language}
-\subsection{Semiotics}
-\subsection{The Notion of a Semantic Grammar}
+% \section{The Language of Thought}
+% \subsection{Gödel's Incompleteness Theorem and Turing's Extensions}
+% \subsection{Chomsky's Hierarchy}
+% \subsection{Computational Irreducibility}
+% \subsection{Constructivism}
+% \subsection{Syntax vs. Semantics in Language}
+% \subsection{Semiotics}
+% \subsection{The Notion of a Semantic Grammar}
 
-\section{The Nature of Meaning}
-\subsection{Meaning in the context of Modeling Approaches}
-\subsection{The Grounding Problem: Harnard's perspective}
-\subsection{Concept of Meaningfulness}
+% \section{The Nature of Meaning}
+% \subsection{Meaning in the context of Modeling Approaches}
+% \subsection{The Grounding Problem: Harnard's perspective}
+% \subsection{Concept of Meaningfulness}
 
-\section{The Formation and Representation of Concepts}
-\subsection{Approaches to Representation}
-\subsection{The Theory of Memes: Richard Dawkins's perspective}
-\subsection{Concepts as a Self-Organizing System}
-\subsection{Connection to Cellular Automata}
+% \section{The Formation and Representation of Concepts}
+% \subsection{Approaches to Representation}
+% \subsection{The Theory of Memes: Richard Dawkins's perspective}
+% \subsection{Concepts as a Self-Organizing System}
+% \subsection{Connection to Cellular Automata}
 
-\section{Representation of Concepts as Probabilistic Programs}
-\subsection{Overview of Probabilistic Programs}
-\subsection{Role of Program Synthesis}
+% \section{Representation of Concepts as Probabilistic Programs}
+% \subsection{Overview of Probabilistic Programs}
+% \subsection{Role of Program Synthesis}
 
-\section{Conclusion}
-\subsection{Summary of Findings}
-\subsection{Implications for the Field}
-\subsection{Recommendations for Future Research}
+% \section{Conclusion}
+% \subsection{Summary of Findings}
+% \subsection{Implications for the Field}
+% \subsection{Recommendations for Future Research}
 
 
 
 
-\include{chapters/introduction.tex}
+% \include{chapters/introduction.tex}
 
 
 
-Current AI is focused on deep learning.
-difference in approaches:
-- statistical pattern recognition
-- models of the world
 
-- we need very little data, 
-- solve et coagula, we have concepts which we can use to dream, imagine, etc. 
+% \subsubsection{Research Question}
 
-- who am i? 
-
-
-\subsection{Background}\label{sec:background}
-- Problem statement
-- program synthesis, previously \dots
-- DreamCoder, DeepCoder, DeepSynth, etc. 
-CFG, PCFG, etc. 
-
-- They are predicting weights for a PCFG.
+% \subsubsection{Motivation}
+% - Modeling human thought
+% \begin{description}
+%         \item[Test]
+% \end{description}
+% - problem statement 
 
 
+% \subsubsection{Impact and Importance}
+% - Understanding/ modeling cognition. 
+% - Better AI models, OOD generalization, reasoning, ...
 
-\subsubsection{Research Question}
+% \subsubsection{Methods}
+% - GFlowNet: definition, flow matching constraint, 
 
-\subsubsection{Motivation}
-- Modeling human thought
-\begin{description}
-        \item[Test]
-\end{description}
-- problem statement 
+% \subsubsection{Design}
 
-
-\subsubsection{Impact and Importance}
-- Understanding/ modeling cognition. 
-- Better AI models, OOD generalization, reasoning, ...
-
-\subsubsection{Methods}
-- GFlowNet: definition, flow matching constraint, 
-
-\subsubsection{Design}
-
-\subsubsection{Analysis}
+% \subsubsection{Analysis}
 
 
-\section{Scientific and Societal Relevance}
+% \section{Scientific and Societal Relevance}
 
-\section{Conclusion}
+% \section{Conclusion}
 
-\section{Discussion}
+% \section{Discussion}
 
 \appendix
 
