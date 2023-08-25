@@ -1,5 +1,5 @@
 import src.sequential.deepsynth.dsl as dsl
-from src.sequential.deepsynth.DSL.list import *
+
 from src.sequential.deepsynth.Predictions.dataset_sampler import Dataset
 from src.sequential.deepsynth.type_system import *
 
@@ -17,9 +17,15 @@ class Data:
     nb_arguments_max: int
     lexicon: list
     size_max: int
+    deepcoder_dsl: bool
 
     def __post_init__(self):
-        self.dsl = dsl.DSL(semantics, primitive_types)
+        if self.deepcoder_dsl:
+            from src.sequential.deepsynth.DSL.deepcoder import semantics, primitive_types, no_repetitions
+        else:
+            no_repetitions = None
+            from src.sequential.deepsynth.DSL.list import semantics, primitive_types
+        self.dsl = dsl.DSL(semantics, primitive_types, no_repetitions if no_repetitions else None)
         self.type_request = Arrow(List(INT), List(INT))
         self.create_cfg()
         self.create_dataset_and_generator()

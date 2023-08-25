@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from src.sequential.deepsynth.program import Function
 
 class IOEncoder(nn.Module):
     """

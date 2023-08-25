@@ -27,13 +27,14 @@ class GFlowNet(nn.Module):
         # MLPs for logits and logZ
         self.forward_logits = GFlowNet_Forward(d_model, len(state_encoder.rules))
 
-        self.logZ = self.forward_logits.logZ
+        # self.logZ = self.forward_logits.logZ
+        self.logZ = GFlowNet_Z(d_model)  # LogZ measures the partition function
 
     def forward(self, state, io):
 
-
         # TODO: The IO stays the same for the whole duration of the trajectory.
         #  We mustn't recompute it every time
+
         # Process IO
         io = self.io_encoder(io)
         io = self.positional_encoding(io)
@@ -70,15 +71,13 @@ class GFlowNet_Forward(nn.Module):
                     nn.Linear(input_dim, output_dim)
                 )
 
-        self.logZ = GFlowNet_LogZ(input_dim)
-
     def forward(self, x):
         return self.forward_logits(x)
 
 
-class GFlowNet_LogZ(nn.Module):
+class GFlowNet_Z(nn.Module):
     def __init__(self, d_model):
-        super(GFlowNet_LogZ, self).__init__()
+        super(GFlowNet_Z, self).__init__()
         self.logZ = nn.Sequential(
             nn.LayerNorm(d_model),
             nn.Linear(d_model, d_model),

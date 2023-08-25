@@ -101,4 +101,26 @@ Emmanuel Bengio, Moksh Jain, Maksym Korablyov, Doina Precup, and Yoshua Bengio.
 \newblock In {\em Advances in {Neural} {Information} {Processing} {Systems}},
   volume~34, pages 27381--27394. Curran Associates, Inc., 2021.
 
+\bibitem{goyal_inductive_2022}
+Anirudh Goyal and Yoshua Bengio.
+\newblock Inductive biases for deep learning of higher-level cognition.
+\newblock {\em Proceedings of the Royal Society A: Mathematical, Physical and
+  Engineering Sciences}, 478(2266):20210068, October 2022.
+\newblock Publisher: Royal Society.
+
+\bibitem{yoshuabengioScalingService}
+Yoshua Bengio.
+\newblock {Scaling in the service of reasoning \& model-based ML}.
+\newblock
+  \url{https://yoshuabengio.org/2023/03/21/scaling-in-the-service-of-reasoning-model-based-ml/},
+  2022.
+\newblock Accessed 21-08-2023.
+
+\bibitem{fijalkow_scaling_2021}
+Nathanaël Fijalkow, Guillaume Lagarde, Théo Matricon, Kevin Ellis, Pierre
+  Ohlmann, and Akarsh Potta.
+\newblock Scaling {Neural} {Program} {Synthesis} with {Distribution}-based
+  {Search}, October 2021.
+\newblock arXiv:2110.12485 [cs].
+
 \end{thebibliography}

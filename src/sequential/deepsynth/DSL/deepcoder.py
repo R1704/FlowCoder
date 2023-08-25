@@ -19,7 +19,7 @@ def scanl(op):
 			y = [l[0]]
 			for x in l[1:]:
 				last = y[-1]
-				y.append(op(last, x)) 
+				y.append(op(last, x))
 		return y
 	return aux
 

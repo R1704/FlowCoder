@@ -22,23 +22,26 @@ save_checkpoint = False
 train = True
 inference = False
 
+lexicon_range = 30
+
 data = Data(
      device=device,
      dataset_size=1_000_000,
      nb_examples_max=2,
-     max_program_depth=2,
+     max_program_depth=3,
      # max_program_depth=4,
      nb_arguments_max=3,
-     # lexicon=[0, 1], # [x for x in range(-2, 2)], #[x for x in range(-30, 30)],
-     lexicon=[x for x in range(-30, 30)],
+     lexicon=[x for x in range(-lexicon_range, lexicon_range)], #[0, 1], #[x for x in range(-30, 30)],
+     # lexicon=[x for x in range(-30, 30)],
      # size_max=3,
      size_max=10,
+     deepcoder_dsl=False  # use the deepcoder dsl if true and otherwise the list dsl
      )
 
 io_encoder = IOEncoder(
     n_examples_max=data.nb_examples_max,
     size_max=data.size_max,
-    lexicon=data.lexicon,
+    lexicon=[x for x in range(-lexicon_range*10, lexicon_range*10)],
     d_model=512,  # TODO: try different dimensions
     device=device
     )
@@ -76,12 +79,14 @@ reward = Reward(
 
 if train:
     training = Training(
-        batch_size=32,
+        batch_size=8,
         learning_rate_trn=1e-4, #1e-3,
         learning_rate_gfn=1e-4,
         e_steps=10,
-        m_step_threshold=10,
+        m_step_threshold_init=150,
         m_steps=10,
+        replay_prob=0.3,
+        fantasy_prob=0.3,
         model_path=model_path,
         data=data,
         model=model,

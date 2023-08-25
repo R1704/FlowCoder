@@ -24,82 +24,82 @@ and we are building a world model which can be thought of as probabilistic progr
 
 \subsection{Program Synthesis}
 
-Probabilistic programs, in essence, represent a form of causal reasoning. By representing beliefs as probability distributions and reasoning patterns as programmatic structures, they offer a nuanced way of modeling complex real-world systems. Given the inherently uncertain nature of our environment and the myriad possible interpretations of sensory data, a probabilistic approach is naturally aligned with the cognitive demands of building accurate and adaptable world models.
+% Probabilistic programs, in essence, represent a form of causal reasoning. By representing beliefs as probability distributions and reasoning patterns as programmatic structures, they offer a nuanced way of modeling complex real-world systems. Given the inherently uncertain nature of our environment and the myriad possible interpretations of sensory data, a probabilistic approach is naturally aligned with the cognitive demands of building accurate and adaptable world models.
 
-Program synthesis refers to the automatic generation of programs from a higher-level specification. In the context of cognition, it implies a process where an agent generates a novel programmatic structure to represent or reason about its environment. Understanding this synthesis process becomes crucial for several reasons:
+% Program synthesis refers to the automatic generation of programs from a higher-level specification. In the context of cognition, it implies a process where an agent generates a novel programmatic structure to represent or reason about its environment. Understanding this synthesis process becomes crucial for several reasons:
 
-Generativity and Flexibility: Human cognition is not merely reactive. It proactively creates, hypothesizes, and experiments. By studying how programs are synthesized, we might glean insights into the generative aspects of thought.
+% Generativity and Flexibility: Human cognition is not merely reactive. It proactively creates, hypothesizes, and experiments. By studying how programs are synthesized, we might glean insights into the generative aspects of thought.
 
-Abstraction: At the heart of program synthesis is the ability to abstract away from particulars and generate general rules or patterns. This mirrors cognitive abilities like generalization and analogy-making.
+% Abstraction: At the heart of program synthesis is the ability to abstract away from particulars and generate general rules or patterns. This mirrors cognitive abilities like generalization and analogy-making.
 
-Efficiency: Just as efficient algorithms are prized in computing, efficient cognitive strategies are essential for survival. Program synthesis might hold the key to understanding how humans prune vast possibility spaces to arrive at functional solutions quickly.
+% Efficiency: Just as efficient algorithms are prized in computing, efficient cognitive strategies are essential for survival. Program synthesis might hold the key to understanding how humans prune vast possibility spaces to arrive at functional solutions quickly.
 
-Moreover, the impressive capabilities of large language models (LLMs) is undeniable, yet they fail at various "simple" tasks, where approaches of formal languages shine. 
-
-
-
-
-Problem Statement: Navigating the Vast Program Search Space Within Context-Free Grammars
-
-1. Background and Introduction
-
-The field of programming has always been underpinned by the intricacies of formal grammars. Context-Free Grammars (CFGs), a subset of formal grammar, are essential in defining the syntactical structures of many programming languages. However, given the generative nature of CFGs, the potential program space defined by even a modestly complex grammar can be immensely vast. Searching for a specific program within this space, or ensuring that a particular space is sufficiently explored, poses significant computational challenges.
-
-2. Problem Definition
-
-2.1 CFG and Program Space
-
-Let \( G = (N, \Sigma, P, S) \) be a Context-Free Grammar, where:
-\begin{itemize}
-    \item \( N \) is a finite set of non-terminal symbols.
-    \item \( \Sigma \) is a finite set of terminal symbols with \newline \( N \cap \Sigma = \emptyset \)
-    \item \( P \) is a finite set of production rules, where each rule is of the form \( N \rightarrow (N \cup \Sigma)^* \)
-    \item \( S \) is the start symbol, with \( S \in N \)
-\end{itemize}
-
-Given such a CFG, the derived program space \( \Pi(G) \) is the set of all possible strings (or sequences of symbols) derivable from \( S \).
-
-2.2 Problem Statement
-
-Given a Context-Free Grammar \( G \) and a defined objective function \( f \) that maps any program \( p \in \Pi(G) \) to a real value representing its desirability or fitness:
-
-Find \( p^* \) such that:
-\[ p^* = \arg\max_{p \in \Pi(G)} f(p) \]
-
-In other words, the problem is to locate a program \( p^* \) within the vast program space \( \Pi(G) \) defined by \( G \) that maximizes (or, alternatively, minimizes) the objective function \( f \).
-
-3. Challenges and Complications
-
-3.1 Size of the Search Space
-
-The generative capacity of CFGs means that even grammars of moderate complexity can define immensely vast program spaces. The sheer size of these spaces poses computational and search challenges.
-
-3.2 Non-Linearity and Discontinuities
-
-The mapping between programs and their fitness as defined by \( f \) might be non-linear with multiple local maxima, making search strategies based on gradient ascent or other linear heuristics suboptimal.
-
-3.3 Generalization vs Specialization
-
-While CFGs provide a generalized representation of possible programs, the objective function might lead to highly specialized solutions. Balancing between the two is non-trivial.
-
-3.4 Syntactic vs Semantic Validity
-
-A CFG ensures syntactic validity but does not guarantee semantic correctness. Ensuring that a program derived from a CFG is semantically meaningful or error-free in a given context is an additional layer of complexity.
+% Moreover, the impressive capabilities of large language models (LLMs) is undeniable, yet they fail at various "simple" tasks, where approaches of formal languages shine. 
 
 
 
 
-4. Techniques in Program Synthesis
+% Problem Statement: Navigating the Vast Program Search Space Within Context-Free Grammars
 
-Several techniques have emerged as pivotal in the domain of program synthesis:
+% 1. Background and Introduction
 
-Deductive Synthesis: Rooted in formal logic, this method transforms specifications into programs. The use of logic mirrors certain cognitive tasks, especially those demanding strict reasoning.
+% The field of programming has always been underpinned by the intricacies of formal grammars. Context-Free Grammars (CFGs), a subset of formal grammar, are essential in defining the syntactical structures of many programming languages. However, given the generative nature of CFGs, the potential program space defined by even a modestly complex grammar can be immensely vast. Searching for a specific program within this space, or ensuring that a particular space is sufficiently explored, poses significant computational challenges.
 
-Stochastic Search: By randomly exploring the space of possible programs, these methods mirror heuristic-based cognitive processes. Genetic algorithms, for instance, mimic evolutionary processes to evolve optimal or near-optimal solutions.
+% 2. Problem Definition
 
-Neural Program Synthesis: Neural networks, especially recurrent ones, have shown promise in generating programmatic structures. The parallels between neural networks and neural structures in the brain offer tantalizing possibilities for cognitive science.
+% 2.1 CFG and Program Space
 
-Example-Based Synthesis: Drawing inspiration from how humans often learn—from examples—these methods generate programs by generalizing from provided instances. This mirrors pedagogical processes and experiential learning.
+% Let \( G = (N, \Sigma, P, S) \) be a Context-Free Grammar, where:
+% \begin{itemize}
+%     \item \( N \) is a finite set of non-terminal symbols.
+%     \item \( \Sigma \) is a finite set of terminal symbols with \newline \( N \cap \Sigma = \emptyset \)
+%     \item \( P \) is a finite set of production rules, where each rule is of the form \( N \rightarrow (N \cup \Sigma)^* \)
+%     \item \( S \) is the start symbol, with \( S \in N \)
+% \end{itemize}
+
+% Given such a CFG, the derived program space \( \Pi(G) \) is the set of all possible strings (or sequences of symbols) derivable from \( S \).
+
+% 2.2 Problem Statement
+
+% Given a Context-Free Grammar \( G \) and a defined objective function \( f \) that maps any program \( p \in \Pi(G) \) to a real value representing its desirability or fitness:
+
+% Find \( p^* \) such that:
+% \[ p^* = \arg\max_{p \in \Pi(G)} f(p) \]
+
+% In other words, the problem is to locate a program \( p^* \) within the vast program space \( \Pi(G) \) defined by \( G \) that maximizes (or, alternatively, minimizes) the objective function \( f \).
+
+% 3. Challenges and Complications
+
+% 3.1 Size of the Search Space
+
+% The generative capacity of CFGs means that even grammars of moderate complexity can define immensely vast program spaces. The sheer size of these spaces poses computational and search challenges.
+
+% 3.2 Non-Linearity and Discontinuities
+
+% The mapping between programs and their fitness as defined by \( f \) might be non-linear with multiple local maxima, making search strategies based on gradient ascent or other linear heuristics suboptimal.
+
+% 3.3 Generalization vs Specialization
+
+% While CFGs provide a generalized representation of possible programs, the objective function might lead to highly specialized solutions. Balancing between the two is non-trivial.
+
+% 3.4 Syntactic vs Semantic Validity
+
+% A CFG ensures syntactic validity but does not guarantee semantic correctness. Ensuring that a program derived from a CFG is semantically meaningful or error-free in a given context is an additional layer of complexity.
+
+
+
+
+% 4. Techniques in Program Synthesis
+
+% Several techniques have emerged as pivotal in the domain of program synthesis:
+
+% Deductive Synthesis: Rooted in formal logic, this method transforms specifications into programs. The use of logic mirrors certain cognitive tasks, especially those demanding strict reasoning.
+
+% Stochastic Search: By randomly exploring the space of possible programs, these methods mirror heuristic-based cognitive processes. Genetic algorithms, for instance, mimic evolutionary processes to evolve optimal or near-optimal solutions.
+
+% Neural Program Synthesis: Neural networks, especially recurrent ones, have shown promise in generating programmatic structures. The parallels between neural networks and neural structures in the brain offer tantalizing possibilities for cognitive science.
+
+% Example-Based Synthesis: Drawing inspiration from how humans often learn—from examples—these methods generate programs by generalizing from provided instances. This mirrors pedagogical processes and experiential learning.
 
 
 
@@ -110,7 +110,8 @@ The idea that the thoughts are constructed by some kind of Language of Thought (
 Gottfried Leibniz imagined a \textit{Characteristica Universalis}, a formal language capable of expressing metaphysical concepts \cite{sep-leibniz-logic-influence}.
 Jerry Fodor, among many other scholars, developed this hypothesis, and proposed that thoughts are composed according to some form of internal grammar \cite{sep-language-thought}.
 If our thoughts are indeed composed by some language, we can let our intuitions about its structure and limitations be guided by the advances made in the past century in regards to formal languages and computationalism.
-Gödel showed that any formal system strong enough to express Peano Arithmetic is incomplete \cite{sep-goedel-incompleteness}. Turing showed that any possible computation can be done by a Turing machine and concluded that the human mind must be computational \cite{JCopeland2004-JCOTET}. Chomsky's Hierarchy classifies formal languages of different strengths and the automata that recognize them \cite{chomsky1959certain}.
+Gödel showed that any formal system strong enough to express Peano Arithmetic is incomplete \cite{sep-goedel-incompleteness}. Turing showed that any possible computation can be done by a Turing machine and concluded that the human mind must be computational \cite{JCopeland2004-JCOTET}. [Piantadosi disagrees] 
+Chomsky's Hierarchy classifies formal languages of different strengths and the automata that recognize them \cite{chomsky1959certain}.
 These results and many more are consequential when thinking about a language of thought.
 Many important questions about concepts are still left unanswered, e.g. regarding their formation, the structure of the framework they reside in, their representation, how they connect to other concepts and so on. 
 Many contemporary versions of the LOT hypothesis (LOTH) argue that our conceptual framework is constructed bottom-up using some initial primitives. More so, the language we construct concepts in is executable, akin to a programming language \cite{dehaene_symbols_2022}. The idea is that we model the world by creating programs that generate our observations \cite{rule_child_2020}. 
@@ -128,13 +129,13 @@ I (and many others) suspect that semantics are not just an emergent phenomenon b
 Moreover, purely symbolic attempts, albeit being the original approach of artificial intelligence, have proven to be insufficient \cite{garcez2020neurosymbolic}. Instead, the successes of modern AI are owed to the advances of connectionist models. These however, have their own deficits, namely, being incredibly data-hungry, lacking causality, and lacking out-of-distribution generalization, to name a few. Therefore, new approaches try to combine these two AI strands into what is known as \emph{neurosymbolic AI} \cite{garcez2020neurosymbolic}.
 
 
-\subsubsection{DreamCoder}
+\subsection{DreamCoder}
 DreamCoder (DC) is a model that synthesises programs from initial primitives in a domain specific language (DSL) and a set of tasks \cite{ellis_dreamcoder_2021}. The model utilises a modified version of a wake-sleep algorithm \cite{hinton1995wake} to learn a generative model and a recognition network in tandem. The generative model learns a probability distribution over programs while the recognition network learns to map from tasks to programs and serves as neurally guided search over the program space.
 DreamCoder builds its library of programs from primitives in its DSL, and creates higher-order functions.
 Sub-routines that are commonly used, are chunked and abstracted into concepts which become more accessible. This narrows the search tree immensely and enables scalability.
 Tasks can be generative (e.g. creating an image) or conditional, (input-output relation, e.g. sorting a list).
-Figure \ref{fig:conc_library}(A) shows examples of tasks across different domains. 
-Figure \ref{fig:conc_library}(B) shows an example, in which the task to learn is to sort a list. On the left we see the initial primitives. The shaded region shows the learned library of concepts. On the right we see the final solution, which uses \texttt{concept15} , which itself uses previously abstracted concepts. Note the difference in the length of the program using abstracted concepts vs. only initial primitives, shown beneath.
+% Figure \ref{LaTeX/img/conc_library.png}(A) shows examples of tasks across different domains. 
+% Figure \ref{fig:../img/conc_library}(B) shows an example, in which the task to learn is to sort a list. On the left we see the initial primitives. The shaded region shows the learned library of concepts. On the right we see the final solution, which uses \texttt{concept15} , which itself uses previously abstracted concepts. Note the difference in the length of the program using abstracted concepts vs. only initial primitives, shown beneath.
 
 \begin{figure*}
 \includegraphics[width=\textwidth]{img/conc_library.png}
@@ -157,7 +158,7 @@ A Bayesian View
 
 \section{DeepSynth}
 - Introducing different search strategies.
-The two main approaches are enumerative search and sampling.
+The two main approaches are enumerative search and sampling. (also show entropy sampling (kilcher's explanation))
 However, either way, they are first predicting weights for the PCFG and then searching or sampling from the PCFG. 
 \section{Search space}
 \section{Program space}
@@ -254,7 +255,7 @@ Since its original publication many extended and modified variants have been pub
 
 \begin{enumerate}
     \item \textbf{TB Objective}: Trajectory Balance (TB) approach, as elaborated by Malkin et al. (2022), necessitates simultaneous learning of a forward policy, a backward policy $P_B(s|s'; \theta)$, and a scalar $Z_\theta$. The TB objective is:
-    \[ L_{TB}(\tau;\theta) = \frac{Z_\theta \prod_{i=1}^{n} P_F(s_i|s_{i-1};\theta)}{\log R(z) \prod_{i=1}^{n} P_B(s_{i-1}|s_i;\theta)} \]
+    \[ L_{TB}(\tau;\theta) = \left[\log\frac{Z_\theta \prod_{i=1}^{n} P_F(s_i|s_{i-1};\theta)}{R(z) \prod_{i=1}^{n} P_B(s_{i-1}|s_i;\theta)}\right]^2 \] However, since I am essentially predicting a linearized tree, each node can only have one parent. Therefore, $P_B$ will always be $1$ and can be disregarded from the equation. We can then simplify the TB Objective, making use of log rules, to \[ L_{TB}(\tau;\theta) = \left(\log Z_\theta + \sum_{i=1}^{n} \log P_F(s_i|s_{i-1};\theta) - \log R(z)\right)^2 \]
     
     \item \textbf{Training Dynamics}: Nullifying $L_{TB}$ ensures proportional sampling to object reward. The loss can be minimized using gradient descent with on-policy and off-policy strategies, reminiscent of reinforcement learning techniques.
     
@@ -284,13 +285,64 @@ Since its original publication many extended and modified variants have been pub
 In a probabilistic programming representation of world models and thoughts, as a type of Language of Thought, which aligns with constructivism we can conceive of the problem statement as 
 
 
-In a language of thought, regardless of most details, we tend to think in a paradigm in which thoughts are compositional. In one way or another, thoughts are hierarchical.
+In a language of thought, regardless of most details, we tend to think in a paradigm in which thoughts are compositional. In one way or another, thoughts are hierarchical (?).
 Both in ontologies, i.e. the way concepts are structured, (animal - bird - fink) but also in the sequential nature of thought construction (as in natural language, reasoning tasks, etc.). We are creating parse trees, or abstract syntax trees. 
+
+The renowned professor Yoshua Bengio explains that thoughts are composed of multiple intermediate steps and explains that reasoning, or thinking, is the combination of knowledge and inference. 
+He theorises that we we construct a world model which may take the form of an energy based model.
+It is interesting to think about whether this world model is explicit or implicit. In DreamCoder and other SOTA methods in program synthesis the world model is essentially an explicit PCFG from which one samples programs. In neural program synthesis, the new approach of neurosymbolic programming, the role of the neural network is to act as a recognition model, helping to search programs from this PCFG.
+I imagine it a little different, and see the thought construction process more like an agent, following a policy.
+
+On one side, in alignment with Occam's razor, our world model aims to identify the essential knowledge fragments required to interpret observed data. This model should be concise, optimizing the encoding bits and enhancing the reutilization of knowledge segments, thereby enhancing its generalization capability to unfamiliar scenarios. This aligns with the principle of parsimoniousness or, as Dehaene describes as finding programs of minimum description length.
+
+A trained inference machine amortizes the cost of searching through a vast solution space which resource-intensive search methods like MCMC, traditional AI techniques, or optimization algorithms cannot handle.
+In conclusion, approximate inference could be the solution here, since a larger model doesn't lead to overfitting but better approximations, while not being dependent on lots of data.
+
+Yoshua warns that a notable vulnerability of current large language models is the conflation of the world model with the inference mechanism. Although LLMs may construct an implicit world model, the distinction between world model and inference may be the underlying cause of their difficulty for out-of-distribution prediction \cite{goyal_inductive_2022, yoshuabengioScalingService}.
+
+In his book, Thinking Fast and Slow, Nobel-prize leaurate Daniel Kahneman popularized the notion of two systems being the core mechanisms of human cognition [SOURCE]. 
+- explain system 1 and two 
+- explain hemispheric lateralization, mcgilchrist, etc.
+- notion that if we don't have a concept for it, it does not exist for us. I.e. even if our sensory equipment can in principle take it in, and does take it in, it is not there for us. It seems we are unable to attend to it. Perhaps attribute meaning to it and therefore it doesn't enter our conscious awareness.
+- I think meaning is the integrated framework of relationships between concepts. This is the field we observe the world through. 
+- Concepts in culture and society, i.e. over different levels in a hierarchy. (Memes)
+- Computational boundary of the self. How do multicellular agents, or multiple agents compute information together? There must be a common language, that is approximately the same.
+- Allostasis \& Homeostasis (of concepts/ memes)
+- Imaginaria, where do unicorns exist, etc. What is a table
+- Can any concept be definitively defined as a particular concept (either symbolic or symbolic vector e.g. SPA, hyperdimensional vectors) or are all concepts approximations?
+- Introduce different frameworks and architectures (Kissner, Jepa, Concepts (energy based model from i think deepmind), GLOM, SPA, DreamCoder)
+- Introduce GFlowNets as a way to create thought trajectories
+- Explain that GFlowNets could be used over multiple of these ideas and frameworks (discrete, continuous, etc. ) it is a general framework.
+- Here I'm going to attempt to use it for probabilistic program synthesis.
+
+
+
+Humans naturally exhibit the aptitude to innately evaluate the reliability of our knowledge. Understanding the limits of one's knowledge directs the acquisition of new information, thus optimizing the learning process.
+
+Moreover, human cognition is characterized by modularity and reusability. Our mental architectures are adept at disentangling knowledge into modular components, which can be recalled, combined, and repurposed to address novel challenges.
+By continuously crafting and refining abstract concepts, humans can process, assimilate, and communicate multifaceted knowledge structures with remarkable efficiency.
+
+Further, we intuitively discern causal relationships, allowing for predictive and counterfactual reasoning.
+Causal models, seen as extensive distribution families influenced by interventions, provide the scaffolding for this intuitive understanding. As highlighted by Kemp et al. (2015), these models enable humans to extrapolate beyond observed data, envisage hypothetical scenarios, and navigate the world with a goal-oriented mindset. In computational terms, integrating causality can tremendously amplify the generalization capabilities of algorithms, allowing them to predict outcomes under novel interventions and facilitating deeper understanding of intricate systems.
+
+Often there are multiple solutions to a query, which is why the inference network should model a multimodal distribution rather than a point estimate. Difference between MAP and MLE. 
+
+
+
+
+Stephen Wolfram explains in his book about ChatGPT and the accompanying blog article how a thought can be seen as a trajectory through semantic space. 
+- introduce transformers, how they work and especially the attention mechanism.
+- introduce the notion of spaces
+
+This also relates to causality.
 
 In a probabilistic programming paradigm, we view this as compositional functions, with the many properties of functional programming analogous to currying, etc. 
 
 What is a thought?
 [Thoughts as trajectories]
+Perhaps we can think of understanding, as integrating information into a meaningful whole that is largely consistent.
+
+
 
 We can formalise this as a hierarchical latent structure Z.
 
@@ -315,5 +367,29 @@ Other ideas: wave function collapse
 
 
 - Reasons for using a GFlowNet
+
 - Transformer allows for semantic relationships (although we still don't use control or data flow, but we could in principle)
+
 - We want to approximate a multimodal distribution, unlike DreamCoder in which the MAP estimate refrains from finding semantically equal but syntactically different solutions. 
+
+
+
+
+
+
+In 2021, Fijalkow et al. introduced DeepSynth \footnote{\url{https://github.com/nathanael-fijalkow/DeepSynth}}, a general-purpose program synthesizer which constructs programs from input output examples \cite{fijalkow_scaling_2021}. They make use of a 2-step pipeline in which a neural network learns to predict weights for a context free grammar (CFG) and then a search algorithm seeks programs matching the query. 
+Two main strategies are introduced: enumerative search and sampling.
+
+There is a trade-off between finding many programs rapidly, or fewer programs that are more likely to solve the problem.
+
+
+In their framework, we are given a list of primitives, the initial DSL, with a number of syntactic constraints which compile into a context free grammar. they then train a prediction model to predict the weights of the cfg making it a pcfg. lastly they search through the pcfg to find programs meeting the given specification. 
+
+In this work, I am implementing a novel program synthesizer, which integrates with the DeepSynth framework. 
+
+I am separating the generative model (world model) from the inference machine. And am using a full transformer.
+Tasks are encoded using the transformer encoder. [explain in detail], which states are encoded using the decoder. A state is represented as a rule of the cfg.
+at each step of the trajectory, the combined inputs are used for the forward logit network to predict logits over possible actions which are then added to the state.
+
+
+\subsection{Complexity analysis}

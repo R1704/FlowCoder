@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-
 from torch.nn.utils.rnn import pad_sequence
 
 
@@ -11,16 +10,13 @@ class RuleEncoder(nn.Module):
         self.cfg = cfg
 
         # Collecting rules (non-terminal to program pairs) from the CFG
-        # TODO: Do I also need a STOP token,
-        #  so the transformer learns what a finished program looks like?
-        self.rules = ['PAD', 'START']
+        self.rules = ['PAD', 'START', 'STOP']
         self.terminal_rules = []
         for non_terminal, programs in cfg.rules.items():
             for program, args in programs.items():
                 self.rules.append((non_terminal, program))
-                if args == []:
+                if not args:
                     self.terminal_rules.append((non_terminal, program))
-
 
         # Creating dictionaries for indexing
         self.rule2idx = {rule: i for i, rule in enumerate(self.rules)}
@@ -36,7 +32,6 @@ class RuleEncoder(nn.Module):
 
         # Encode the state sequences into embeddings
         states_encoded = [self.rule_embedding(state) for state in states_batch]
-
         # Padding
         states_encoded = pad_sequence(states_encoded, batch_first=True, padding_value=self.rule2idx['PAD'])
         states_encoded = states_encoded.transpose(0, 1)

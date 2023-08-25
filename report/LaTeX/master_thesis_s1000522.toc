@@ -1,15 +1,16 @@
 \contentsline {section}{\numberline {1}Problem Statement}{3}{section.1}%
 \contentsline {section}{\numberline {2}Background}{3}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Program Synthesis}{3}{subsection.2.1}%
-\contentsline {section}{\numberline {3}DreamCoder}{4}{section.3}%
-\contentsline {subsubsection}{\numberline {3.0.1}DreamCoder}{5}{subsubsection.3.0.1}%
-\contentsline {paragraph}{Wake}{5}{section*.3}%
-\contentsline {paragraph}{Sleep: Abstraction}{5}{section*.4}%
-\contentsline {paragraph}{Sleep: Dreaming}{5}{section*.5}%
-\contentsline {section}{\numberline {4}DeepSynth}{5}{section.4}%
-\contentsline {section}{\numberline {5}Search space}{5}{section.5}%
-\contentsline {section}{\numberline {6}Program space}{5}{section.6}%
-\contentsline {section}{\numberline {7}GFlowNet}{7}{section.7}%
-\contentsline {section}{\numberline {8}Theory}{7}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Introduction}{7}{subsection.8.1}%
-\contentsline {section}{\numberline {9}Methods}{8}{section.9}%
+\contentsline {section}{\numberline {3}DreamCoder}{3}{section.3}%
+\contentsline {subsection}{\numberline {3.1}DreamCoder}{3}{subsection.3.1}%
+\contentsline {paragraph}{Wake}{4}{section*.3}%
+\contentsline {paragraph}{Sleep: Abstraction}{4}{section*.4}%
+\contentsline {paragraph}{Sleep: Dreaming}{4}{section*.5}%
+\contentsline {section}{\numberline {4}DeepSynth}{4}{section.4}%
+\contentsline {section}{\numberline {5}Search space}{4}{section.5}%
+\contentsline {section}{\numberline {6}Program space}{4}{section.6}%
+\contentsline {section}{\numberline {7}GFlowNet}{6}{section.7}%
+\contentsline {section}{\numberline {8}Theory}{6}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Introduction}{6}{subsection.8.1}%
+\contentsline {section}{\numberline {9}Methods}{7}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Complexity analysis}{8}{subsection.9.1}%
