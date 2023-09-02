@@ -7,7 +7,7 @@ from typing import Any, Tuple
 import typing
 
 
-def load_tasks(folder: str = "list_dataset") -> typing.List[Tuple[str,Any]]:
+def load_tasks(folder: str = "list_dataset") -> typing.List[Tuple[str, Any]]:
     # Load all tasks
     tasks = []
     for file in glob.glob(f"{folder}/*.pickle"):

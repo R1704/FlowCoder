@@ -23,32 +23,23 @@ train = True
 inference = False
 
 lexicon_range = 30
+d_model = 512
 
-data = Data(
-     device=device,
-     dataset_size=1_000_000,
-     nb_examples_max=2,
-     max_program_depth=3,
-     # max_program_depth=4,
-     nb_arguments_max=3,
-     lexicon=[x for x in range(-lexicon_range, lexicon_range)], #[0, 1], #[x for x in range(-30, 30)],
-     # lexicon=[x for x in range(-30, 30)],
-     # size_max=3,
-     size_max=10,
-     deepcoder_dsl=False  # use the deepcoder dsl if true and otherwise the list dsl
-     )
+# TODO: Try different model sizes
+
+data = Data(device=device)
 
 io_encoder = IOEncoder(
     n_examples_max=data.nb_examples_max,
-    size_max=data.size_max,
-    lexicon=[x for x in range(-lexicon_range*10, lexicon_range*10)],
-    d_model=512,  # TODO: try different dimensions
+    size_max=10,
+    lexicon=[x for x in range(-lexicon_range*10, lexicon_range*10)],  # For leverage in the fantasy phase
+    d_model=d_model,
     device=device
     )
 
 state_encoder = RuleEncoder(
     cfg=data.cfg,
-    d_model=512,  # TODO: try different dimensions
+    d_model=d_model,
     device=device
     )
 
@@ -56,7 +47,7 @@ model = GFlowNet(
     cfg=data.cfg,
     io_encoder=io_encoder,
     state_encoder=state_encoder,
-    d_model=512,
+    d_model=d_model,
     num_heads=8,
     num_layers=2,
     dropout=0.1,
@@ -69,28 +60,22 @@ if from_checkpoint:
 
 model.to(device)
 
-reward = Reward(
-    vocab_size=10*len(data.lexicon),
-    d_model=512,  # TODO: try different dimensions
-    num_heads=8,
-    num_layers=2,
-    dropout=0.1
-    )
 
 if train:
     training = Training(
-        batch_size=8,
-        learning_rate_trn=1e-4, #1e-3,
+        epochs=145,
+        batch_size=4,
+        learning_rate_trn=1e-4,
         learning_rate_gfn=1e-4,
-        e_steps=10,
+        e_steps=500,
         m_step_threshold_init=150,
-        m_steps=10,
+        m_steps=150,
+        alpha=0.3,
         replay_prob=0.3,
         fantasy_prob=0.3,
         model_path=model_path,
         data=data,
         model=model,
-        reward=reward,
         device=device
     )
     training.train()
@@ -98,8 +83,3 @@ if train:
 if save_checkpoint:
     print('Model parameters saved to checkpoint.')
     torch.save(model.state_dict(), model_path)
-
-if inference:
-    model.eval()
-    batch_IOs, batch_program, latent_batch_IOs = data.get_next_batch(model.batch_size)
-    model()

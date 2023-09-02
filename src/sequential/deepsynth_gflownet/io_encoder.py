@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from src.sequential.deepsynth.program import Function
+
 
 class IOEncoder(nn.Module):
     """
@@ -19,9 +19,8 @@ class IOEncoder(nn.Module):
 
     def encode_IO(self, IO):
         '''
-        embeds a list of inputs and its associated output
-        IO is of the form [[I1,I2, ..., Ik], O]
-        where I1, I2, ..., Ik are inputs and O an output
+        IO comes in the form [[I1,I2, ..., Ik], O]
+        We concatenate all IOs into one list with special IN and OUT tokens, and PAD up to the longest example
         '''
         encoded = []
         for inp, out in IO:
@@ -33,7 +32,7 @@ class IOEncoder(nn.Module):
 
     def forward(self, IOs):
         ios = []
-        max_len = 0  # to store the maximum length
+        max_len = 0
 
         # First, encode all IO pairs and find the max length
         for IO in IOs:

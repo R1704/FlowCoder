@@ -32,6 +32,7 @@ class RuleEncoder(nn.Module):
 
         # Encode the state sequences into embeddings
         states_encoded = [self.rule_embedding(state) for state in states_batch]
+
         # Padding
         states_encoded = pad_sequence(states_encoded, batch_first=True, padding_value=self.rule2idx['PAD'])
         states_encoded = states_encoded.transpose(0, 1)
@@ -49,3 +50,13 @@ class RuleEncoder(nn.Module):
     def get_parent_args(self, rule):
         nt, p = rule
         return self.cfg.rules[nt][p]
+
+    def get_neighbors(self, rule):
+        neighbors = []
+        (my_typ, (my_p, my_arg_idx), my_depth), my_prog = rule
+        for r in self.rules[2:]:
+            if r[0][1] != None:
+                (typ, (p, arg_idx), depth), prog = r
+                if my_p == p and my_depth == depth:
+                    neighbors.append(r)
+        return neighbors

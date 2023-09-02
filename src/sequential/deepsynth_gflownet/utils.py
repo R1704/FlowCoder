@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import math
-
+import csv
 
 class PositionalEncoding(nn.Module):
     # https://pytorch.org/tutorials/beginner/transformer_tutorial.html
@@ -24,3 +24,17 @@ class PositionalEncoding(nn.Module):
 
 def flatten(lst):
     return [element for sublist in lst for element in sublist]
+
+
+# Define a function to append a new row to an existing CSV file
+def append_to_csv(filename, row_data):
+    with open(filename, mode='a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(row_data)
+
+
+# Define a function to create a new CSV file with headers
+def create_csv(filename, headers):
+    with open(filename, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(headers)

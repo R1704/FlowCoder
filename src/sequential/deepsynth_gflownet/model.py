@@ -1,8 +1,3 @@
-import torch
-from torch import nn
-import math
-import logging
-
 from src.sequential.deepsynth_gflownet.utils import *
 
 
@@ -60,6 +55,7 @@ class GFlowNet(nn.Module):
         mask = mask.float().masked_fill(mask == 0, float('-inf')).masked_fill(mask == 1, float(0.0))
         return mask.to(self.device)
 
+
 # Forward policy
 class GFlowNet_Forward(nn.Module):
     def __init__(self, input_dim, output_dim):
@@ -75,6 +71,7 @@ class GFlowNet_Forward(nn.Module):
         return self.forward_logits(x)
 
 
+# Partition function
 class GFlowNet_Z(nn.Module):
     def __init__(self, d_model):
         super(GFlowNet_Z, self).__init__()

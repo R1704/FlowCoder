@@ -17,6 +17,9 @@ def make_program_checker(dsl: DSL, examples) -> Callable[[Program, bool], bool]:
             for i, example in enumerate(examples):
                 input, output = example
                 out = prog.eval(dsl, input, i)
+                # print(f'real output: {output}\n'
+                #       f'predicted output: {out}\n'
+                #       f'program: {prog}')
                 if output != out:
                     return False
             return True
@@ -67,6 +70,7 @@ def task_set2dataset(tasks, model, dsl: DSL) -> List[Tuple[str, PCFG, Callable[[
             constants = None
         ex = [([i[0]], o) for i, o in examples]
         batch_IOs.append(ex)
+
         if isinstance(model, BigramsPredictor):
             batch_types.append(__get_type_request(examples))
     # Inference

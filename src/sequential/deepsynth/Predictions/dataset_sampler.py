@@ -62,6 +62,7 @@ class Dataset(torch.utils.data.IterableDataset):
             selected_type: Type = random.choice(self.allowed_types)
             rtype = selected_type.returns()
             # print("Selected type:", selected_type)
+            # print("rtype:", rtype)
             program = next(self.program_sampler[selected_type])
             while program.is_constant():
                 program = next(self.program_sampler[selected_type])
