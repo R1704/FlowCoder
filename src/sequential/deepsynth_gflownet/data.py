@@ -13,6 +13,7 @@ import random
 @dataclass
 class Data:
     device: torch
+    max_program_depth: int
     data_generator = None
     task_generator = None
 
@@ -22,7 +23,7 @@ class Data:
         self.dsl = dsl.DSL(semantics, primitive_types)
         self.cfg = self.dsl.DSL_to_CFG(
             self.type_request,
-            max_program_depth=4  # NOTE: this may need to be increased (perhaps gradually)
+            max_program_depth=4
             )
 
         self.nb_examples_max = 15

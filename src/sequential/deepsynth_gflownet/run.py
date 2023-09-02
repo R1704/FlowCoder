@@ -27,7 +27,7 @@ d_model = 512
 
 # TODO: Try different model sizes
 
-data = Data(device=device)
+data = Data(device=device, max_program_depth=4)
 
 io_encoder = IOEncoder(
     n_examples_max=data.nb_examples_max,
@@ -63,6 +63,7 @@ model.to(device)
 
 if train:
     training = Training(
+        min_program_depth=3,
         epochs=145,
         batch_size=4,
         learning_rate_trn=1e-4,

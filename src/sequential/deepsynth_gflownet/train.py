@@ -21,6 +21,7 @@ import torch.nn.functional as F
 
 @dataclass
 class Training:
+    min_program_depth: int
     epochs: int
     batch_size: int
     learning_rate_trn: float
@@ -55,8 +56,11 @@ class Training:
         headers = ['Epoch', 'Steps', 'Task Name', 'Program', 'Examples']
         create_csv(self.csv_file, headers)
 
-    def get_next_rules(self, S):
-        return [(S, p) for p in self.data.cfg.rules[S].keys()]
+        self.cfgs = {depth: self.data.dsl.DSL_to_CFG(self.data.type_request, max_program_depth=depth)
+                     for depth in range(2, self.data.max_program_depth)}
+
+    def get_next_rules(self, S, depth):
+        return [(S, p) for p in self.cfgs[depth].rules[S].keys()]
 
     def get_mask(self, rules: list):
         mask = [1 if rule in rules else 0 for rule in self.model.state_encoder.rules]
@@ -65,7 +69,7 @@ class Training:
 
 
 
-    def sample_program_dfs(self, batch_IOs, epsilon=0., beta=1.):
+    def sample_program_dfs(self, batch_IOs, depth, epsilon=0., beta=1.):
 
         # Initialize the state of each program in the batch to 'START'
         states = [['START'] for _ in range(len(batch_IOs))]
@@ -106,7 +110,7 @@ class Training:
                     next_nt = frontiers[i].pop()
 
                     # Get the possible next rules for the current non-terminal
-                    rules = self.get_next_rules(next_nt)
+                    rules = self.get_next_rules(next_nt, depth)
 
                     # Create a mask to block invalid actions
                     mask = self.get_mask(rules)
@@ -241,7 +245,7 @@ class Training:
             sleep_loss.backward()
             self.optimizer_policy.step()  # (E-step sleep)
 
-    def e_step(self, epoch):
+    def e_step(self, epoch, depth):
         logging.info(f'\nComputing E-step')
         solved = False
         e_step_losses = []
@@ -261,7 +265,7 @@ class Training:
 
             # Predict programs and calculate associated log partition functions and other parameters
             # epsilon and beta for exploration
-            logZs, total_forwards, programs, states = self.sample_program_dfs(batch_IOs, epsilon=0.2, beta=0.8)
+            logZs, total_forwards, programs, states = self.sample_program_dfs(batch_IOs, depth, epsilon=0.2, beta=0.8)
 
             # Calculate rewards for the predicted programs
             rewards = self.rewards(programs, batch_IOs)
@@ -292,23 +296,24 @@ class Training:
             if self.max_reward in rewards:
                 logging.info(f'Task: {task_names[0]} solved.')
                 solved = True
-                self.save_results(task_names, e_step, epoch, programs, rewards)
+                self.save_results(depth, epoch, e_step, task_names, programs, rewards, batch_IOs)
 
         if not solved:
             logging.info(f'Task: {task_names[0]} not solved. :-(')
-            epoch_data = [epoch, '', task_names[0], '', batch_IOs[0]]
+            epoch_data = [depth, epoch, '', task_names[0], '', batch_IOs[0]]
             append_to_csv(self.csv_file, epoch_data)
 
         logging.debug(f'Finished e-step')
         return e_step_data, e_step_losses, e_step_logZs
 
-    def save_results(self, batch_program_names, e_step, epoch, programs, rewards, batch_IOs):
+    # def save_results(self, batch_program_names, e_step, epoch, programs, rewards, batch_IOs):
+    def save_results(self, depth, epoch, e_step, batch_program_names, programs, rewards, batch_IOs):
         for i in range(self.batch_size):
             if rewards[i] == self.max_reward:
-                epoch_data = [epoch, e_step, batch_program_names[i], programs[i], batch_IOs[i]]
+                epoch_data = [depth, epoch, e_step, batch_program_names[i], programs[i], batch_IOs[i]]
                 append_to_csv(self.csv_file, epoch_data)
 
-    def m_step(self, max_program_depth):
+    def m_step(self, max_program_depth, depth):
 
         m_step_losses = []
         m_step_data = []
@@ -322,7 +327,7 @@ class Training:
         for _ in m_step_tqdm:
 
             # Predict programs without specific parameters epsilon and beta
-            _, _, programs, states = self.sample_program_dfs(batch_IOs)
+            _, _, programs, states = self.sample_program_dfs(batch_IOs, depth)
 
             # Calculate rewards for the predicted programs
             rewards = self.rewards(programs, batch_IOs)
@@ -371,46 +376,46 @@ class Training:
         total_e_losses = []
         total_m_losses = []
         total_logZs = []
+        for depth in range(self.min_program_depth, self.data.max_program_depth):
+            for epoch in tqdm.tqdm(range(self.epochs)):
 
-        for epoch in tqdm.tqdm(range(self.epochs)):
+                e_step_data, e_step_losses, e_step_logZs = self.e_step(epoch, depth)
+                total_e_losses.extend(e_step_losses)
+                total_logZs.extend(e_step_logZs)
+                e_step_correct = self.correct_programs(e_step_data)
 
-            e_step_data, e_step_losses, e_step_logZs = self.e_step(epoch)
-            total_e_losses.extend(e_step_losses)
-            total_logZs.extend(e_step_logZs)
-            e_step_correct = self.correct_programs(e_step_data)
+                total_data.extend(e_step_data)
+                total_correct.extend(e_step_correct)
 
-            total_data.extend(e_step_data)
-            total_correct.extend(e_step_correct)
+                rand = random.random()
+                rand = 0
 
-            rand = random.random()
-            rand = 0
+                if rand < self.replay_prob:
+                    # if len(total_correct) > self.batch_size:
+                    if total_correct[replay_i:]:
+                        logging.info(f'{replay_i + 1}. Replay')
+                        # self.replay(total_correct[replay_i * self.batch_size: (replay_i + 1) * self.batch_size])
+                        self.replay(total_correct[replay_i:replay_i + self.batch_size])
+                        # self.replay(total_correct[-1])
+                        replay_i += len(e_step_correct)
 
-            if rand < self.replay_prob:
-                # if len(total_correct) > self.batch_size:
-                if total_correct[replay_i:]:
-                    logging.info(f'{replay_i + 1}. Replay')
-                    # self.replay(total_correct[replay_i * self.batch_size: (replay_i + 1) * self.batch_size])
-                    self.replay(total_correct[replay_i:replay_i + self.batch_size])
-                    # self.replay(total_correct[-1])
-                    replay_i += len(e_step_correct)
+                if rand < self.fantasy_prob:
+                    logging.info(f'{fantasy_i + 1}. Fantasy')
+                    # self.fantasy(total_data[fantasy_i * self.batch_size: (fantasy_i + 1) * self.batch_size])
+                    self.fantasy(total_data[-1])
+                    fantasy_i += 1
 
-            if rand < self.fantasy_prob:
-                logging.info(f'{fantasy_i + 1}. Fantasy')
-                # self.fantasy(total_data[fantasy_i * self.batch_size: (fantasy_i + 1) * self.batch_size])
-                self.fantasy(total_data[-1])
-                fantasy_i += 1
+                # Optimize Generative Model
+                # Check whether the moving average of the GFlowNet's training loss is below the current threshold
+                # if self.moving_average_loss < current_threshold or epoch == self.epochs - 1:
+                #     m_step_data, m_step_losses = self.m_step()
+                #     total_m_losses.extend(m_step_losses)
+                #     total_correct.extend(self.correct_programs(m_step_data))
+                #     total_data.extend(m_step_data)
+                # # Decrease the threshold value linearly over the epochs
+                # current_threshold -= self.threshold_decrement
 
-            # Optimize Generative Model
-            # Check whether the moving average of the GFlowNet's training loss is below the current threshold
-            # if self.moving_average_loss < current_threshold or epoch == self.epochs - 1:
-            #     m_step_data, m_step_losses = self.m_step()
-            #     total_m_losses.extend(m_step_losses)
-            #     total_correct.extend(self.correct_programs(m_step_data))
-            #     total_data.extend(m_step_data)
-            # # Decrease the threshold value linearly over the epochs
-            # current_threshold -= self.threshold_decrement
-
-            self.print_stats(start_time, total_correct, total_data)
+                self.print_stats(start_time, total_correct, total_data)
 
 
         self.plot_results(total_e_losses, total_m_losses, total_logZs, [], epoch)
