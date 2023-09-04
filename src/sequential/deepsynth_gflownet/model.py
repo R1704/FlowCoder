@@ -1,10 +1,9 @@
 from src.sequential.deepsynth_gflownet.utils import *
-
+from src.sequential.deepsynth_gflownet.config import *
 
 class GFlowNet(nn.Module):
-    def __init__(self, cfg, io_encoder, state_encoder, d_model=512, num_heads=8, num_layers=2, dropout=0.1, device='cpu'):
+    def __init__(self, cfg, io_encoder, state_encoder, d_model=512, num_heads=8, num_layers=2, dropout=0.1):
         super(GFlowNet, self).__init__()
-        self.device = device
         self.cfg = cfg
         self.io_encoder = io_encoder
         self.state_encoder = state_encoder
@@ -53,7 +52,7 @@ class GFlowNet(nn.Module):
     def generate_square_subsequent_mask(self, sz):
         mask = (torch.triu(torch.ones(sz, sz)) == 1).transpose(0, 1)
         mask = mask.float().masked_fill(mask == 0, float('-inf')).masked_fill(mask == 1, float(0.0))
-        return mask.to(self.device)
+        return mask.to(device)
 
 
 # Forward policy

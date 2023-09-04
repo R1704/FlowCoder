@@ -17,9 +17,6 @@ def make_program_checker(dsl: DSL, examples) -> Callable[[Program, bool], bool]:
             for i, example in enumerate(examples):
                 input, output = example
                 out = prog.eval(dsl, input, i)
-                # print(f'real output: {output}\n'
-                #       f'predicted output: {out}\n'
-                #       f'program: {prog}')
                 if output != out:
                     return False
             return True

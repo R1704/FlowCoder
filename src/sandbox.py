@@ -13,62 +13,40 @@ import pickle
 
 
 from src.sequential.deepsynth_gflownet.io_encoder import *
+from src.sequential.deepsynth.cons_list import tuple2constlist
 
 
 
+dsl = dsl.DSL(semantics, primitive_types)
+type_request = Arrow(List(INT), List(INT))
 
-data = Data(device=torch.device('cuda' if torch.cuda.is_available() else 'cpu'))
+cfg = dsl.DSL_to_CFG(type_request, max_program_depth=4)
+dataset = Dataset(
+    size=10,
+    dsl=dsl,
+    pcfg_dict={type_request: cfg.CFG_to_Uniform_PCFG()},
+    nb_examples_max=15,
+    arguments={type_request: type_request.arguments()},
+    ProgramEncoder=lambda x: x,
+    size_max=10,
+    lexicon=[x for x in range(-30, 30)],
+    for_flashfill=False
+    )
 
-names, examples = data.get_next_batch(8)
-# print(names)
-# print()
-# print(examples)
+# print(dataset.allowed_types)
+# print(type_request)
+# print(dataset.arguments)
 
-#
-#
-# print(data.cfg)
-# rules = data.cfg.rules
-# S = data.cfg.start
-#
-# first = rules[S]
-#
-# print('-------Rules--------')
-# for rule, v in rules.items():
-#     print(rule, v)
-# print()
-#
-# print('-------start and its programs--------')
-# print(S, first, '\n')
-#
-# pcfg = data.cfg.CFG_to_Uniform_PCFG()
-# program_generator_dfs = dfs(pcfg)
-# program_generator_bfs = bfs(pcfg)
-# partial_program = next(program_generator_dfs)
-# print(f'partial program: {partial_program}')
-#
-# program = reconstruct_from_compressed(partial_program, target_type=data.cfg.start[0])
-# print(f'program: {program}')
-# print(type(program))
-# print([type(a) for a in program.arguments])
-#
-# print('-----------------------------')
-#
-#
-# # state_encoder = RuleEncoder(cfg=data.cfg)
-# # print(state_encoder.rules)
-# print('-----------------------------')
+nb_IOs = random.randint(1, dataset.nb_examples_max)
+inputs = [[dataset.input_sampler.sample(type_) for type_ in dataset.arguments[type_request]] for _ in
+                      range(nb_IOs)]
 
+print(inputs)
 
-# batch_IOs, batch_program = data.get_next_batch(1)
-# print(batch_IOs, batch_program)
-
-
-
-# folder = '/vol/tensusers4/rhommelsheim/master_thesis/src/sequential/deepsynth/list_dataset'
-# tasks = load_tasks(folder)
-#
-# for task in tasks:
-#      name, example = task
-#      print(name)
-#      for i, o in example:
-#           print(i, o)
+outputs = []
+for input_ in inputs:
+    environment = tuple2constlist(input_)
+    print(environment)
+    # output = program.eval_naive(self.dsl, environment)
+    # if self.__output_validation__(output, rtype):
+    #     outputs.append(output)

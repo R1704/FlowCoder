@@ -1,18 +1,16 @@
 import src.sequential.deepsynth.dsl as dsl
 from src.sequential.deepsynth.DSL.list import semantics, primitive_types
-from src.sequential.deepsynth.Predictions.dataset_sampler import Dataset
+from src.sequential.deepsynth.Predictions.dataset_sampler import Dataset, Input_sampler
 from src.sequential.deepsynth.type_system import *
 from src.sequential.deepsynth.model_loader import build_dreamcoder_intlist_model
 from src.sequential.deepsynth.dreamcoder_dataset_loader import load_tasks, filter_tasks_for_model
 from src.sequential.deepsynth_gflownet.config import *
-import torch
 from dataclasses import dataclass
 import random
 
 
 @dataclass
 class Data:
-    device: torch
     max_program_depth: int
     data_generator = None
     task_generator = None
@@ -23,13 +21,16 @@ class Data:
         self.dsl = dsl.DSL(semantics, primitive_types)
         self.cfg = self.dsl.DSL_to_CFG(
             self.type_request,
-            max_program_depth=4
+            max_program_depth=self.max_program_depth
             )
 
-        self.nb_examples_max = 15
+        self.nb_examples_max = 15  # from DreamCoder dataset
         self.size_max = 10
         nb_arguments_max = 1
         self.lexicon = [x for x in range(-30, 30)]
+
+        self.input_sampler = Input_sampler(self.size_max, range(max(self.lexicon)-1))
+        self.arguments = {self.type_request: self.type_request.arguments()}
 
     # DreamCoder tasks for model evaluation
     @staticmethod
@@ -41,7 +42,6 @@ class Data:
         tasks = filter_tasks_for_model(tasks, rules_predictor)
         print("Remaining tasks after filter:", len(tasks), "tasks")
         dataset_size = len(tasks)
-
         all_tasks = []
         for name, examples in tasks:
             ex = [([i[0]], o) for i, o in examples]  # Get rid of None in the 'constant' slot (done by i[0])
@@ -56,8 +56,8 @@ class Data:
             for i in range(len(tasks)):
                 yield tasks[i]
 
-    def create_train_dataset(self, max_program_depth, dataset_size):
-        cfg = self.dsl.DSL_to_CFG(self.type_request, max_program_depth=max_program_depth)
+    def create_train_dataset(self, dataset_size):
+        cfg = self.dsl.DSL_to_CFG(self.type_request, max_program_depth=self.max_program_depth)
         self.dataset = Dataset(
             size=dataset_size,
             dsl=self.dsl,
@@ -71,6 +71,11 @@ class Data:
             for_flashfill=False
             )
         self.data_generator = self.dataset.__iter__()
+
+    def sample_input(self):
+        nb_IOs = random.randint(1, self.nb_examples_max)
+        inputs = [random.sample(range(max(self.lexicon)-1), random.randint(0, self.size_max)) for _ in range(nb_IOs)]  # the empirical data is in range [0, 29]
+        return inputs
 
     def get_next_batch(self, batch_size, data_type='train', max_program_depth=4, shuffle=False):
 

@@ -1,9 +1,8 @@
 from src.sequential.deepsynth_gflownet.model import GFlowNet
 from src.sequential.deepsynth_gflownet.data import Data
 from src.sequential.deepsynth_gflownet.train import Training
-from src.sequential.deepsynth_gflownet.reward import Reward
 
-import torch
+from torch.optim import Adam
 
 import logging
 from src.sequential.deepsynth_gflownet.io_encoder import *
@@ -14,34 +13,29 @@ logger.setLevel(logging.DEBUG)
 logging.getLogger('matplotlib.font_manager').disabled = True
 
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model_path = 'gflownet.pth'
-
-from_checkpoint = False
+from_checkpoint = True
 save_checkpoint = False
 train = True
 inference = False
 
-lexicon_range = 30
 d_model = 512
 
 # TODO: Try different model sizes
 
-data = Data(device=device, max_program_depth=4)
+data = Data(max_program_depth=6)
 
 io_encoder = IOEncoder(
     n_examples_max=data.nb_examples_max,
     size_max=10,
-    lexicon=[x for x in range(-lexicon_range*10, lexicon_range*10)],  # For leverage in the fantasy phase
-    d_model=d_model,
-    device=device
+    lexicon=data.lexicon,
+    d_model=d_model
     )
 
 state_encoder = RuleEncoder(
     cfg=data.cfg,
-    d_model=d_model,
-    device=device
+    d_model=d_model
     )
+
 
 model = GFlowNet(
     cfg=data.cfg,
@@ -50,15 +44,21 @@ model = GFlowNet(
     d_model=d_model,
     num_heads=8,
     num_layers=2,
-    dropout=0.1,
-    device=device
+    dropout=0.1
     )
+learning_rate = 0.001
+optimizer = Adam(model.parameters(), lr=learning_rate)
 
 if from_checkpoint:
-    print('Model parameters loaded from checkpoint.')
-    model.load_state_dict(torch.load(model_path))
+    checkpoint = torch.load(MODEL_PATH)
+    model.load_state_dict(checkpoint['model_state_dict'])
+    # optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+    # epoch = checkpoint['epoch']
+    # loss = checkpoint['loss']
+    logging.info('Model parameters loaded from checkpoint.')
 
 model.to(device)
+
 
 
 if train:
@@ -72,15 +72,15 @@ if train:
         m_step_threshold_init=150,
         m_steps=150,
         alpha=0.3,
+        beta=0.7,
+        epsilon=0.3,
         replay_prob=0.3,
-        fantasy_prob=0.3,
-        model_path=model_path,
+        fantasy_prob=0.0,
+        model_path=MODEL_PATH,
         data=data,
         model=model,
-        device=device
+        optimizer=optimizer,
+        save_checkpoint=save_checkpoint
     )
-    training.train()
 
-if save_checkpoint:
-    print('Model parameters saved to checkpoint.')
-    torch.save(model.state_dict(), model_path)
+    training.train()

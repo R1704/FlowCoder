@@ -1,12 +1,12 @@
+from src.sequential.deepsynth_gflownet.config import *
 import torch
 import torch.nn as nn
 from torch.nn.utils.rnn import pad_sequence
 
 
 class RuleEncoder(nn.Module):
-    def __init__(self, cfg, d_model=512, device='cpu'):
+    def __init__(self, cfg, d_model=512):
         super(RuleEncoder, self).__init__()
-        self.device = device
         self.cfg = cfg
 
         # Collecting rules (non-terminal to program pairs) from the CFG
@@ -28,7 +28,7 @@ class RuleEncoder(nn.Module):
     def forward(self, states_batch):
 
         # Convert rules to indices and then convert lists to tensors and move them to the specified device
-        states_batch = [torch.tensor([self.rule2idx[s] for s in state], device=self.device) for state in states_batch]
+        states_batch = [torch.tensor([self.rule2idx[s] for s in state], device=device) for state in states_batch]
 
         # Encode the state sequences into embeddings
         states_encoded = [self.rule_embedding(state) for state in states_batch]
