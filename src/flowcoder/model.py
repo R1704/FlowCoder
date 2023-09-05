@@ -3,6 +3,7 @@ import torch.nn as nn
 from flowcoder.utils import PositionalEncoding
 from flowcoder.config import device
 
+
 class GFlowNet(nn.Module):
     def __init__(self, cfg, io_encoder, state_encoder, d_model=512, num_heads=8, num_layers=2, dropout=0.1):
         super(GFlowNet, self).__init__()

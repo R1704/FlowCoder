@@ -4,11 +4,11 @@ from flowcoder.train import Training
 from flowcoder.io_encoder import IOEncoder
 from flowcoder.state_encoder import RuleEncoder
 from flowcoder.config import *
+
 import torch
 from torch.optim import Adam
 
 import logging
-
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 logging.getLogger('matplotlib.font_manager').disabled = True

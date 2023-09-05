@@ -1,4 +1,6 @@
+from deepsynth.type_system import *
 import re
+
 
 primitive_types = {
   '++' : Arrow(STRING,Arrow(STRING,STRING)),
