@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 
 # Style
 from dataclasses import dataclass
-from tqdm.auto import tqdm
+import tqdm
 
 # Deepsynth
 from deepsynth.dsl import *
@@ -306,7 +306,7 @@ class Training:
         logging.info(f'IOs: {batch_IOs[0]}')
 
 
-        e_step_tqdm = tqdm(range(self.e_steps), position=0, desc='e_step', leave=False, colour='blue', ncols=80)
+        e_step_tqdm = tqdm.tqdm(range(self.e_steps), position=0, desc='e_step', leave=False, colour='blue', ncols=80)
         for e_step in e_step_tqdm:
 
             # Predict programs and calculate associated log partition functions and other parameters
@@ -389,7 +389,7 @@ class Training:
         # Iterate through the number of M-steps
         batch_IOs, batch_programs = self.data.get_next_batch(self.batch_size, data_type='train',
                                                              max_program_depth=max_program_depth)
-        m_step_tqdm = tqdm(range(self.m_steps), leave=False)
+        m_step_tqdm = tqdm.tqdm(range(self.m_steps), leave=False)
         for _ in m_step_tqdm:
             # Predict programs without specific parameters epsilon and beta
             _, _, programs, states = self.sample_program_dfs(batch_IOs, depth)
@@ -441,9 +441,9 @@ class Training:
         total_m_losses = []
         total_logZs = []
 
-        for depth in tqdm(range(self.min_program_depth, self.max_program_depth + 1), position=0, desc='depth',
+        for depth in tqdm.tqdm(range(self.min_program_depth, self.max_program_depth + 1), position=0, desc='depth',
                           leave=False, colour='green', ncols=80):
-            epoch_tqdm = tqdm(range(self.epochs), position=0, desc='epoch', leave=False, colour='green', ncols=80)
+            epoch_tqdm = tqdm.tqdm(range(self.epochs), position=0, desc='epoch', leave=False, colour='green', ncols=80)
             for epoch in epoch_tqdm:
 
                 e_step_data, e_step_losses, e_step_logZs, solved = self.e_step(epoch, depth)

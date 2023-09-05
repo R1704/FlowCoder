@@ -1,4 +1,5 @@
 from collections import deque
+from deepsynth.pcfg import PCFG
 
 def bounded_threshold(G : PCFG, threshold):
     '''

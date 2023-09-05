@@ -1,4 +1,7 @@
+from deepsynth.pcfg import PCFG
+from deepsynth.Algorithms import dfs
 import logging
+
 
 def sort_and_add(G : PCFG, init = 5, step = 5):
     '''
