@@ -1,0 +1,73 @@
+\documentclass[twocolumn, a4paper]{report}
+
+\input{../auxillary/preamble}
+
+\clearpage
+\section*{Acknowledgement}
+
+\begin{abstract}
+    I posit that the conceptual architecture we create, i.e. the generative model, obides by the same principles as any hierarchical self-organising system, namely discernment about what it is and what it is not. 
+\end{abstract}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+Cool words to use: 
+\begin{itemize}
+    \item explanadum
+\end{itemize}
+
+
+
+\todo[inline]{Go through text and see which words should be operationalised into the glossary}
+\todo[inline]{Put all terms in gpt and ask for similar terms}
+\todo[inline]{Use plagiarism checker}
+\todo[inline]{make sure that the tone of the thesis is the same everywhere. Write it with wit. Make it fun to read.}
+
+\input{../sections/introduction}
+
+\begin{description}
+    \item[computational] Why do things work the way they do?
+    What is the goal of the computation?
+    What are the unifying principles?
+    here we describe the problem as a self-organizing system, building hierarchical generative models. 
+    \item[algorithmic] What representations can implement
+    such computations? 
+    How does the choice of representations
+    determine the algorithm? 
+    Here we describe the FEP and how the discrimination between me and world gives rise to self-organization
+    Here we take the stance of a LOT and talk about the benefits of a symbolic paradigm although this could also be done in other ways, e.g. GLOM
+    \item[implementational] here we talk about program synthesis and combinatorial search, MCMC, RL, DreamCoder, etc. 
+\end{description}
+
+Other things to clarify
+\begin{itemize}
+    \item What is a symbol (also relate to semiotics but also in the cognitive sense. Something that relates to something else, a pointer. Think of memories that are stored in the hippocampus.) what about bioelectrical prepatterns? are all representations symbolic? How would symbols be implemented in the brain?
+    \item Analytic vs. Geometric Solutions as an analogy to approximation vs symbol? imitating understanding vs actual and think about whether there is actually any difference. perhaps a limitation of the symbolic programming approach is that it is rigid and less flexible?
+\end{itemize}
+
+
+\input{../sections/1computational/cognitive_systems}
+\newpage
+\input{../sections/2algorithmic/lot}
+\newpage
+\input{../sections/3implementational/implementational}
+\newpage
+\input{../sections/discussion}
+
+\Gls{latex} is very useful and can use \gls{glsy}.
+
+
+\clearpage
+\printglossaries
+
+\clearpage
+\bibliographystyle{unsrt}
+\bibliography{../auxiliary/ref.bib}
+
+\clearpage
+\appendix
+
+
+\end{document}

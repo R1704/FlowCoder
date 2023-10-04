@@ -1,0 +1,168 @@
+\begin{thebibliography}{10}
+
+\bibitem{ciaunica_nested_2023}
+Anna Ciaunica, Michael Levin, Fernando~E. Rosas, and Karl Friston.
+\newblock Nested {Selves}: {Self}-{Organisation} and {Shared} {Markov}
+  {Blankets} in {Prenatal} {Development} in {Humans}.
+\newblock preprint, PsyArXiv, May 2023.
+
+\bibitem{garcez_neurosymbolic_2020}
+Artur~d'Avila Garcez and Luis~C. Lamb.
+\newblock Neurosymbolic {AI}: {The} 3rd {Wave}.
+\newblock {\em arXiv:2012.05876 [cs]}, December 2020.
+\newblock arXiv: 2012.05876.
+
+\bibitem{vernon_embodied_2015}
+David Vernon, Robert Lowe, Serge Thill, and Tom Ziemke.
+\newblock Embodied cognition and circular causality: on the role of
+  constitutive autonomy in the reciprocal coupling of perception and action.
+\newblock {\em Frontiers in Psychology}, 6, 2015.
+
+\bibitem{friston_world_2021}
+Karl Friston, Rosalyn~J. Moran, Yukie Nagai, Tadahiro Taniguchi, Hiroaki Gomi,
+  and Josh Tenenbaum.
+\newblock World model learning and inference.
+\newblock {\em Neural Networks}, 144:573--590, December 2021.
+
+\bibitem{mazzaglia_free_2022}
+Pietro Mazzaglia, Tim Verbelen, Ozan Çatal, and Bart Dhoedt.
+\newblock The {Free} {Energy} {Principle} for {Perception} and {Action}: {A}
+  {Deep} {Learning} {Perspective}.
+\newblock {\em Entropy}, 24(2):301, February 2022.
+\newblock arXiv:2207.06415 [cs, q-bio].
+
+\bibitem{sep-leibniz-logic-influence}
+Volker Peckhaus.
+\newblock {Leibniz's Influence on 19th Century Logic}.
+\newblock In Edward~N. Zalta, editor, {\em The {Stanford} Encyclopedia of
+  Philosophy}. Metaphysics Research Lab, Stanford University, {W}inter 2018
+  edition, 2018.
+
+\bibitem{sep-language-thought}
+Michael Rescorla.
+\newblock {The Language of Thought Hypothesis}.
+\newblock In Edward~N. Zalta, editor, {\em The {Stanford} Encyclopedia of
+  Philosophy}. Metaphysics Research Lab, Stanford University, {S}ummer 2019
+  edition, 2019.
+
+\bibitem{sep-goedel-incompleteness}
+Panu Raatikainen.
+\newblock {Gödel’s Incompleteness Theorems}.
+\newblock In Edward~N. Zalta, editor, {\em The {Stanford} Encyclopedia of
+  Philosophy}. Metaphysics Research Lab, Stanford University, {S}pring 2022
+  edition, 2022.
+
+\bibitem{JCopeland2004-JCOTET}
+B.~J. Copeland.
+\newblock {\em The Essential Turing}.
+\newblock Oxford University Press UK, 2004.
+
+\bibitem{chomsky1959certain}
+Noam Chomsky.
+\newblock On certain formal properties of grammars.
+\newblock {\em Information and control}, 2(2):137--167, 1959.
+
+\bibitem{dehaene_symbols_2022}
+Stanislas Dehaene, Fosca Al~Roumi, Yair Lakretz, Samuel Planton, and Mathias
+  Sablé-Meyer.
+\newblock Symbols and mental programs: a hypothesis about human singularity.
+\newblock {\em Trends in Cognitive Sciences}, 26(9):751--766, September 2022.
+
+\bibitem{rule_child_2020}
+Joshua~S. Rule, Joshua~B. Tenenbaum, and Steven~T. Piantadosi.
+\newblock The {Child} as {Hacker}.
+\newblock {\em Trends in Cognitive Sciences}, 24(11):900--915, November 2020.
+
+\bibitem{al_roumi_mental_2021}
+Fosca Al~Roumi, Sébastien Marti, Liping Wang, Marie Amalric, and Stanislas
+  Dehaene.
+\newblock Mental compression of spatial sequences in human working memory using
+  numerical and geometrical primitives.
+\newblock {\em Neuron}, 109(16):2627--2639.e4, August 2021.
+
+\bibitem{piantadosi2021computational}
+Steven~T Piantadosi.
+\newblock The computational origin of representation.
+\newblock {\em Minds and machines}, 31(1):1--58, 2021.
+
+\bibitem{piantasodi2022meaning}
+Steven~T Piantasodi and Felix Hill.
+\newblock Meaning without reference in large language models.
+\newblock {\em arXiv preprint arXiv:2208.02957}, 2022.
+
+\bibitem{do2021neural}
+Quan Do and Michael~E Hasselmo.
+\newblock Neural circuits and symbolic processing.
+\newblock {\em Neurobiology of Learning and Memory}, 186:107552, 2021.
+
+\bibitem{santoro2021symbolic}
+Adam Santoro, Andrew Lampinen, Kory Mathewson, Timothy Lillicrap, and David
+  Raposo.
+\newblock Symbolic behaviour in artificial intelligence.
+\newblock {\em arXiv preprint arXiv:2102.03406}, 2021.
+
+\bibitem{ellis_dreamcoder_2021}
+Kevin Ellis, Catherine Wong, Maxwell Nye, Mathias Sablé-Meyer, Lucas Morales,
+  Luke Hewitt, Luc Cary, Armando Solar-Lezama, and Joshua~B. Tenenbaum.
+\newblock {DreamCoder}: bootstrapping inductive program synthesis with
+  wake-sleep library learning.
+\newblock In {\em Proceedings of the 42nd {ACM} {SIGPLAN} {International}
+  {Conference} on {Programming} {Language} {Design} and {Implementation}},
+  pages 835--850, Virtual Canada, June 2021. ACM.
+
+\bibitem{hofstadter_gdel_1979}
+Douglas~R. Hofstadter.
+\newblock {\em Gödel, Escher, Bach: an Eternal Golden Braid}.
+\newblock Basic Books Inc., 1979.
+
+\bibitem{garcez2020neurosymbolic}
+Artur~d'Avila Garcez and Luis~C Lamb.
+\newblock Neurosymbolic ai: the 3rd wave.
+\newblock {\em arXiv preprint arXiv:2012.05876}, 2020.
+
+\bibitem{bouizegarene_narrative_2020}
+Nabil Bouizegarene, Maxwell Ramstead, Axel Constant, Karl Friston, and Laurence
+  Kirmayer.
+\newblock Narrative as active inference, July 2020.
+
+\bibitem{goyal_inductive_2022}
+Anirudh Goyal and Yoshua Bengio.
+\newblock Inductive biases for deep learning of higher-level cognition.
+\newblock {\em Proceedings of the Royal Society A: Mathematical, Physical and
+  Engineering Sciences}, 478(2266):20210068, October 2022.
+\newblock Publisher: Royal Society.
+
+\bibitem{yoshuabengioScalingService}
+Yoshua Bengio.
+\newblock {Scaling in the service of reasoning \& model-based ML}.
+\newblock
+  \url{https://yoshuabengio.org/2023/03/21/scaling-in-the-service-of-reasoning-model-based-ml/},
+  2022.
+\newblock Accessed 21-08-2023.
+
+\bibitem{gulwani_program_2017}
+Sumit Gulwani, Oleksandr Polozov, and Rishabh Singh.
+\newblock {\em Program synthesis}.
+\newblock Number 4.2017, 1-2 in Foundations and trends in programming
+  languages. Now Publishers, Hanover, MA Delft, 2017.
+
+\bibitem{hinton1995wake}
+Geoffrey~E Hinton, Peter Dayan, Brendan~J Frey, and Radford~M Neal.
+\newblock The" wake-sleep" algorithm for unsupervised neural networks.
+\newblock {\em Science}, 268(5214):1158--1161, 1995.
+
+\bibitem{fijalkow_scaling_2021}
+Nathanaël Fijalkow, Guillaume Lagarde, Théo Matricon, Kevin Ellis, Pierre
+  Ohlmann, and Akarsh Potta.
+\newblock Scaling {Neural} {Program} {Synthesis} with {Distribution}-based
+  {Search}, October 2021.
+\newblock arXiv:2110.12485 [cs].
+
+\bibitem{bengio_flow_2021}
+Emmanuel Bengio, Moksh Jain, Maksym Korablyov, Doina Precup, and Yoshua Bengio.
+\newblock Flow {Network} based {Generative} {Models} for {Non}-{Iterative}
+  {Diverse} {Candidate} {Generation}.
+\newblock In {\em Advances in {Neural} {Information} {Processing} {Systems}},
+  volume~34, pages 27381--27394. Curran Associates, Inc., 2021.
+
+\end{thebibliography}

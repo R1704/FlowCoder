@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/src/deprecated" />
+    </content>
+    <orderEntry type="jdk" jdkName="Remote Python 3.10.8 (sftp://rhommelsheim@thunderlane.science.ru.nl:22/vol/tensusers4/rhommelsheim/anaconda3/envs/playground/bin/python)" jdkType="Python SDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
