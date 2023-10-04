@@ -1,3 +1,6 @@
+import sys
+sys.path.append('/vol/tensusers4/rhommelsheim/master_thesis/src')
+
 from flowcoder.model import GFlowNet
 from flowcoder.data import Data
 from flowcoder.train import Training
@@ -7,16 +10,15 @@ from flowcoder.config import *
 
 import torch
 from torch.optim import Adam
-
 import logging
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 logging.getLogger('matplotlib.font_manager').disabled = True
 
-from_checkpoint = False
-save_checkpoint = True
+from_checkpoint = True
+save_checkpoint = False
 train = True
-inference = False
+inference = True
 
 d_model = 512
 
@@ -51,33 +53,33 @@ optimizer = Adam(model.parameters(), lr=learning_rate)
 if from_checkpoint:
     checkpoint = torch.load(FROM_CHECKPOINT_PATH)
     model.load_state_dict(checkpoint['model_state_dict'])
-    # optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-    # epoch = checkpoint['epoch']
-    # loss = checkpoint['loss']
     logging.info(f'Model parameters loaded from checkpoint in {FROM_CHECKPOINT_PATH}.')
 
 model.to(device)
+if inference:
+    model.eval()
 
-if train:
-    training = Training(
-        min_program_depth=3,
-        max_program_depth=data.max_program_depth,
-        epochs=145,
-        batch_size=4,
-        learning_rate_trn=1e-4,
-        learning_rate_gfn=1e-4,
-        e_steps=500,
-        m_step_threshold_init=150,
-        m_steps=150,
-        alpha=0.3,
-        beta=0.7,
-        epsilon=0.3,
-        replay_prob=0.3,
-        fantasy_prob=0.1,
-        data=data,
-        model=model,
-        optimizer=optimizer,
-        save_checkpoint=save_checkpoint,
-        )
+training = Training(
+    min_program_depth=5,
+    max_program_depth=data.max_program_depth,
+    epochs=145,
+    batch_size=4,
+    learning_rate_trn=1e-4,
+    learning_rate_gfn=1e-4,
+    e_steps=500,
+    m_step_threshold_init=150,
+    m_steps=150,
+    alpha=0.3,
+    beta=0.7,
+    epsilon=0.3,
+    replay_prob=0.3,
+    fantasy_prob=0.005,
+    data=data,
+    model=model,
+    optimizer=optimizer,
+    save_checkpoint=save_checkpoint,
+    )
 
-    training.train()
+training.train()
+
+

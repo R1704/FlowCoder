@@ -2,7 +2,7 @@
 import datetime
 import time
 
-# Logging
+# debugging
 import logging
 
 # Math
@@ -12,6 +12,9 @@ import random
 from itertools import chain
 import numpy as np
 from collections import deque
+
+# To measure edit distance between outputs
+import Levenshtein
 
 # Torch
 from torch.distributions.categorical import Categorical
@@ -72,14 +75,14 @@ class Training:
         # self.optimizer_policy = Adam(self.model.forward_logits.parameters(), lr=self.learning_rate_gfn)
 
         # self.optimizer_policy = Adam(self.model.parameters(), lr=self.learning_rate_gfn)
-        self.max_reward = 100.
+        self.max_reward = 10.
         self.csv_file = os.path.join(RESULTS, f'stats_{datetime.datetime.now()}.csv')
-        headers = ['Epoch', 'Steps', 'Task Name', 'Program', 'Examples']
+        headers = ['Depth', 'Epoch', 'Steps', 'Task Name', 'Program', 'Examples']
         create_csv(self.csv_file, headers)
 
         # Create a dictionary of CFGs of different depths, so we can learn it gradually
         self.cfgs = {depth: self.data.dsl.DSL_to_CFG(self.data.type_request, max_program_depth=depth)
-                     for depth in range(2, self.data.max_program_depth)}
+                     for depth in range(self.min_program_depth, self.max_program_depth + 1)}
 
     def get_next_rules(self, S, depth):
         return [(S, p) for p in self.cfgs[depth].rules[S].keys()]
@@ -104,10 +107,6 @@ class Training:
         # Initialize an empty list to store the generated program for each program in the batch
         programs = [[] for _ in range(len(batch_IOs))]
 
-        # # Process IO
-        # preprocessed_ios = self.model.io_encoder(batch_IOs)
-        # preprocessed_ios = self.model.positional_encoding(preprocessed_ios)
-
         # Loop continues until all frontiers are empty, i.e., all programs are fully generated
         while any(frontiers):
 
@@ -125,6 +124,7 @@ class Training:
 
             # Loop over each program in the batch
             for i in range(len(batch_IOs)):
+
                 # Check if there are still non-terminals to be expanded in the frontier
                 if frontiers[i]:
                     next_nt = frontiers[i].pop()
@@ -259,7 +259,10 @@ class Training:
             for program, input_set, state in zip(programs, inputs, states):
                 predicted_output = [program.eval_naive(self.data.dsl, [inp]) for inp in input_set]
 
-                # NOTE: If the program is constant it means it doesn't depend on the input. Do we want to exclude this?
+                # NOTE: If the program is constant it means it doesn't depend on the input.
+                # We are also checking for Nones, don't want any programs that produce them
+                # Also, the output should be in the lexicon. This is not strictly necessary, the model would learn to
+                # extrapolate without this constraint, but this complicates the model.
                 if \
                         not program.is_constant() \
                         and predicted_output is not None \
@@ -301,17 +304,17 @@ class Training:
         # self.freeze_parameters(self.model.transformer)
 
         # Sample tasks from the real distribution and try to solve them (wake phase)
-        batch_IOs, task_names = self.data.get_next_batch(self.batch_size, data_type='test', shuffle=True)  # set shuffle to False if you want the tasks in order
+        batch_IOs, task_names = self.data.get_next_batch(self.batch_size, data_type='test', shuffle=False)
         logging.info(f'Working on task: {task_names[0]}')
         logging.info(f'IOs: {batch_IOs[0]}')
-
 
         e_step_tqdm = tqdm.tqdm(range(self.e_steps), position=0, desc='e_step', leave=False, colour='blue', ncols=80)
         for e_step in e_step_tqdm:
 
             # Predict programs and calculate associated log partition functions and other parameters
             # epsilon and beta for exploration
-            logZs, total_forwards, programs, states = self.sample_program_dfs(batch_IOs, depth, epsilon=self.epsilon,
+            logZs, total_forwards, programs, states = self.sample_program_dfs(batch_IOs, depth,
+                                                                              epsilon=self.epsilon,
                                                                               beta=self.beta)
 
             # Calculate rewards for the predicted programs
@@ -323,7 +326,6 @@ class Training:
             # Collect data for stats and training
             e_step_data.append((programs, states, batch_IOs, task_names, rewards))
 
-            # steps = torch.tensor([len(s) - 1 for s in states], device=device)
             # Compute the loss and perform backpropagation
             e_loss = (logZs + total_forwards - torch.log(rewards).clip(-20)).pow(2)  # Trajectory Balance
             e_loss = e_loss.mean()
@@ -356,7 +358,7 @@ class Training:
                 self.replay(replay_data)
 
                 # If we solved it, continue with the next task.
-                # Comment this out if you want the chance for multiple solutions.
+                # Comment this return out if you want the chance for multiple solutions.
                 return e_step_data, e_step_losses, e_step_logZs, solved
 
             if random.random() < self.fantasy_prob:
@@ -515,45 +517,23 @@ class Training:
             print('=' * 50)
         print(f'Average programs per second: {self.calculate_programs_per_second(start_time, len(total_data))}')
 
-    ##############################################
-    ##############################################
-    ##############################################
-    ########### ***** REWARD ***** ###############
-    ##############################################
-    ##############################################
-    ##############################################
+    def normalized_similarity(self, seq1, seq2):
+        # Computes the normalized edit distance
+        ld = 1 - Levenshtein.distance(seq1, seq2) / (max(len(seq1), len(seq2)) + 1e-10)
+        # print(f'True: {seq1}')
+        # print(f'Pred: {seq2}')
+        # print(f'Levenshtein Distance: {ld}')
+        return ld
 
     def rewards(self, programs, batch_ios):
 
         # Create program checkers
-        program_checkers = [self.make_program_checker(self.data.dsl, examples, self.data.lexicon) for examples in batch_ios]
+        program_checkers = [self.make_program_checker(self.data.dsl, examples, self.data.lexicon)
+                            for examples in batch_ios]
 
         # Compute rewards
-        reward = [float(program_checker(program)) for program, program_checker in
-                  zip(programs, program_checkers)]
+        reward = [float(program_checker(program)) for program, program_checker in zip(programs, program_checkers)]
 
-
-        # program_checkers = [make_program_checker(self.data.dsl, examples) for examples in batch_ios]
-        # reward = [float(program_checker(program, False)) for program, program_checker in
-        #           zip(programs, program_checkers)]
-
-        # reward = []
-        # for i, program, ios in zip(range(len(programs)), programs, batch_ios):
-        #     res = self.compare_outputs(program, ios, dsl)
-
-        # if res == 1. or program == batch_program[i]:
-        #     for x, io in enumerate(ios):
-        #         inp, out = io
-        #         predicted_output = program.eval_naive(dsl, inp)
-        #         print(f'reward          : {res}')
-        #         print(f'input           : {inp}')
-        #         print(f'real output     : {out}')
-        #         print(f'predicted_output: {predicted_output}')
-        #         print(f'real program    : {batch_program[i]}')
-        #         print(f'pred program    : {program}')
-        #         print('---------------------------------')
-
-        # reward.append(res)
         return torch.tensor(reward, requires_grad=True, device=device)
 
     def make_program_checker(self, dsl: DSL, examples, data_lexicon) -> Callable[[Program, bool], float]:
@@ -568,12 +548,14 @@ class Training:
                     not all(out in data_lexicon for sublist in predicted_output for out in sublist):
                 return 0.0
 
+            # Compute the average normalized Levenshtein distance over all examples
+            avg_levenshtein_distance = 0
             for example in examples:
                 input, output = example
                 out = prog.eval_naive(dsl, input)
-                if output != out:
-                    return 0.1
-            return self.max_reward
+                avg_levenshtein_distance += self.normalized_similarity(output, out)
+            avg_levenshtein_distance /= len(examples)
+            return self.max_reward if avg_levenshtein_distance == 1 else avg_levenshtein_distance
 
         return checker
 

@@ -46,6 +46,7 @@ class Data:
         for name, examples in tasks:
             ex = [([i[0]], o) for i, o in examples]
             all_tasks.append((name, ex))
+            print(name, ex)
         return all_tasks, dataset_size
 
     @staticmethod
