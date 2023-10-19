@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.8.4)  4 OCT 2023 13:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.8.4)  19 OCT 2023 12:10
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -23,7 +23,7 @@ File: size10.clo 2019/12/20 v1.4l Standard LaTeX file (size option)
 \abovecaptionskip=\skip47
 \belowcaptionskip=\skip48
 \bibindent=\dimen134
-) (../auxillary/preamble.tex (/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/hyperref.sty
+) (../auxiliary/preamble.tex (/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2020-05-15 v7.00e Hypertext links for LaTeX
  (/usr/local/texlive/2020/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
 Package: ltxcmds 2019/12/15 v1.24 LaTeX kernel commands for general use (HO)
@@ -255,6 +255,19 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 \Gm@layouthoffset=\dimen168
 \Gm@layoutvoffset=\dimen169
 \Gm@dimlist=\toks26
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2019/11/30 v1.2a Enhanced LaTeX Graphics (DPC,SPQR)
+ (/usr/local/texlive/2020/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2019/11/30 v1.4a Standard LaTeX Graphics (DPC,SPQR)
+ (/usr/local/texlive/2020/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 105.
+)
+\Gin@req@height=\dimen170
+\Gin@req@width=\dimen171
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/xargs/xargs.sty
 Package: xargs 2008/03/22 v1.1  extended macro definitions  (mpg)
  (/usr/local/texlive/2020/texmf-dist/tex/latex/xkeyval/xkeyval.sty
@@ -294,8 +307,8 @@ Package: todonotes 2018/11/22
 Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty (/usr/local/texlive/2020/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty (/usr/local/texlive/2020/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty (/usr/local/texlive/2020/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
 \pgfutil@everybye=\toks31
-\pgfutil@tempdima=\dimen170
-\pgfutil@tempdimb=\dimen171
+\pgfutil@tempdima=\dimen172
+\pgfutil@tempdimb=\dimen173
  (/usr/local/texlive/2020/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-lists.tex)) (/usr/local/texlive/2020/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
 \pgfutil@abb=\box50
  (/usr/local/texlive/2020/texmf-dist/tex/latex/ms/everyshi.sty
@@ -304,20 +317,7 @@ Package: everyshi 2001/05/15 v3.00 EveryShipout Package (MS)
 Package: pgfrcs 2020/01/08 v3.1.5b (3.1.5b)
 ))
 Package: pgf 2020/01/08 v3.1.5b (3.1.5b)
- (/usr/local/texlive/2020/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty (/usr/local/texlive/2020/texmf-dist/tex/latex/graphics/graphicx.sty
-Package: graphicx 2019/11/30 v1.2a Enhanced LaTeX Graphics (DPC,SPQR)
- (/usr/local/texlive/2020/texmf-dist/tex/latex/graphics/graphics.sty
-Package: graphics 2019/11/30 v1.4a Standard LaTeX Graphics (DPC,SPQR)
- (/usr/local/texlive/2020/texmf-dist/tex/latex/graphics/trig.sty
-Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
-) (/usr/local/texlive/2020/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
-File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
-)
-Package graphics Info: Driver file: pdftex.def on input line 105.
-)
-\Gin@req@height=\dimen172
-\Gin@req@width=\dimen173
-) (/usr/local/texlive/2020/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty (/usr/local/texlive/2020/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+ (/usr/local/texlive/2020/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty (/usr/local/texlive/2020/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty (/usr/local/texlive/2020/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
 Package: pgfsys 2020/01/08 v3.1.5b (3.1.5b)
  (/usr/local/texlive/2020/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
 \pgfkeys@pathtoks=\toks32
@@ -507,7 +507,18 @@ LaTeX Info: Redefining \addtolength on input line 81.
 \calc@Cskip=\skip56
 )
 \c@@todonotes@numberoftodonotes=\count302
-) (/usr/local/texlive/2020/texmf-dist/tex/latex/glossaries/base/glossaries.sty
+) (/usr/local/texlive/2020/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryfit.code.tex
+File: tikzlibraryfit.code.tex 2020/01/08 v3.1.5b (3.1.5b)
+) (/usr/local/texlive/2020/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.geometric.code.tex
+File: tikzlibraryshapes.geometric.code.tex 2020/01/08 v3.1.5b (3.1.5b)
+ (/usr/local/texlive/2020/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.geometric.code.tex
+File: pgflibraryshapes.geometric.code.tex 2020/01/08 v3.1.5b (3.1.5b)
+)) (/usr/local/texlive/2020/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryarrows.code.tex
+File: tikzlibraryarrows.code.tex 2020/01/08 v3.1.5b (3.1.5b)
+ (/usr/local/texlive/2020/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.code.tex
+File: pgflibraryarrows.code.tex 2020/01/08 v3.1.5b (3.1.5b)
+\arrowsize=\dimen280
+)) (/usr/local/texlive/2020/texmf-dist/tex/latex/glossaries/base/glossaries.sty
 Package: glossaries 2020/03/19 v4.46 (NLCT)
  (/usr/local/texlive/2020/texmf-dist/tex/latex/mfirstuc/mfirstuc.sty
 Package: mfirstuc 2017/11/14 v2.06 (NLCT)
@@ -593,7 +604,7 @@ Package: longtable 2020/01/07 v4.13 Multi-page Table package (DPC)
 \LTpre=\skip62
 \LTpost=\skip63
 \LTchunksize=\count323
-\LTcapwidth=\dimen280
+\LTcapwidth=\dimen281
 \LT@head=\box61
 \LT@firsthead=\box62
 \LT@foot=\box63
@@ -606,24 +617,25 @@ Package: longtable 2020/01/07 v4.13 Multi-page Table package (DPC)
 )
 \glsdescwidth=\skip64
 \glspagelistwidth=\skip65
-) (/usr/local/texlive/2020/texmf-dist/tex/latex/glossaries/styles/glossary-super.sty
+)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/glossaries/styles/glossary-super.sty
 Package: glossary-super 2020/03/19 v4.46 (NLCT)
  (/usr/local/texlive/2020/texmf-dist/tex/latex/supertabular/supertabular.sty
 Package: supertabular 2020/02/02 v4.1g the supertabular environment
 \c@tracingst=\count328
-\ST@wd=\dimen281
+\ST@wd=\dimen282
 \ST@rightskip=\skip66
 \ST@leftskip=\skip67
 \ST@parfillskip=\skip68
-\ST@pageleft=\dimen282
-\ST@headht=\dimen283
-\ST@tailht=\dimen284
-\ST@pagesofar=\dimen285
-\ST@pboxht=\dimen286
-\ST@lineht=\dimen287
-\ST@prevht=\dimen288
-\ST@toadd=\dimen289
-\ST@dimen=\dimen290
+\ST@pageleft=\dimen283
+\ST@headht=\dimen284
+\ST@tailht=\dimen285
+\ST@pagesofar=\dimen286
+\ST@pboxht=\dimen287
+\ST@lineht=\dimen288
+\ST@prevht=\dimen289
+\ST@toadd=\dimen290
+\ST@dimen=\dimen291
 \ST@pbox=\box65
 )) (/usr/local/texlive/2020/texmf-dist/tex/latex/glossaries/styles/glossary-tree.sty
 Package: glossary-tree 2020/03/19 v4.46 (NLCT)
@@ -640,12 +652,12 @@ Package: glossaries-extra 2020/04/01 v1.45 (NLCT)
 \glo@main@file=\write5
 \openout5 = `master_thesis_s1000522.glo'.
 
-Package glossaries Info: Writing glossary file master_thesis_s1000522.glo on input line 51.
- (../auxillary/glossary.tex) (/usr/local/texlive/2020/texmf-dist/tex/latex/tools/array.sty
+Package glossaries Info: Writing glossary file master_thesis_s1000522.glo on input line 61.
+ (../auxiliary/glossary.tex) (/usr/local/texlive/2020/texmf-dist/tex/latex/tools/array.sty
 Package: array 2019/08/31 v2.4l Tabular extension package (FMi)
-\col@sep=\dimen291
+\col@sep=\dimen292
 \ar@mcellbox=\box66
-\extrarowheight=\dimen292
+\extrarowheight=\dimen293
 \NC@list=\toks54
 \extratabsurround=\skip70
 \backup@length=\skip71
@@ -657,26 +669,25 @@ File: l3backend-pdfmode.def 2020-06-29 L3 backend support: PDF mode
 ) (/Users/ron/Code/master_thesis/report/LaTeX/main/master_thesis_s1000522.aux)
 \openout1 = `master_thesis_s1000522.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
 \AtBeginShipoutBox=\box69
-Package hyperref Info: Link coloring ON on input line 70.
-
-(/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/nameref.sty
+Package hyperref Info: Link coloring ON on input line 80.
+ (/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
  (/usr/local/texlive/2020/texmf-dist/tex/latex/refcount/refcount.sty
 Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
@@ -685,9 +696,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count333
 )
-LaTeX Info: Redefining \ref on input line 70.
-LaTeX Info: Redefining \pageref on input line 70.
-LaTeX Info: Redefining \nameref on input line 70.
+LaTeX Info: Redefining \ref on input line 80.
+LaTeX Info: Redefining \pageref on input line 80.
+LaTeX Info: Redefining \nameref on input line 80.
  (/Users/ron/Code/master_thesis/report/LaTeX/main/master_thesis_s1000522.out) (/Users/ron/Code/master_thesis/report/LaTeX/main/master_thesis_s1000522.out)
 \@outlinefile=\write6
 \openout6 = `master_thesis_s1000522.out'.
@@ -695,13 +706,13 @@ LaTeX Info: Redefining \nameref on input line 70.
  (/usr/local/texlive/2020/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count334
-\scratchdimen=\dimen293
+\scratchdimen=\dimen294
 \scratchbox=\box70
 \nofMPsegments=\count335
 \nofMParguments=\count336
 \everyMPshowfont=\toks55
 \MPscratchCnt=\count337
-\MPscratchDim=\dimen294
+\MPscratchDim=\dimen295
 \MPnumerator=\count338
 \makeMPintoPDFobject=\count339
 \everyMPtoPDFconversion=\toks56
@@ -745,7 +756,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-ABD: EveryShipout initializing macros (../auxillary/titlepage.tex
+ABD: EveryShipout initializing macros (../auxiliary/titlepage.tex
 Package epstopdf Info: Source file: <../img/in_dei_nomine_feliciter.eps>
 (epstopdf)                    date: 2020-06-29 13:55:38
 (epstopdf)                    size: 17353 bytes
@@ -755,25 +766,25 @@ Package epstopdf Info: Source file: <../img/in_dei_nomine_feliciter.eps>
 (epstopdf)             Command: <repstopdf --outfile=../img/in_dei_nomine_feliciter-eps-converted-to.pdf ../img/in_dei_nomine_feliciter.eps>
 (epstopdf)             \includegraphics on input line 6.
 Package epstopdf Info: Output file is already uptodate.
-<../img/in_dei_nomine_feliciter-eps-converted-to.pdf, id=256, 248.93pt x 319.1925pt>
+<../img/in_dei_nomine_feliciter-eps-converted-to.pdf, id=260, 248.93pt x 319.1925pt>
 File: ../img/in_dei_nomine_feliciter-eps-converted-to.pdf Graphic file (type pdf)
 <use ../img/in_dei_nomine_feliciter-eps-converted-to.pdf>
 Package pdftex.def Info: ../img/in_dei_nomine_feliciter-eps-converted-to.pdf  used on input line 6.
 (pdftex.def)             Requested size: 71.13188pt x 91.20946pt.
 )
-Underfull \hbox (badness 10000) in paragraph at lines 98--98
+Underfull \hbox (badness 10000) in paragraph at lines 108--108
 
  []
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 98.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 108.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 98.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 108.
  (/usr/local/texlive/2020/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \hbox (badness 10000) in paragraph at lines 98--98
+Underfull \hbox (badness 10000) in paragraph at lines 108--108
 
  []
 
@@ -788,26 +799,26 @@ Underfull \hbox (badness 10000) in paragraph at lines 98--98
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
-Overfull \vbox (795.83461pt too high) has occurred while \output is active []
+Underfull \vbox (badness 1077) has occurred while \output is active []
 
  [2
 
 
 ]
-Underfull \hbox (badness 1242) in paragraph at lines 11--11
+Underfull \hbox (badness 1242) in paragraph at lines 31--31
  [][] [][][][][] \OT1/cmr/m/n/10 From [[]]: \Self-organization is typ-i-cally 
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-
-Underfull \hbox (badness 1221) in paragraph at lines 21--21
+ [3]
+Underfull \hbox (badness 1221) in paragraph at lines 45--45
  [][] [][][][][] \OT1/cmr/m/n/10 For-mal-iz-ing the prob-lem as con-struct-ing 
  []
 
-[3]
-Underfull \hbox (badness 1102) in paragraph at lines 24--24
+
+Underfull \hbox (badness 1102) in paragraph at lines 47--47
  \OT1/cmr/m/n/10 a sym-bolic search al-go-rithm uses those 
  []
 
@@ -831,7 +842,7 @@ l.10 \end{abstract}
 ] (/Users/ron/Code/master_thesis/report/LaTeX/main/master_thesis_s1000522.tocpdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.49 ...umberline {2}Transformer}{24}{section.3.2}
+l.52 ...\numberline {8}DeepSynth}{28}{section.0.8}
                                                   % [1
 
 
@@ -871,120 +882,153 @@ l.14 \listoftables
 ]
 Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 23.
  (../sections/introduction.tex)
-Underfull \hbox (badness 1888) in paragraph at lines 35--41
+Underfull \hbox (badness 1888) in paragraph at lines 39--45
 []\OT1/cmr/m/n/10 What rep-re-sen-ta-tions can im-ple-ment
  []
 
-(../sections/1computational/cognitive_systems.texpdfTeX warning (ext4): destination with the same identifier (name{page.5}) has been already used, duplicate ignored
+pdfTeX warning (ext4): destination with the same identifier (name{page.5}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1 \chapter
-            {Computational Description} [5
+l.52 \end{itemize}
+                   [5
 
-]
-Chapter 1.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-Overfull \vbox (636.78244pt too high) has occurred while \output is active []
-
- [6
-
-]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [7]
-Underfull \hbox (badness 6961) in paragraph at lines 89--89
-[]\OT1/cmr/bx/n/12 Self-organization and pre-dic-tive
+] (/Users/ron/Code/master_thesis/report/LaTeX/main/../sections/theoretical.tex
+Underfull \hbox (badness 6141) in paragraph at lines 17--18
+[]\OT1/cmr/m/n/10 Levin ex-pounds on the idea that the self-
  []
 
-[8]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-Underfull \hbox (badness 1270) in paragraph at lines 116--117
-[]\OT1/cmr/m/n/10 Prototype The-ory ( + pro-to-type, stereo-type,
+[6]
+Underfull \hbox (badness 5203) in paragraph at lines 53--54
+[]\OT1/cmr/m/n/10 Autonomy is de-fined as the de-gree of self-
  []
 
-[9] [10]
-Underfull \hbox (badness 10000) in paragraph at lines 168--168
+[7]
+Underfull \hbox (badness 10000) in paragraph at lines 106--106
 []\OT1/cmr/bx/n/12 Part-Whole Hi-er-ar-chies/ Ho-l-
  []
 
 
-LaTeX Warning: Citation `Lake_Ullman_Tenenbaum_Gershman_2017' on page 11 undefined on input line 194.
+Underfull \vbox (badness 2221) has occurred while \output is active []
+
+ [8]
+Underfull \hbox (badness 1270) in paragraph at lines 147--148
+[]\OT1/cmr/m/n/10 Prototype The-ory ( + pro-to-type, stereo-type,
+ []
+
+
+Underfull \hbox (badness 1629) in paragraph at lines 159--160
+[]\OT1/cmr/m/n/10 Relationship be-tween agent and en-vi-ron-ment.
+ []
+
+[9] [10]
+Underfull \hbox (badness 6961) in paragraph at lines 226--226
+[]\OT1/cmr/bx/n/12 Self-organization and pre-dic-tive
+ []
 
 [11]
-
-LaTeX Warning: Citation `Lake_Ullman_Tenenbaum_Gershman_2017' on page 12 undefined on input line 215.
-
-[12] [13]
-Underfull \vbox (badness 5893) has occurred while \output is active []
-
- [14] [15] [16]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [17]
-Underfull \hbox (badness 1281) in paragraph at lines 482--483
+ [12]
+<../img/semPointer.jpg, id=734, 784.95238pt x 409.29149pt>
+File: ../img/semPointer.jpg Graphic file (type jpg)
+<use ../img/semPointer.jpg>
+Package pdftex.def Info: ../img/semPointer.jpg  used on input line 271.
+(pdftex.def)             Requested size: 483.69687pt x 252.20926pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \hbox (badness 1281) in paragraph at lines 316--316
+[]\OT1/cmr/bx/n/12 What does it mean to un-der-
+ []
+
+[13] [14pdfTeX warning (ext4): destination with the same identifier (name{figure.0.1}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.352 
+       </Users/ron/Code/master_thesis/report/LaTeX/main/../img/semPointer.jpg>] [15] [16]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [17] [18] [19] [20]
+Underfull \hbox (badness 1281) in paragraph at lines 629--630
 []\OT1/cmr/m/n/10 Relation to self-organization, ac-tive in-fer-ence,
  []
 
-
+[21]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [18] [19]) [20] (../sections/2algorithmic/lot.tex
-Chapter 2.
-
-Underfull \hbox (badness 10000) in paragraph at lines 2--2
-[]\OT1/cmr/bx/n/14.4 Probabilistic Pro-gram-ming
- []
-
-) (../sections/3implementational/implementational.tex [21
-
-]
-Chapter 3.
-
-Underfull \hbox (badness 1062) in paragraph at lines 42--43
+ [22] [23]) (/Users/ron/Code/master_thesis/report/LaTeX/main/../sections/technical.tex [24]
+Underfull \hbox (badness 1062) in paragraph at lines 49--50
 \OT1/cmr/m/n/10 gram-mars of mod-er-ate com-plex-ity can de-fine im-
  []
 
-[22
-
-]
+[25] [26] [27] [28]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [23] [24]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [25] [26]
-Overfull \hbox (34.49474pt too wide) detected at line 349
+ [29]
+Overfull \hbox (34.49474pt too wide) detected at line 381
 \OML/cmm/m/it/10 L[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^\\OT1/cmr/m/n/10 ; \OML/cmm/m/it/10 ^^R\OT1/cmr/m/n/10 ) = [][]
  []
 
-[27]
-Underfull \hbox (badness 2856) in paragraph at lines 411--412
+[30]
+Underfull \hbox (badness 2856) in paragraph at lines 443--444
 []\OT1/cmr/m/n/10 Write about the marginal-iza-tion. Can we
  []
 
-[28] [29]
-Underfull \hbox (badness 10000) in paragraph at lines 549--550
+[31] [32]
+Underfull \hbox (badness 10000) in paragraph at lines 581--582
 \OT1/cmr/m/n/10 which is equiv-a-lent to min-i-miz-ing
  []
 
 
-Underfull \hbox (badness 2662) in paragraph at lines 549--550
+Underfull \hbox (badness 2662) in paragraph at lines 581--582
 \OML/cmm/m/it/10 D[] []$\OT1/cmr/m/n/10 , the KL is op-po-site di-rec-
  []
 
-[30]) (../sections/discussion.tex [31
+[33]
+Chapter 1.
+
+Underfull \hbox (badness 10000) in paragraph at lines 597--597
+[]\OT1/cmr/bx/n/14.4 Probabilistic Pro-gram-ming
+ []
+
+) (../sections/discussion.tex [34
 
 ]
-Chapter 4.
-) [32
+Chapter 2.
+
+Underfull \hbox (badness 10000) in paragraph at lines 13--13
+[]\OT1/cmr/bx/n/14.4 Implications/ Con-se-quences
+ []
+
+) [35
 
 
-] (/Users/ron/Code/master_thesis/report/LaTeX/main/master_thesis_s1000522.gls) [33
+]
+No file master_thesis_s1000522.gls.
+
+Package glossaries-extra Warning: Glossary `main' is missing on input line 66.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 66--66
+[]\OT1/cmr/m/n/10 Check the con-tents of the file
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 66--66
+\OT1/cmtt/m/n/10 master_thesis_s1000522.glo\OT1/cmr/m/n/10 . If it's empty,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 66--66
+[]\OT1/cmtt/m/n/10 makeglossaries-lite
+ []
+
+
+Package glossaries-extra Warning: Rerun required to build the glossary `main' or check TeX's shell escape allows you to run makeindex on input line 66.
+
+[36
 
 
 
@@ -1005,99 +1049,113 @@ Underfull \hbox (badness 1158) in paragraph at lines 4--8
  []
 
 
-Underfull \hbox (badness 1057) in paragraph at lines 22--26
+Underfull \hbox (badness 1057) in paragraph at lines 27--31
 \OT1/cmr/m/n/10 Tadahiro Taniguchi, Hi-roaki Gomi, and Josh
  []
 
 
-Underfull \hbox (badness 1365) in paragraph at lines 72--75
+Underfull \hbox (badness 1365) in paragraph at lines 88--91
 []\OT1/cmr/m/n/10 Joshua S. Rule, Joshua B. Tenen-baum, and
  []
 
 
-Underfull \hbox (badness 1365) in paragraph at lines 72--75
+Underfull \hbox (badness 1365) in paragraph at lines 88--91
 \OT1/cmr/m/it/10 Trends in Cog-ni-tive Sci-ences\OT1/cmr/m/n/10 , 24(11):900--915,
  []
 
-[34
+[37
 
 
 ]
-Underfull \hbox (badness 1005) in paragraph at lines 124--127
+Underfull \hbox (badness 1005) in paragraph at lines 140--143
 []\OT1/cmr/m/n/10 Nabil Bouize-garene, Maxwell Ram-stead, Axel
  []
 
 
-Underfull \hbox (badness 1466) in paragraph at lines 129--134
+Underfull \hbox (badness 1466) in paragraph at lines 145--150
 []\OT1/cmr/m/n/10 Anirudh Goyal and Yoshua Ben-gio.  In-duc-
  []
 
 
-Underfull \hbox (badness 1205) in paragraph at lines 129--134
+Underfull \hbox (badness 1205) in paragraph at lines 145--150
 \OT1/cmr/m/n/10 ni-tion.  \OT1/cmr/m/it/10 Pro-ceed-ings of the Royal So-ci-ety A:
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 136--142
+Underfull \hbox (badness 10000) in paragraph at lines 152--158
 []\OT1/cmr/m/n/10 Yoshua Ben-gio.  Scal-ing in the ser-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 136--142
+Underfull \hbox (badness 10000) in paragraph at lines 152--158
 \OT1/cmr/m/n/10 vice of rea-son-ing & model-based ML.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 136--142
+Underfull \hbox (badness 10000) in paragraph at lines 152--158
 [][]$\OT1/cmtt/m/n/10 https : / / yoshuabengio . org / 2023 / 03 / 21 /
  []
 
 
-Overfull \hbox (58.23262pt too wide) in paragraph at lines 136--142
+Overfull \hbox (58.23262pt too wide) in paragraph at lines 152--158
 \OT1/cmtt/m/n/10 scaling-[]in-[]the-[]service-[]of-[]reasoning-[]model-[]based-[]ml/$[][]\OT1/cmr/m/n/10 ,
  []
 
 
-Underfull \hbox (badness 1502) in paragraph at lines 155--160
+Underfull \hbox (badness 1502) in paragraph at lines 171--176
 \OT1/cmr/m/n/10 Ma-tri-con, Kevin El-lis, Pierre Ohlmann, and
  []
 
 
-Underfull \hbox (badness 2005) in paragraph at lines 162--167
+Underfull \hbox (badness 2005) in paragraph at lines 178--183
 \OT1/cmr/m/n/10 rablyov, Doina Pre-cup, and Yoshua Ben-gio.
  []
 
-) [35
-
-]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 73.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 73.
+) [38]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 76.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 76.
  (/Users/ron/Code/master_thesis/report/LaTeX/main/master_thesis_s1000522.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 73.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 73.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 76.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 76.
 Package rerunfilecheck Info: File `master_thesis_s1000522.out' has not changed.
-(rerunfilecheck)             Checksum: E6CCD672E7403F34416010FF22BC89C3;4060.
-
-
-LaTeX Warning: There were undefined references.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 73.
+(rerunfilecheck)             Checksum: 35158EED1757306796FE51816B04D8BF;4119.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 76.
  ) 
 Here is how much of TeX's memory you used:
- 24286 strings out of 480906
- 451646 string characters out of 5908284
- 909955 words of memory out of 5000000
- 39149 multiletter control sequences out of 15000+600000
+ 26628 strings out of 480906
+ 511995 string characters out of 5908284
+ 929751 words of memory out of 5000000
+ 41438 multiletter control sequences out of 15000+600000
  544836 words of font info for 66 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 71i,10n,85p,4273b,935s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 71i,10n,85p,3030b,941s stack positions out of 5000i,500n,10000p,200000b,80000s
+pdfTeX warning (dest): name{glo:homeostasis} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{glo:glsy} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{glo:latex} has been referenced but does not exist, replaced by a fixed one
+
 pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist, replaced by a fixed one
 
+pdfTeX warning (dest): name{glo:perception\040action\040cycle} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{glo:counterfactual\040states} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{glo:embodiment} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{glo:embryo} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{glo:blastoderm} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{glo:oocyte} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{glo:cognitive\040light\040cone} has been referenced but does not exist, replaced by a fixed one
+
 {/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on /Users/ron/Code/master_thesis/report/LaTeX/main/master_thesis_s1000522.pdf (41 pages, 390028 bytes).
+Output written on /Users/ron/Code/master_thesis/report/LaTeX/main/master_thesis_s1000522.pdf (44 pages, 500388 bytes).
 PDF statistics:
- 1015 PDF objects out of 1200 (max. 8388607)
- 925 compressed objects within 10 object streams
- 187 named destinations out of 1000 (max. 500000)
- 562 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1080 PDF objects out of 1200 (max. 8388607)
+ 985 compressed objects within 10 object streams
+ 229 named destinations out of 1000 (max. 500000)
+ 575 words of extra memory for PDF output out of 10000 (max. 10000000)
 

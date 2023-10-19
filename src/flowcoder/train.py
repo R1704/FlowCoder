@@ -40,6 +40,19 @@ from flowcoder.config import *
 from flowcoder.utils import *
 
 
+
+
+# TODO: show that Z approximates total flow
+# TODO: fantasy batch in replay
+# TODO: check all TODOs
+# TODO: ablation sleep
+# TODO: EM vs normal
+# TODO: learning rate scheduler
+# TODO: hyperparameter search
+
+
+
+
 @dataclass
 class Training:
     min_program_depth: int

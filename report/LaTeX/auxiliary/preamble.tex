@@ -28,6 +28,9 @@
 \usepackage[margin=2cm]{geometry}
 \setlength {\marginparwidth}{2cm}
 
+% For graphics
+\usepackage{graphicx}
+
 % For page headers
 % \usepackage[]{fancyhdr}
 
@@ -46,6 +49,10 @@
 \newcommandx{\story}[2][1=]{\todo[inline, linecolor=OrangeRed,backgroundcolor=OrangeRed!25,bordercolor=OrangeRed,#1]{#2}}
 \newcommandx{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
 %
+
+% For diagrams
+\usepackage{tikz}
+\usetikzlibrary{fit, positioning, shapes.geometric, arrows}
 
 % Glossary
 \usepackage[toc]{glossaries}

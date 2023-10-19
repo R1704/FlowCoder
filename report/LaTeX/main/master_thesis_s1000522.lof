@@ -1,4 +1,3 @@
-\addvspace {10\p@ }
-\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1}{\ignorespaces (a) A sensorimotor input, here a table, is compressed sequentially into a Semantic Pointer. (b) A Semantic Pointer is decompressed and returns a representation of a table. Due to the compression process the decompression results in noise. The figure is taken from Blouw et al. \cite {blouw2016concepts}.}}{14}{figure.0.1}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }

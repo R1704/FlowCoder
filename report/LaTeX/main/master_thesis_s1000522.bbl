@@ -12,6 +12,11 @@ Artur~d'Avila Garcez and Luis~C. Lamb.
 \newblock {\em arXiv:2012.05876 [cs]}, December 2020.
 \newblock arXiv: 2012.05876.
 
+\bibitem{blouw2016concepts}
+Peter Blouw, Eugene Solodkin, Paul Thagard, and Chris Eliasmith.
+\newblock Concepts as semantic pointers: A framework and computational model.
+\newblock {\em Cognitive science}, 40(5):1128--1162, 2016.
+
 \bibitem{vernon_embodied_2015}
 David Vernon, Robert Lowe, Serge Thill, and Tom Ziemke.
 \newblock Embodied cognition and circular causality: on the role of
@@ -23,6 +28,17 @@ Karl Friston, Rosalyn~J. Moran, Yukie Nagai, Tadahiro Taniguchi, Hiroaki Gomi,
   and Josh Tenenbaum.
 \newblock World model learning and inference.
 \newblock {\em Neural Networks}, 144:573--590, December 2021.
+
+\bibitem{eliasmith2013build}
+Chris Eliasmith.
+\newblock {\em How to build a brain: A neural architecture for biological
+  cognition}.
+\newblock Oxford University Press, 2013.
+
+\bibitem{Lake_Ullman_Tenenbaum_Gershman_2017}
+Brenden~M. Lake, Tomer~D. Ullman, Joshua~B. Tenenbaum, and Samuel~J. Gershman.
+\newblock Building machines that learn and think like people.
+\newblock {\em Behavioral and Brain Sciences}, 40:e253, 2017.
 
 \bibitem{mazzaglia_free_2022}
 Pietro Mazzaglia, Tim Verbelen, Ozan Çatal, and Bart Dhoedt.

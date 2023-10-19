@@ -1,6 +1,6 @@
 \documentclass[twocolumn, a4paper]{report}
 
-\input{../auxillary/preamble}
+\input{../auxiliary/preamble}
 
 \clearpage
 \section*{Acknowledgement}
@@ -23,7 +23,11 @@ Cool words to use:
 \todo[inline]{Go through text and see which words should be operationalised into the glossary}
 \todo[inline]{Put all terms in gpt and ask for similar terms}
 \todo[inline]{Use plagiarism checker}
-\todo[inline]{make sure that the tone of the thesis is the same everywhere. Write it with wit. Make it fun to read.}
+\todo[inline]{make sure that the tone of the thesis is the same everywhere. 
+Write it with wit. Make it fun to read. 
+Don't make convoluted sentences.}
+
+\todo[inline]{Check for british vs american grammar}
 
 \input{../sections/introduction}
 
@@ -48,16 +52,15 @@ Other things to clarify
 \end{itemize}
 
 
-\input{../sections/1computational/cognitive_systems}
+\input{../sections/theoretical.tex}
 \newpage
-\input{../sections/2algorithmic/lot}
-\newpage
-\input{../sections/3implementational/implementational}
+\input{../sections/technical.tex}
 \newpage
 \input{../sections/discussion}
 
-\Gls{latex} is very useful and can use \gls{glsy}.
 
+\Gls{latex} is very useful and can use \gls{glsy}.
+\Gls{latex} is very useful and can use \gls{homeostasis}.
 
 \clearpage
 \printglossaries

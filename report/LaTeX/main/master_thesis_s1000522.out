@@ -1,56 +1,57 @@
 \BOOKMARK [1][-]{section.0.1}{Introduction}{}% 1
 \BOOKMARK [2][-]{subsection.0.1.1}{Main Contributions}{section.0.1}% 2
-\BOOKMARK [0][-]{chapter.1}{Computational Description}{}% 3
-\BOOKMARK [1][-]{section.1.1}{Cognitive Systems}{chapter.1}% 4
-\BOOKMARK [2][-]{subsection.1.1.1}{The origin of cognition}{section.1.1}% 5
-\BOOKMARK [2][-]{subsection.1.1.2}{Embodied cognition and circular causality: on the role of constitutive autonomy in the reciprocal coupling of perception and action}{section.1.1}% 6
-\BOOKMARK [2][-]{subsection.1.1.3}{Active Inference}{section.1.1}% 7
-\BOOKMARK [2][-]{subsection.1.1.4}{Bioelectrical patterns and predictive processing}{section.1.1}% 8
-\BOOKMARK [2][-]{subsection.1.1.5}{Self-organization and predictive processing}{section.1.1}% 9
-\BOOKMARK [2][-]{subsection.1.1.6}{Identity and Essence}{section.1.1}% 10
-\BOOKMARK [2][-]{subsection.1.1.7}{What is a thought?}{section.1.1}% 11
-\BOOKMARK [2][-]{subsection.1.1.8}{What does it mean to understand?}{section.1.1}% 12
-\BOOKMARK [2][-]{subsection.1.1.9}{Part-Whole Hierarchies/ Holarchies}{section.1.1}% 13
-\BOOKMARK [2][-]{subsection.1.1.10}{Correlation Does Not Imply Causation}{section.1.1}% 14
-\BOOKMARK [2][-]{subsection.1.1.11}{Thinking fast}{section.1.1}% 15
-\BOOKMARK [2][-]{subsection.1.1.12}{From Language to Consciousness: JB \(Check Craft note\)}{section.1.1}% 16
-\BOOKMARK [2][-]{subsection.1.1.13}{Free-Energy Principle}{section.1.1}% 17
-\BOOKMARK [2][-]{subsection.1.1.14}{generative models}{section.1.1}% 18
-\BOOKMARK [2][-]{subsection.1.1.15}{hierarchical generative model}{section.1.1}% 19
-\BOOKMARK [2][-]{subsection.1.1.16}{Organisms across scale and multi-scale cognition}{section.1.1}% 20
-\BOOKMARK [2][-]{subsection.1.1.17}{Language in Thought}{section.1.1}% 21
-\BOOKMARK [2][-]{subsection.1.1.18}{LLMs}{section.1.1}% 22
-\BOOKMARK [2][-]{subsection.1.1.19}{Human's capabilities}{section.1.1}% 23
-\BOOKMARK [2][-]{subsection.1.1.20}{System 1 and 2}{section.1.1}% 24
-\BOOKMARK [2][-]{subsection.1.1.21}{Hemispheric Lateralisation}{section.1.1}% 25
-\BOOKMARK [2][-]{subsection.1.1.22}{Language of Thought}{section.1.1}% 26
-\BOOKMARK [2][-]{subsection.1.1.23}{Computational Mind}{section.1.1}% 27
-\BOOKMARK [2][-]{subsection.1.1.24}{Some approaches}{section.1.1}% 28
-\BOOKMARK [2][-]{subsection.1.1.25}{Compositional world model and inference machine}{section.1.1}% 29
-\BOOKMARK [2][-]{subsection.1.1.26}{Problem Statement}{section.1.1}% 30
-\BOOKMARK [0][-]{chapter.2}{Algorithmic Description}{}% 31
-\BOOKMARK [1][-]{section.2.1}{Probabilistic Programming Paradigm}{chapter.2}% 32
-\BOOKMARK [2][-]{subsection.2.1.1}{Game Engine in the Head}{section.2.1}% 33
-\BOOKMARK [0][-]{chapter.3}{Implementational Description}{}% 34
-\BOOKMARK [1][-]{section.3.1}{Program Synthesis}{chapter.3}% 35
-\BOOKMARK [2][-]{subsection.3.1.1}{EM}{section.3.1}% 36
-\BOOKMARK [2][-]{subsection.3.1.2}{DreamCoder}{section.3.1}% 37
-\BOOKMARK [1][-]{section.3.2}{Transformer}{chapter.3}% 38
-\BOOKMARK [1][-]{section.3.3}{GFlowNet}{chapter.3}% 39
-\BOOKMARK [1][-]{section.3.4}{Theory}{chapter.3}% 40
-\BOOKMARK [1][-]{section.3.5}{Methods}{chapter.3}% 41
-\BOOKMARK [1][-]{section.3.6}{DeepSynth}{chapter.3}% 42
-\BOOKMARK [1][-]{section.3.7}{FlowCoder}{chapter.3}% 43
-\BOOKMARK [2][-]{subsection.3.7.1}{Introduction}{section.3.7}% 44
-\BOOKMARK [2][-]{subsection.3.7.2}{Results}{section.3.7}% 45
-\BOOKMARK [2][-]{subsection.3.7.3}{Analysis}{section.3.7}% 46
-\BOOKMARK [2][-]{subsection.3.7.4}{Complexity analysis}{section.3.7}% 47
-\BOOKMARK [2][-]{subsection.3.7.5}{Benefits over other approaches}{section.3.7}% 48
-\BOOKMARK [2][-]{subsection.3.7.6}{Limitations}{section.3.7}% 49
-\BOOKMARK [2][-]{subsection.3.7.7}{Future Work}{section.3.7}% 50
-\BOOKMARK [2][-]{subsection.3.7.8}{Conclusion}{section.3.7}% 51
-\BOOKMARK [2][-]{subsection.3.7.9}{Discussion}{section.3.7}% 52
-\BOOKMARK [1][-]{section.3.8}{From notes}{chapter.3}% 53
-\BOOKMARK [0][-]{chapter.4}{Discussion}{}% 54
-\BOOKMARK [1][-]{section.4.1}{Societal implications}{chapter.4}% 55
-\BOOKMARK [0][-]{section*.49}{Glossary}{}% 56
+\BOOKMARK [1][-]{section.0.2}{Cognitive Systems}{}% 3
+\BOOKMARK [2][-]{subsection.0.2.1}{The origin of cognition}{section.0.2}% 4
+\BOOKMARK [2][-]{subsection.0.2.2}{Embodied cognition and circular causality: on the role of constitutive autonomy in the reciprocal coupling of perception and action}{section.0.2}% 5
+\BOOKMARK [2][-]{subsection.0.2.3}{Part-Whole Hierarchies/ Holarchies}{section.0.2}% 6
+\BOOKMARK [2][-]{subsection.0.2.4}{Heterarchy and strange loop}{section.0.2}% 7
+\BOOKMARK [2][-]{subsection.0.2.5}{Identity and Essence}{section.0.2}% 8
+\BOOKMARK [2][-]{subsection.0.2.6}{Active Inference}{section.0.2}% 9
+\BOOKMARK [2][-]{subsection.0.2.7}{Bioelectrical patterns and predictive processing}{section.0.2}% 10
+\BOOKMARK [2][-]{subsection.0.2.8}{Self-organization and predictive processing}{section.0.2}% 11
+\BOOKMARK [2][-]{subsection.0.2.9}{What is a concept?}{section.0.2}% 12
+\BOOKMARK [2][-]{subsection.0.2.10}{LLMs/ Self-attention / transformers}{section.0.2}% 13
+\BOOKMARK [2][-]{subsection.0.2.11}{What is a thought?}{section.0.2}% 14
+\BOOKMARK [2][-]{subsection.0.2.12}{What does it mean to understand?}{section.0.2}% 15
+\BOOKMARK [2][-]{subsection.0.2.13}{Correlation Does Not Imply Causation}{section.0.2}% 16
+\BOOKMARK [2][-]{subsection.0.2.14}{Thinking fast}{section.0.2}% 17
+\BOOKMARK [2][-]{subsection.0.2.15}{From Language to Consciousness: JB \(Check Craft note\)}{section.0.2}% 18
+\BOOKMARK [2][-]{subsection.0.2.16}{Free-Energy Principle}{section.0.2}% 19
+\BOOKMARK [2][-]{subsection.0.2.17}{generative models}{section.0.2}% 20
+\BOOKMARK [2][-]{subsection.0.2.18}{hierarchical generative model}{section.0.2}% 21
+\BOOKMARK [2][-]{subsection.0.2.19}{Organisms across scale and multi-scale cognition}{section.0.2}% 22
+\BOOKMARK [2][-]{subsection.0.2.20}{Language in Thought}{section.0.2}% 23
+\BOOKMARK [2][-]{subsection.0.2.21}{LLMs}{section.0.2}% 24
+\BOOKMARK [2][-]{subsection.0.2.22}{Human's capabilities}{section.0.2}% 25
+\BOOKMARK [2][-]{subsection.0.2.23}{System 1 and 2}{section.0.2}% 26
+\BOOKMARK [2][-]{subsection.0.2.24}{Hemispheric Lateralisation}{section.0.2}% 27
+\BOOKMARK [2][-]{subsection.0.2.25}{Language of Thought}{section.0.2}% 28
+\BOOKMARK [2][-]{subsection.0.2.26}{Computational Mind}{section.0.2}% 29
+\BOOKMARK [2][-]{subsection.0.2.27}{Some approaches}{section.0.2}% 30
+\BOOKMARK [2][-]{subsection.0.2.28}{Compositional world model and inference machine}{section.0.2}% 31
+\BOOKMARK [2][-]{subsection.0.2.29}{Problem Statement}{section.0.2}% 32
+\BOOKMARK [1][-]{section.0.3}{Program Synthesis}{}% 33
+\BOOKMARK [2][-]{subsection.0.3.1}{EM}{section.0.3}% 34
+\BOOKMARK [2][-]{subsection.0.3.2}{DreamCoder}{section.0.3}% 35
+\BOOKMARK [1][-]{section.0.4}{Transformer}{}% 36
+\BOOKMARK [1][-]{section.0.5}{GFlowNet}{}% 37
+\BOOKMARK [1][-]{section.0.6}{Theory}{}% 38
+\BOOKMARK [1][-]{section.0.7}{Methods}{}% 39
+\BOOKMARK [1][-]{section.0.8}{DeepSynth}{}% 40
+\BOOKMARK [1][-]{section.0.9}{FlowCoder}{}% 41
+\BOOKMARK [2][-]{subsection.0.9.1}{Introduction}{section.0.9}% 42
+\BOOKMARK [2][-]{subsection.0.9.2}{Results}{section.0.9}% 43
+\BOOKMARK [2][-]{subsection.0.9.3}{Analysis}{section.0.9}% 44
+\BOOKMARK [2][-]{subsection.0.9.4}{Complexity analysis}{section.0.9}% 45
+\BOOKMARK [2][-]{subsection.0.9.5}{Benefits over other approaches}{section.0.9}% 46
+\BOOKMARK [2][-]{subsection.0.9.6}{Limitations}{section.0.9}% 47
+\BOOKMARK [2][-]{subsection.0.9.7}{Future Work}{section.0.9}% 48
+\BOOKMARK [2][-]{subsection.0.9.8}{Conclusion}{section.0.9}% 49
+\BOOKMARK [2][-]{subsection.0.9.9}{Discussion}{section.0.9}% 50
+\BOOKMARK [1][-]{section.0.10}{From notes}{}% 51
+\BOOKMARK [0][-]{chapter.1}{Algorithmic Description}{}% 52
+\BOOKMARK [1][-]{section.1.1}{Probabilistic Programming Paradigm}{chapter.1}% 53
+\BOOKMARK [2][-]{subsection.1.1.1}{Game Engine in the Head}{section.1.1}% 54
+\BOOKMARK [0][-]{chapter.2}{Discussion}{}% 55
+\BOOKMARK [1][-]{section.2.1}{Implications/ Consequences of the theory}{chapter.2}% 56
+\BOOKMARK [0][-]{section*.75}{Glossary}{}% 57
