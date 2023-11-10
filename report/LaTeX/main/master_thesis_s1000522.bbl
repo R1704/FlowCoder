@@ -1,21 +1,24 @@
 \begin{thebibliography}{10}
 
-\bibitem{ciaunica_nested_2023}
-Anna Ciaunica, Michael Levin, Fernando~E. Rosas, and Karl Friston.
-\newblock Nested {Selves}: {Self}-{Organisation} and {Shared} {Markov}
-  {Blankets} in {Prenatal} {Development} in {Humans}.
-\newblock preprint, PsyArXiv, May 2023.
-
-\bibitem{garcez_neurosymbolic_2020}
-Artur~d'Avila Garcez and Luis~C. Lamb.
-\newblock Neurosymbolic {AI}: {The} 3rd {Wave}.
-\newblock {\em arXiv:2012.05876 [cs]}, December 2020.
-\newblock arXiv: 2012.05876.
+\bibitem{ellis_dreamcoder_2021}
+Kevin Ellis, Catherine Wong, Maxwell Nye, Mathias Sablé-Meyer, Lucas Morales,
+  Luke Hewitt, Luc Cary, Armando Solar-Lezama, and Joshua~B. Tenenbaum.
+\newblock {DreamCoder}: bootstrapping inductive program synthesis with
+  wake-sleep library learning.
+\newblock In {\em Proceedings of the 42nd {ACM} {SIGPLAN} {International}
+  {Conference} on {Programming} {Language} {Design} and {Implementation}},
+  pages 835--850, Virtual Canada, June 2021. ACM.
 
 \bibitem{blouw2016concepts}
 Peter Blouw, Eugene Solodkin, Paul Thagard, and Chris Eliasmith.
 \newblock Concepts as semantic pointers: A framework and computational model.
 \newblock {\em Cognitive science}, 40(5):1128--1162, 2016.
+
+\bibitem{ciaunica_nested_2023}
+Anna Ciaunica, Michael Levin, Fernando~E. Rosas, and Karl Friston.
+\newblock Nested {Selves}: {Self}-{Organisation} and {Shared} {Markov}
+  {Blankets} in {Prenatal} {Development} in {Humans}.
+\newblock preprint, PsyArXiv, May 2023.
 
 \bibitem{vernon_embodied_2015}
 David Vernon, Robert Lowe, Serge Thill, and Tom Ziemke.
@@ -23,11 +26,110 @@ David Vernon, Robert Lowe, Serge Thill, and Tom Ziemke.
   constitutive autonomy in the reciprocal coupling of perception and action.
 \newblock {\em Frontiers in Psychology}, 6, 2015.
 
+\bibitem{Levin_2023}
+Michael Levin.
+\newblock Bioelectric networks: the cognitive glue enabling evolutionary
+  scaling from physiology to mind.
+\newblock {\em Animal Cognition}, May 2023.
+
+\bibitem{Lake_Ullman_Tenenbaum_Gershman_2017}
+Brenden~M. Lake, Tomer~D. Ullman, Joshua~B. Tenenbaum, and Samuel~J. Gershman.
+\newblock Building machines that learn and think like people.
+\newblock {\em Behavioral and Brain Sciences}, 40:e253, 2017.
+
+\bibitem{friston_free-energy_2010}
+Karl Friston.
+\newblock The free-energy principle: a unified brain theory?
+\newblock {\em Nature Reviews Neuroscience}, 11(2):127--138, February 2010.
+
 \bibitem{friston_world_2021}
 Karl Friston, Rosalyn~J. Moran, Yukie Nagai, Tadahiro Taniguchi, Hiroaki Gomi,
   and Josh Tenenbaum.
 \newblock World model learning and inference.
 \newblock {\em Neural Networks}, 144:573--590, December 2021.
+
+\bibitem{dehaene_symbols_2022}
+Stanislas Dehaene, Fosca Al~Roumi, Yair Lakretz, Samuel Planton, and Mathias
+  Sablé-Meyer.
+\newblock Symbols and mental programs: a hypothesis about human singularity.
+\newblock {\em Trends in Cognitive Sciences}, 26(9):751--766, September 2022.
+
+\bibitem{lake_building_2016}
+Brenden~M. Lake, Tomer~D. Ullman, Joshua~B. Tenenbaum, and Samuel~J. Gershman.
+\newblock Building {Machines} {That} {Learn} and {Think} {Like} {People},
+  November 2016.
+\newblock arXiv:1604.00289 [cs, stat].
+
+\bibitem{garcez_neurosymbolic_2020}
+Artur~d'Avila Garcez and Luis~C. Lamb.
+\newblock Neurosymbolic {AI}: {The} 3rd {Wave}.
+\newblock {\em arXiv:2012.05876 [cs]}, December 2020.
+\newblock arXiv: 2012.05876.
+
+\bibitem{hinton1995wake}
+Geoffrey~E Hinton, Peter Dayan, Brendan~J Frey, and Radford~M Neal.
+\newblock The" wake-sleep" algorithm for unsupervised neural networks.
+\newblock {\em Science}, 268(5214):1158--1161, 1995.
+
+\bibitem{fijalkow_scaling_2021}
+Nathanaël Fijalkow, Guillaume Lagarde, Théo Matricon, Kevin Ellis, Pierre
+  Ohlmann, and Akarsh Potta.
+\newblock Scaling {Neural} {Program} {Synthesis} with {Distribution}-based
+  {Search}, October 2021.
+\newblock arXiv:2110.12485 [cs].
+
+\bibitem{bengio_flow_2021}
+Emmanuel Bengio, Moksh Jain, Maksym Korablyov, Doina Precup, and Yoshua Bengio.
+\newblock Flow {Network} based {Generative} {Models} for {Non}-{Iterative}
+  {Diverse} {Candidate} {Generation}.
+\newblock In {\em Advances in {Neural} {Information} {Processing} {Systems}},
+  volume~34, pages 27381--27394. Curran Associates, Inc., 2021.
+
+\bibitem{ullman_theory_2012}
+Tomer~D. Ullman, Noah~D. Goodman, and Joshua~B. Tenenbaum.
+\newblock Theory learning as stochastic search in the language of thought.
+\newblock {\em Cognitive Development}, 27(4):455--480, October 2012.
+
+\bibitem{gulwani_program_2017}
+Sumit Gulwani, Oleksandr Polozov, and Rishabh Singh.
+\newblock {\em Program synthesis}.
+\newblock Number 4.2017, 1-2 in Foundations and trends in programming
+  languages. Now Publishers, Hanover, MA Delft, 2017.
+
+\bibitem{oliveira_abstract_2013}
+Bruno C. D.~S. Oliveira and Andres Löh.
+\newblock Abstract syntax graphs for domain specific languages.
+\newblock In {\em Proceedings of the {ACM} {SIGPLAN} 2013 workshop on {Partial}
+  evaluation and program manipulation}, pages 87--96, Rome Italy, January 2013.
+  ACM.
+
+\bibitem{zhang_novel_2019}
+Jian Zhang, Xu~Wang, Hongyu Zhang, Hailong Sun, Kaixuan Wang, and Xudong Liu.
+\newblock A {Novel} {Neural} {Source} {Code} {Representation} {Based} on
+  {Abstract} {Syntax} {Tree}.
+\newblock In {\em 2019 {IEEE}/{ACM} 41st {International} {Conference} on
+  {Software} {Engineering} ({ICSE})}, pages 783--794, Montreal, QC, Canada, May
+  2019. IEEE.
+
+\bibitem{Levin_2022}
+Michael Levin.
+\newblock Technological approach to mind everywhere: An experimentally-grounded
+  framework for understanding diverse bodies and minds.
+\newblock {\em Frontiers in Systems Neuroscience}, 16, 2022.
+
+\bibitem{levin_computational_2019}
+Michael Levin.
+\newblock The {Computational} {Boundary} of a “{Self}”: {Developmental}
+  {Bioelectricity} {Drives} {Multicellularity} and {Scale}-{Free} {Cognition}.
+\newblock {\em Frontiers in Psychology}, 10:2688, December 2019.
+
+\bibitem{zeithamova_brain_2019}
+Dagmar Zeithamova, Michael~L. Mack, Kurt Braunlich, Tyler Davis, Carol~A.
+  Seger, Marlieke T. R.~van Kesteren, and Andreas Wutz.
+\newblock Brain {Mechanisms} of {Concept} {Learning}.
+\newblock {\em Journal of Neuroscience}, 39(42):8259--8266, October 2019.
+\newblock Publisher: Society for Neuroscience Section: Symposium and
+  Mini-Symposium.
 
 \bibitem{eliasmith2013build}
 Chris Eliasmith.
@@ -35,17 +137,26 @@ Chris Eliasmith.
   cognition}.
 \newblock Oxford University Press, 2013.
 
-\bibitem{Lake_Ullman_Tenenbaum_Gershman_2017}
-Brenden~M. Lake, Tomer~D. Ullman, Joshua~B. Tenenbaum, and Samuel~J. Gershman.
-\newblock Building machines that learn and think like people.
-\newblock {\em Behavioral and Brain Sciences}, 40:e253, 2017.
+\bibitem{Gaerdenfors}
+Peter Gärdenfors.
+\newblock {\em {Conceptual Spaces: The Geometry of Thought}}.
+\newblock The MIT Press, 03 2000.
 
-\bibitem{mazzaglia_free_2022}
-Pietro Mazzaglia, Tim Verbelen, Ozan Çatal, and Bart Dhoedt.
-\newblock The {Free} {Energy} {Principle} for {Perception} and {Action}: {A}
-  {Deep} {Learning} {Perspective}.
-\newblock {\em Entropy}, 24(2):301, February 2022.
-\newblock arXiv:2207.06415 [cs, q-bio].
+\bibitem{garcez2020neurosymbolic}
+Artur~d'Avila Garcez and Luis~C Lamb.
+\newblock Neurosymbolic ai: the 3rd wave.
+\newblock {\em arXiv preprint arXiv:2012.05876}, 2020.
+
+\bibitem{Park_Friston_2013}
+Hae-Jeong Park and Karl Friston.
+\newblock Structural and functional brain networks: from connections to
+  cognition.
+\newblock {\em Science (New York, N.Y.)}, 342(6158):1238411, November 2013.
+
+\bibitem{bouizegarene_narrative_2020}
+Nabil Bouizegarene, Maxwell Ramstead, Axel Constant, Karl Friston, and Laurence
+  Kirmayer.
+\newblock Narrative as active inference, July 2020.
 
 \bibitem{sep-leibniz-logic-influence}
 Volker Peckhaus.
@@ -77,12 +188,6 @@ B.~J. Copeland.
 Noam Chomsky.
 \newblock On certain formal properties of grammars.
 \newblock {\em Information and control}, 2(2):137--167, 1959.
-
-\bibitem{dehaene_symbols_2022}
-Stanislas Dehaene, Fosca Al~Roumi, Yair Lakretz, Samuel Planton, and Mathias
-  Sablé-Meyer.
-\newblock Symbols and mental programs: a hypothesis about human singularity.
-\newblock {\em Trends in Cognitive Sciences}, 26(9):751--766, September 2022.
 
 \bibitem{rule_child_2020}
 Joshua~S. Rule, Joshua~B. Tenenbaum, and Steven~T. Piantadosi.
@@ -117,68 +222,21 @@ Adam Santoro, Andrew Lampinen, Kory Mathewson, Timothy Lillicrap, and David
 \newblock Symbolic behaviour in artificial intelligence.
 \newblock {\em arXiv preprint arXiv:2102.03406}, 2021.
 
-\bibitem{ellis_dreamcoder_2021}
-Kevin Ellis, Catherine Wong, Maxwell Nye, Mathias Sablé-Meyer, Lucas Morales,
-  Luke Hewitt, Luc Cary, Armando Solar-Lezama, and Joshua~B. Tenenbaum.
-\newblock {DreamCoder}: bootstrapping inductive program synthesis with
-  wake-sleep library learning.
-\newblock In {\em Proceedings of the 42nd {ACM} {SIGPLAN} {International}
-  {Conference} on {Programming} {Language} {Design} and {Implementation}},
-  pages 835--850, Virtual Canada, June 2021. ACM.
-
 \bibitem{hofstadter_gdel_1979}
 Douglas~R. Hofstadter.
 \newblock {\em Gödel, Escher, Bach: an Eternal Golden Braid}.
 \newblock Basic Books Inc., 1979.
 
-\bibitem{garcez2020neurosymbolic}
-Artur~d'Avila Garcez and Luis~C Lamb.
-\newblock Neurosymbolic ai: the 3rd wave.
-\newblock {\em arXiv preprint arXiv:2012.05876}, 2020.
+\bibitem{wolfram2023chatgpt}
+S.~Wolfram.
+\newblock {\em What Is ChatGPT Doing ... and Why Does It Work?}
+\newblock Wolfram Media, Incorporated, 2023.
 
-\bibitem{bouizegarene_narrative_2020}
-Nabil Bouizegarene, Maxwell Ramstead, Axel Constant, Karl Friston, and Laurence
-  Kirmayer.
-\newblock Narrative as active inference, July 2020.
-
-\bibitem{goyal_inductive_2022}
-Anirudh Goyal and Yoshua Bengio.
-\newblock Inductive biases for deep learning of higher-level cognition.
-\newblock {\em Proceedings of the Royal Society A: Mathematical, Physical and
-  Engineering Sciences}, 478(2266):20210068, October 2022.
-\newblock Publisher: Royal Society.
-
-\bibitem{yoshuabengioScalingService}
-Yoshua Bengio.
-\newblock {Scaling in the service of reasoning \& model-based ML}.
-\newblock
-  \url{https://yoshuabengio.org/2023/03/21/scaling-in-the-service-of-reasoning-model-based-ml/},
-  2022.
-\newblock Accessed 21-08-2023.
-
-\bibitem{gulwani_program_2017}
-Sumit Gulwani, Oleksandr Polozov, and Rishabh Singh.
-\newblock {\em Program synthesis}.
-\newblock Number 4.2017, 1-2 in Foundations and trends in programming
-  languages. Now Publishers, Hanover, MA Delft, 2017.
-
-\bibitem{hinton1995wake}
-Geoffrey~E Hinton, Peter Dayan, Brendan~J Frey, and Radford~M Neal.
-\newblock The" wake-sleep" algorithm for unsupervised neural networks.
-\newblock {\em Science}, 268(5214):1158--1161, 1995.
-
-\bibitem{fijalkow_scaling_2021}
-Nathanaël Fijalkow, Guillaume Lagarde, Théo Matricon, Kevin Ellis, Pierre
-  Ohlmann, and Akarsh Potta.
-\newblock Scaling {Neural} {Program} {Synthesis} with {Distribution}-based
-  {Search}, October 2021.
-\newblock arXiv:2110.12485 [cs].
-
-\bibitem{bengio_flow_2021}
-Emmanuel Bengio, Moksh Jain, Maksym Korablyov, Doina Precup, and Yoshua Bengio.
-\newblock Flow {Network} based {Generative} {Models} for {Non}-{Iterative}
-  {Diverse} {Candidate} {Generation}.
-\newblock In {\em Advances in {Neural} {Information} {Processing} {Systems}},
-  volume~34, pages 27381--27394. Curran Associates, Inc., 2021.
+\bibitem{Vaswani_Shazeer_Parmar_Uszkoreit_Jones_Gomez_Kaiser_Polosukhin_2017}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+  Aidan~N Gomez, Łukasz Kaiser, and Illia Polosukhin.
+\newblock Attention is all you need.
+\newblock In {\em Advances in Neural Information Processing Systems},
+  volume~30. Curran Associates, Inc., 2017.
 
 \end{thebibliography}

@@ -1,75 +1,76 @@
-\contentsline {section}{\numberline {1}Introduction}{5}{section.0.1}%
-\contentsline {subsection}{\numberline {1.1}Main Contributions}{5}{subsection.0.1.1}%
-\contentsline {section}{\numberline {2}Cognitive Systems}{6}{section.0.2}%
-\contentsline {subsection}{\numberline {2.1}The origin of cognition}{6}{subsection.0.2.1}%
-\contentsline {subsection}{\numberline {2.2}Embodied cognition and circular causality: on the role of constitutive autonomy in the reciprocal coupling of perception and action}{7}{subsection.0.2.2}%
-\contentsline {subsection}{\numberline {2.3}Part-Whole Hierarchies/ Holarchies}{8}{subsection.0.2.3}%
-\contentsline {subsection}{\numberline {2.4}Heterarchy and strange loop}{9}{subsection.0.2.4}%
-\contentsline {subsection}{\numberline {2.5}Identity and Essence}{9}{subsection.0.2.5}%
-\contentsline {subsubsection}{Categories}{9}{section*.32}%
-\contentsline {subsubsection}{Computational models of categorization}{9}{section*.33}%
-\contentsline {subsection}{\numberline {2.6}Active Inference}{10}{subsection.0.2.6}%
-\contentsline {subsection}{\numberline {2.7}Bioelectrical patterns and predictive processing}{11}{subsection.0.2.7}%
-\contentsline {subsection}{\numberline {2.8}Self-organization and predictive processing}{11}{subsection.0.2.8}%
-\contentsline {subsection}{\numberline {2.9}What is a concept?}{12}{subsection.0.2.9}%
-\contentsline {subsubsection}{Semantic Pointer Architecture}{12}{section*.39}%
-\contentsline {subsection}{\numberline {2.10}LLMs/ Self-attention / transformers}{13}{subsection.0.2.10}%
-\contentsline {subsection}{\numberline {2.11}What is a thought?}{13}{subsection.0.2.11}%
-\contentsline {subsection}{\numberline {2.12}What does it mean to understand?}{13}{subsection.0.2.12}%
-\contentsline {subsection}{\numberline {2.13}Correlation Does Not Imply Causation}{14}{subsection.0.2.13}%
-\contentsline {subsection}{\numberline {2.14}Thinking fast}{15}{subsection.0.2.14}%
-\contentsline {subsection}{\numberline {2.15}From Language to Consciousness: JB (Check Craft note)}{16}{subsection.0.2.15}%
-\contentsline {subsection}{\numberline {2.16}Free-Energy Principle}{16}{subsection.0.2.16}%
-\contentsline {subsection}{\numberline {2.17}generative models}{18}{subsection.0.2.17}%
-\contentsline {subsection}{\numberline {2.18}hierarchical generative model}{18}{subsection.0.2.18}%
-\contentsline {subsection}{\numberline {2.19}Organisms across scale and multi-scale cognition}{18}{subsection.0.2.19}%
-\contentsline {subsection}{\numberline {2.20}Language in Thought}{19}{subsection.0.2.20}%
-\contentsline {subsection}{\numberline {2.21}LLMs}{19}{subsection.0.2.21}%
-\contentsline {subsubsection}{Limitations}{19}{section*.51}%
-\contentsline {subsection}{\numberline {2.22}Human's capabilities}{19}{subsection.0.2.22}%
-\contentsline {subsubsection}{Operationalising "Understanding"}{19}{section*.53}%
-\contentsline {subsection}{\numberline {2.23}System 1 and 2}{20}{subsection.0.2.23}%
-\contentsline {subsubsection}{Poverty of the Stimulus}{20}{section*.54}%
-\contentsline {subsection}{\numberline {2.24}Hemispheric Lateralisation}{20}{subsection.0.2.24}%
-\contentsline {subsection}{\numberline {2.25}Language of Thought}{20}{subsection.0.2.25}%
-\contentsline {subsubsection}{Neurosymbolic AI}{22}{section*.55}%
-\contentsline {subsubsection}{Formal Grammar}{22}{section*.57}%
-\contentsline {subsection}{\numberline {2.26}Computational Mind}{22}{subsection.0.2.26}%
-\contentsline {subsection}{\numberline {2.27}Some approaches}{22}{subsection.0.2.27}%
-\contentsline {subsection}{\numberline {2.28}Compositional world model and inference machine}{22}{subsection.0.2.28}%
-\contentsline {subsection}{\numberline {2.29}Problem Statement}{24}{subsection.0.2.29}%
-\contentsline {section}{\numberline {3}Program Synthesis}{24}{section.0.3}%
-\contentsline {subsubsection}{CFG}{24}{section*.59}%
-\contentsline {subsection}{\numberline {3.1}EM}{25}{subsection.0.3.1}%
-\contentsline {subsection}{\numberline {3.2}DreamCoder}{25}{subsection.0.3.2}%
-\contentsline {paragraph}{Wake}{26}{section*.60}%
-\contentsline {paragraph}{Sleep: Abstraction}{26}{section*.61}%
-\contentsline {paragraph}{Sleep: Dreaming}{26}{section*.62}%
-\contentsline {section}{\numberline {4}Transformer}{26}{section.0.4}%
-\contentsline {section}{\numberline {5}GFlowNet}{28}{section.0.5}%
-\contentsline {section}{\numberline {6}Theory}{28}{section.0.6}%
-\contentsline {section}{\numberline {7}Methods}{28}{section.0.7}%
-\contentsline {section}{\numberline {8}DeepSynth}{28}{section.0.8}%
-\contentsline {section}{\numberline {9}FlowCoder}{29}{section.0.9}%
-\contentsline {subsection}{\numberline {9.1}Introduction}{30}{subsection.0.9.1}%
-\contentsline {subsubsection}{Framework}{31}{section*.66}%
-\contentsline {subsubsection}{Model}{31}{section*.67}%
-\contentsline {subsubsection}{Wake-sleep}{32}{section*.68}%
-\contentsline {subsubsection}{Reward}{32}{section*.69}%
-\contentsline {subsection}{\numberline {9.2}Results}{32}{subsection.0.9.2}%
-\contentsline {subsection}{\numberline {9.3}Analysis}{32}{subsection.0.9.3}%
-\contentsline {subsection}{\numberline {9.4}Complexity analysis}{32}{subsection.0.9.4}%
-\contentsline {subsection}{\numberline {9.5}Benefits over other approaches}{32}{subsection.0.9.5}%
-\contentsline {subsection}{\numberline {9.6}Limitations}{32}{subsection.0.9.6}%
-\contentsline {subsection}{\numberline {9.7}Future Work}{33}{subsection.0.9.7}%
-\contentsline {subsection}{\numberline {9.8}Conclusion}{33}{subsection.0.9.8}%
-\contentsline {subsection}{\numberline {9.9}Discussion}{33}{subsection.0.9.9}%
-\contentsline {subsubsection}{Biological Plausibility}{33}{section*.70}%
-\contentsline {section}{\numberline {10}From notes}{33}{section.0.10}%
-\contentsline {paragraph}{amortized variational inference}{33}{section*.72}%
-\contentsline {chapter}{\numberline {1}Algorithmic Description}{34}{chapter.1}%
-\contentsline {section}{\numberline {1}Probabilistic Programming Paradigm}{34}{section.1.1}%
-\contentsline {subsection}{\numberline {1.1}Game Engine in the Head}{34}{subsection.1.1.1}%
-\contentsline {chapter}{\numberline {2}Discussion}{35}{chapter.2}%
-\contentsline {section}{\numberline {1}Implications/ Consequences of the theory}{35}{section.2.1}%
-\contentsline {chapter}{Glossary}{36}{section*.75}%
+\contentsline {section}{\numberline {1}Introduction}{4}{section.0.1}%
+\contentsline {subsection}{\numberline {1.1}Main Contributions}{4}{subsection.0.1.1}%
+\contentsline {section}{\numberline {2}Cognition, Nested Multi-scale Hierarchies, and Self-Organisation}{4}{section.0.2}%
+\contentsline {subsection}{\numberline {2.1}Compositionality}{4}{subsection.0.2.1}%
+\contentsline {subsection}{\numberline {2.2}Language of Thought}{5}{subsection.0.2.2}%
+\contentsline {section}{\numberline {3}Bayesian Inference}{5}{section.0.3}%
+\contentsline {subsection}{\numberline {3.1}Game Engine in the Head}{6}{subsection.0.3.1}%
+\contentsline {section}{\numberline {4}Probabilistic Programming}{7}{section.0.4}%
+\contentsline {subsection}{\numberline {4.1}DreamCoder}{7}{subsection.0.4.1}%
+\contentsline {paragraph}{\numberline {4.1.0.1}Wake}{8}{paragraph.0.4.1.0.1}%
+\contentsline {paragraph}{\numberline {4.1.0.2}Sleep: Abstraction}{8}{paragraph.0.4.1.0.2}%
+\contentsline {paragraph}{\numberline {4.1.0.3}Sleep: Dreaming}{8}{paragraph.0.4.1.0.3}%
+\contentsline {section}{\numberline {5}Methods}{9}{section.0.5}%
+\contentsline {section}{\numberline {6}FlowCoder}{9}{section.0.6}%
+\contentsline {subsection}{\numberline {6.1}DeepSynth}{9}{subsection.0.6.1}%
+\contentsline {subsection}{\numberline {6.2}GFlowNet}{10}{subsection.0.6.2}%
+\contentsline {subsection}{\numberline {6.3}EM}{12}{subsection.0.6.3}%
+\contentsline {section}{\numberline {7}Methods}{12}{section.0.7}%
+\contentsline {section}{\numberline {8}FlowCoder}{12}{section.0.8}%
+\contentsline {subsubsection}{\numberline {8.0.1}Framework}{14}{subsubsection.0.8.0.1}%
+\contentsline {subsubsection}{\numberline {8.0.2}Model}{14}{subsubsection.0.8.0.2}%
+\contentsline {paragraph}{\numberline {8.0.2.1}Tasks}{14}{paragraph.0.8.0.2.1}%
+\contentsline {paragraph}{\numberline {8.0.2.2}RuleEncoder}{15}{paragraph.0.8.0.2.2}%
+\contentsline {paragraph}{\numberline {8.0.2.3}IOEncoder}{15}{paragraph.0.8.0.2.3}%
+\contentsline {subsubsection}{\numberline {8.0.3}Wake-sleep}{16}{subsubsection.0.8.0.3}%
+\contentsline {subsubsection}{\numberline {8.0.4}Reward}{16}{subsubsection.0.8.0.4}%
+\contentsline {subsubsection}{\numberline {8.0.5}experiments}{18}{subsubsection.0.8.0.5}%
+\contentsline {subsection}{\numberline {8.1}Results}{18}{subsection.0.8.1}%
+\contentsline {subsection}{\numberline {8.2}Analysis}{18}{subsection.0.8.2}%
+\contentsline {subsubsection}{\numberline {8.2.1}Complexity Analysis}{19}{subsubsection.0.8.2.1}%
+\contentsline {subsection}{\numberline {8.3}Discussion}{19}{subsection.0.8.3}%
+\contentsline {subsubsection}{\numberline {8.3.1}Limitations}{19}{subsubsection.0.8.3.1}%
+\contentsline {subsection}{\numberline {8.4}Future Work}{19}{subsection.0.8.4}%
+\contentsline {subsection}{\numberline {8.5}Conclusion}{20}{subsection.0.8.5}%
+\contentsline {subsection}{\numberline {8.6}Discussion}{20}{subsection.0.8.6}%
+\contentsline {subsubsection}{\numberline {8.6.1}Comparison to other approaches}{20}{subsubsection.0.8.6.1}%
+\contentsline {subsubsection}{\numberline {8.6.2}Biological Plausibility}{21}{subsubsection.0.8.6.2}%
+\contentsline {chapter}{\numberline {1}Philosophical Ramifications}{23}{chapter.1}%
+\contentsline {section}{\numberline {1}Who am I?}{23}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1}The Genesis of Cognition}{23}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.2}Computational boundary of the self}{25}{subsection.1.1.2}%
+\contentsline {subsubsection}{\numberline {1.2.1}Body Patterning and Cognition: A Common Origin}{25}{subsubsection.1.1.2.1}%
+\contentsline {subsubsection}{\numberline {1.2.2}Multicellularity vs. Cancer: The Shifting Boundary of the Self}{25}{subsubsection.1.1.2.2}%
+\contentsline {subsubsection}{\numberline {1.2.3}Defining Individuation From a Cognitive Perspective}{25}{subsubsection.1.1.2.3}%
+\contentsline {subsection}{\numberline {1.3}Embodied cognition and circular causality: on the role of constitutive autonomy in the reciprocal coupling of perception and action}{27}{subsection.1.1.3}%
+\contentsline {section}{\numberline {2}Implications/ Consequences of the theory}{29}{section.1.2}%
+\contentsline {section}{\numberline {3}What is Truth?}{30}{section.1.3}%
+\contentsline {section}{\numberline {4}What is a Concept?}{30}{section.1.4}%
+\contentsline {subsection}{\numberline {4.1}Identity and Essence}{30}{subsection.1.4.1}%
+\contentsline {subsubsection}{\numberline {4.1.1}Categories}{30}{subsubsection.1.4.1.1}%
+\contentsline {subsubsection}{\numberline {4.1.2}Computational models of categorization}{30}{subsubsection.1.4.1.2}%
+\contentsline {subsection}{\numberline {4.2}concepts}{31}{subsection.1.4.2}%
+\contentsline {subsection}{\numberline {4.3}The Hierarchy of Mental Representations: From Sensory Neurons to Conceptual Structures}{33}{subsection.1.4.3}%
+\contentsline {subsection}{\numberline {4.4}Semantic Pointer Architecture}{33}{subsection.1.4.4}%
+\contentsline {subsection}{\numberline {4.5}Concept space}{33}{subsection.1.4.5}%
+\contentsline {section}{\numberline {5}What is Meaning?}{35}{section.1.5}%
+\contentsline {section}{\numberline {6}What is a thought?}{35}{section.1.6}%
+\contentsline {section}{\numberline {7}What Does It Mean to Understand?}{36}{section.1.7}%
+\contentsline {subsubsection}{\numberline {7.0.1}Operationalising "Understanding"}{36}{subsubsection.1.7.0.1}%
+\contentsline {subsection}{\numberline {7.1}Hemispheric Lateralisation}{37}{subsection.1.7.1}%
+\contentsline {section}{\numberline {8}What Is a Language?}{39}{section.1.8}%
+\contentsline {subsection}{\numberline {8.1}Language in Thought}{39}{subsection.1.8.1}%
+\contentsline {subsubsection}{\numberline {8.1.1}Neurosymbolic AI}{40}{subsubsection.1.8.1.1}%
+\contentsline {subsubsection}{\numberline {8.1.2}Formal Grammar}{40}{subsubsection.1.8.1.2}%
+\contentsline {section}{\numberline {9}What Is a Computation?}{41}{section.1.9}%
+\contentsline {subsection}{\numberline {9.1}Computational Mind}{41}{subsection.1.9.1}%
+\contentsline {subsection}{\numberline {9.2}Self-organization and predictive processing}{42}{subsection.1.9.2}%
+\contentsline {subsubsection}{\numberline {9.2.1}Poverty of the Stimulus}{45}{subsubsection.1.9.2.1}%
+\contentsline {subsection}{\numberline {9.3}LLMs/ Self-attention / transformers}{45}{subsection.1.9.3}%
+\contentsline {subsubsection}{\numberline {9.3.1}Limitations}{47}{subsubsection.1.9.3.1}%
+\contentsline {subsection}{\numberline {9.4}System 1 \& System 2}{47}{subsection.1.9.4}%
+\contentsline {chapter}{Glossary}{49}{section*.36}%
+\contentsline {section}{\numberline {1}Domain Specific Language (DSL)}{53}{section.Alph0.1}%
+\contentsline {subsection}{\numberline {1.1}Semantics}{53}{subsection.Alph0.1.1}%
+\contentsline {subsection}{\numberline {1.2}Primitive Types}{54}{subsection.Alph0.1.2}%
+\contentsline {section}{\numberline {2}Parameters}{55}{section.Alph0.2}%

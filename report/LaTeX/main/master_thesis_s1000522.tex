@@ -1,4 +1,5 @@
-\documentclass[twocolumn, a4paper]{report}
+% \documentclass[twocolumn, a4paper]{report}
+\documentclass[a4paper]{report}
 
 \input{../auxiliary/preamble}
 
@@ -6,61 +7,54 @@
 \section*{Acknowledgement}
 
 \begin{abstract}
-    I posit that the conceptual architecture we create, i.e. the generative model, obides by the same principles as any hierarchical self-organising system, namely discernment about what it is and what it is not. 
+    I posit that the construction of our conceptual architecture, abides by the same principles as any hierarchical self-organising system, namely discernment about what it is and what it is not. 
 \end{abstract}
 
 \tableofcontents
 \listoffigures
 \listoftables
 
-Cool words to use: 
-\begin{itemize}
-    \item explanadum
-\end{itemize}
+
+% \todo[inline]{Go through text and see which words should be operationalised into the glossary}
+% \todo[inline]{Check that al terms in glossary are used somewhere in text}
+% \todo[inline]{Put all terms in gpt and ask for similar terms}
+% \todo[inline]{Use plagiarism checker}
+% \todo[inline]{make sure that the tone of the thesis is the same everywhere. 
+% Write it with wit. Make it fun to read. 
+% Don't make convoluted sentences.}
+% \todo[inline]{Make sure to link sections to one another.}
+% \todo[inline]{Check for british vs american grammar}
+% \todo[inline]{Put good quotes in fitting sections.}
+% \todo[inline]{Go through all craft notes (tags) and include ideas}
+% \todo[inline]{Make sure that all formulas use the same notation}
 
 
 
-\todo[inline]{Go through text and see which words should be operationalised into the glossary}
-\todo[inline]{Put all terms in gpt and ask for similar terms}
-\todo[inline]{Use plagiarism checker}
-\todo[inline]{make sure that the tone of the thesis is the same everywhere. 
-Write it with wit. Make it fun to read. 
-Don't make convoluted sentences.}
-
-\todo[inline]{Check for british vs american grammar}
 
 \input{../sections/introduction}
 
-\begin{description}
-    \item[computational] Why do things work the way they do?
-    What is the goal of the computation?
-    What are the unifying principles?
-    here we describe the problem as a self-organizing system, building hierarchical generative models. 
-    \item[algorithmic] What representations can implement
-    such computations? 
-    How does the choice of representations
-    determine the algorithm? 
-    Here we describe the FEP and how the discrimination between me and world gives rise to self-organization
-    Here we take the stance of a LOT and talk about the benefits of a symbolic paradigm although this could also be done in other ways, e.g. GLOM
-    \item[implementational] here we talk about program synthesis and combinatorial search, MCMC, RL, DreamCoder, etc. 
-\end{description}
+% \begin{description}
+%     \item[computational] Why do things work the way they do?
+%     What is the goal of the computation?
+%     What are the unifying principles?
+%     here we describe the problem as a self-organizing system, building hierarchical generative models. 
+%     \item[algorithmic] What representations can implement
+%     such computations? 
+%     How does the choice of representations
+%     determine the algorithm? 
+%     Here we describe the FEP and how the discrimination between me and world gives rise to self-organization
+%     Here we take the stance of a LOT and talk about the benefits of a symbolic paradigm although this could also be done in other ways, e.g. GLOM
+%     \item[implementational] here we talk about program synthesis and combinatorial search, MCMC, RL, DreamCoder, etc. 
+% \end{description}
 
-Other things to clarify
-\begin{itemize}
-    \item What is a symbol (also relate to semiotics but also in the cognitive sense. Something that relates to something else, a pointer. Think of memories that are stored in the hippocampus.) what about bioelectrical prepatterns? are all representations symbolic? How would symbols be implemented in the brain?
-    \item Analytic vs. Geometric Solutions as an analogy to approximation vs symbol? imitating understanding vs actual and think about whether there is actually any difference. perhaps a limitation of the symbolic programming approach is that it is rigid and less flexible?
-\end{itemize}
+
 
 
 \input{../sections/theoretical.tex}
-\newpage
+% \newpage
 \input{../sections/technical.tex}
 \newpage
 \input{../sections/discussion}
-
-
-\Gls{latex} is very useful and can use \gls{glsy}.
-\Gls{latex} is very useful and can use \gls{homeostasis}.
 
 \clearpage
 \printglossaries
@@ -71,6 +65,7 @@ Other things to clarify
 
 \clearpage
 \appendix
-
+\onecolumn
+\input{../auxiliary/appendix.tex}
 
 \end{document}

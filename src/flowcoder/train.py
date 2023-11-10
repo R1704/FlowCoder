@@ -533,9 +533,6 @@ class Training:
     def normalized_similarity(self, seq1, seq2):
         # Computes the normalized edit distance
         ld = 1 - Levenshtein.distance(seq1, seq2) / (max(len(seq1), len(seq2)) + 1e-10)
-        # print(f'True: {seq1}')
-        # print(f'Pred: {seq2}')
-        # print(f'Levenshtein Distance: {ld}')
         return ld
 
     def rewards(self, programs, batch_ios):
