@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from flowcoder.utils import PositionalEncoding
-from flowcoder.config import device
+from flowcoder.config import *
 
 
 class GFlowNet(nn.Module):
@@ -21,16 +21,11 @@ class GFlowNet(nn.Module):
             dropout=dropout
             )
 
-        # MLPs for logits and logZ
+        # Instantiate forward_policy and logZ
         self.forward_logits = GFlowNet_Forward(d_model, len(state_encoder.rules))
-
-        # self.logZ = self.forward_logits.logZ
         self.logZ = GFlowNet_Z(d_model)  # LogZ measures the partition function
 
     def forward(self, state, io):
-
-        # TODO: The IO stays the same for the whole duration of the trajectory.
-        #  We mustn't recompute it every time
 
         # Process IO
         io = self.io_encoder(io)
@@ -86,3 +81,13 @@ class GFlowNet_Z(nn.Module):
 
     def forward(self, x):
         return self.logZ(x)
+
+
+def freeze_parameters(model):
+    for param in model.parameters():
+        param.requires_grad = False
+
+
+def unfreeze_parameters(model):
+    for param in model.parameters():
+        param.requires_grad = True

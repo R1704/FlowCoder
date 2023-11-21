@@ -38,13 +38,7 @@
 
 \section{Probabilistic Programming}
 
-I follow the assumption that we don't start from a blank slate but from some initial concepts, here operationalized as primitives, fundamental program components. These initial primitives comprise a minimal domain-specific lanugage (DSL) and can be composed into more complex programs, which represent the causal structure generating the observations we perceive. As such, an agent learns its own DSL, which in terms of a language of thought is analogous to inferring a mental grammar and using it to learn new conecpts.
-
-
-
-
-
-
+I follow the assumption that we don't start from a blank slate but from some initial concepts, here operationalized as primitives, fundamental program components. These initial primitives comprise a minimal domain-specific lanugage (DSL) and can be composed into more complex programs, which represent the causal structure generating the observations we perceive. As such, an agent learns its own DSL, which in terms of a language of thought is analogous to inferring a mental grammar and using it to learn new concepts.
 
 
 \subsection{DreamCoder}
@@ -93,11 +87,9 @@ The objective is to maximize \(\mathcal{L}\) w.r.t. to the beam \(\{\mathcal{B}_
 In the abstraction phase they maximize \(\mathcal{L}\) w.r.t. \(\mathcal{D}\)
 % - DreamCoder uses a new data structure based on equivalence graphs and constructed via dynamic programming which can summarize a large number of possible refactorings to the original programs.
 
-
-\paragraph{Sleep: Dreaming} The objective during the dreaming phase is to train the recognition model $Q$ to perform MAP inference by both fantasies, and replays. When fantasising, programs are drawn from the learned library as a generative model. The model is then trained on the produced tasks. This ensures a large and varied data-set to learn from and encourages out-of-distribution generalisation. Replays, simply training on previously seen task-program pairs, ensures that the model improves its predictions on the actual tasks it needs to learn, by using its programs.
+\paragraph{Sleep: Dreaming} The objective during the dreaming phase is to train the recognition model $Q$ to perform MAP inference by both fantasies, and replays. When fantasising, programs are drawn from the learned library as a generative model. The model is then trained on the produced tasks. This ensures a large and varied data-set to learn from and encourages out-of-distribution generalisation. Replays, simply training on previously seen task-program pairs, ensures that the model improves its predictions on the actual tasks it needs to learn and doesn't forget how to solve tasks it has already solved correctly.
 
 In dreaming they maximize \(\mathcal{L}\) w.r.t. \(\theta\).
-
 
 \[
     \mathcal{L}_{\text{MAP}}^{\text{Replay}} = \mathbb{E}_{x\sim X} \left[ \log Q \left( \arg\max_{p \in \mathcal{B}_x} P(p|x, D, \theta)  \Big\lvert x \right) \right]
@@ -107,9 +99,9 @@ In dreaming they maximize \(\mathcal{L}\) w.r.t. \(\theta\).
     \mathcal{L}_{\text{MAP}}^{\text{Fantasy}} = \mathbb{E}_{x \sim (D, \theta)} \left[ \log Q \left( \arg\max_{p} P(p|x, D, \theta) \Big\lvert x \right) \right]  
 \]
 
-They chose to optimize MAP rather than the posterior because together with their parameterization of the recognition model, this encourages to break syntactic symmetries.
+The authors chose to optimize MAP rather than the posterior because together with their parameterization of the recognition model, this encourages to break syntactic symmetries.
 
-The recognition model \(Q\) takes tasks as input and outputs a 3-dimensional bigram transition matrix \(Q_{ijk}\), where \(i\) indexes possible children, \(j\) indexes possible parents and \(k\) indexes which argument of the parent is being generated. This parameterization was chosen as a balance between quality and efficiency.
+The recognition model \(Q\) takes a task as input and outputs a 3-dimensional bigram transition matrix \(Q_{ijk}\), where \(i\) indexes possible children, \(j\) indexes possible parents and \(k\) indexes which argument of the parent is being generated. This parameterization was chosen as a balance between quality and efficiency.
 
 
 
@@ -118,31 +110,74 @@ The recognition model \(Q\) takes tasks as input and outputs a 3-dimensional big
 
 
 
+
 \section{Methods}
 \section{FlowCoder}
 
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% DEEPSYNTH %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{DeepSynth}
 
 In their 2021 paper, Fijalkow et al. proposed a framework called "distribution-based search", in which they tackle the difficult problem of searching through a DSL to find programs matching a specification in a vast hypothesis space \cite{fijalkow_scaling_2021}.
 
 They introduce DeepSynth \footnote{\url{https://github.com/nathanael-fijalkow/DeepSynth}}, a general-purpose program synthesizer which constructs programs from input-output examples, and a useful framework allowing us to test different models and search methods.
+\paragraph{DSL} 
 
-Here an initial DSL (See appendix \ref{app:dsl}) and suitable syntactic constraints [show constraints] compiles into a context-free grammar (CFG), which defines the possible structures of programs within its DSL. A CFG consists of a set of production rules that describe how to generate strings (or tree structures) from a set of symbols. It's "context-free" because the production rules are applied regardless of the surrounding symbols.
+Here an initial DSL and suitable syntactic constraints compile into a context-free grammar (CFG), which defines the possible structures of programs within its DSL. A CFG consists of a set of production rules that describe how to generate strings (or tree structures) from a set of non-terminal and terminal symbols. It's "context-free" because the production rules are applied regardless of the surrounding symbols.
 
-Here a CFG is used rather than the more dynamic but computationally heavy inference of variable scoping rules to determine permitted rules.
+Here a CFG is used rather than the more dynamic but computationally heavy inference of variable scoping rules [explain] to determine permitted rules.
+\todo[inline]{discuss that we actually need to infer the CFG but for computational reasons we just use the CFG. Otherwise, we have to find out which rules are allowed since we are dealing with types. Now is there a biologically plausible equivalent to types or is it completely a constraint of the method we are using? I suspect that there are no types. It's all dynamic. But that's okay for now.}
 
-A probabilistic CFG (PCFG) extends a CFG by associating probabilities with the production rules. This allows the grammar to not only generate the syntactic structure of a program but also to represent beliefs about the relative plausibility or frequency of different structures. Here, a PCFG is used to capture prior beliefs about the distribution of programs within a domain, which guides the search and inference process towards more likely programs.
+A probabilistic CFG (PCFG) extends a CFG by associating probabilities with the production rules. This allows the grammar to not only generate the syntactic structure of a program but also to represent beliefs about the relative plausibility or frequency of different structures. This is similar to DreamCoder's transition matrix. Here, a PCFG is used to capture prior beliefs about the distribution of programs within a domain, which guides the search and inference process towards more likely programs.
+
+[discuss here that we are using a transformer to represent a neural PCFG?]
 
 Programs are represented as abstract syntax trees (ASTs). An AST is a tree representation of the syntactic structure of the program, with nodes representing operations or primitives and edges representing their compositional relationships.
 [insert debruin indexing definition]
 [and maybe a graph]
 
+[discuss here the difference between predicting primitives and rules?]
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% DSL %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{DSL}
+(see appendix \ref{app:dsl})
+- typed Lambda calculus 
+
+\paragraph{Syntactic constraints}
+[show constraints]
+
+\paragraph{Tasks}
+We are using n? tasks, originally from DreamCoder and filtered and provided by DeepSynth.
+Tasks are input-output relations in the list editing domain. [See appendix for examples]. 
+we have tasks $x \in X$
+
+% We only work with tasks of type int list -> int list. We remove examples where lists have length greater than Lmax = 10 or where one of the elements of the input or output list are not in Lin = [−30; 30].
+We say that a task is solved if a program is found which satisfies all examples. The timeout of 100s only takes into account the search time and the evaluation times and not the time to query the neural network for predictions.
 
 \begin{itemize}
-    \item Nathaniel compare enumeration based methods with sampling methods. quality vs quantity.
-    \item If the sampler is good enough, there is no need for search
+    \item n dreamcoder Tasks, filtered like in DeepSynth to only have certain types.
+    \item We work with list editing tasks (give a couple of examples)
+    % \item from Deepsynth [We only work with tasks of type int list -> int list. We remove examples where lists have length greater than Lmax = 10 or where one of the elements of the input or output list are not in Lin = [−30; 30].
+    % We say that a task is solved if a program is found which satisfies all examples. The timeout of 100s only takes into account the search time and the evaluation times and not the time to query the neural network for predictions.]
 \end{itemize}
+
+
+\paragraph{Rules}
+I am predicting rules in the CFG, rather than primitives. I.e. edges between two symbols.
 
 
 
@@ -163,11 +198,13 @@ Programs are represented as abstract syntax trees (ASTs). An AST is a tree repre
 
 
 
-Generative Flow Networks (GFlowNets), introduced by Bengio et al., are a class of generative models designed to learn to construct objects from a target distribution over complex high-dimensional spaces, particularly where explicit density estimation is challenging and divers candidates are encouraged \cite{bengio_flow_2021}. GFlowNets learn a stochastic policy for generating sequences of actions that lead to the construction of a sample. This sampling process is done in such a way that the frequency of generating any given sample is proportional to a given reward function associated with that sample.
+Generative Flow Networks (GFlowNets), introduced by Bengio et al., are a class of generative models designed to learn to construct objects from a target distribution over complex high-dimensional spaces, particularly where explicit density estimation is challenging and diverse candidates are encouraged \cite{bengio_flow_2021}. GFlowNets learn a stochastic policy for generating sequences of actions that lead to the construction of a sample. This sampling process is done in such a way that the frequency of generating any given sample is proportional to a given reward function associated with that sample.
 
 GFlowNets create a directed acyclic graph (DAG) over the state space, where vertices correspond to states or partial samples and edges denote transitions or adding a component to a partial sample, in which the edges carry a flow from source to targets.
 
 In GFlowNets, the "flow" in the network corresponds to the process by which the network constructs a sample, which can be thought of as a path in a graph where nodes are partial samples, and edges correspond to adding a component to the partial sample. The network is trained such that the flow into any completed sample is proportional to its reward.
+
+[put a diagram here? of partially constructed ASTs]
 
 The core training objective for a GFlowNet is to satisfy the flow matching constraint. The idea is to ensure that the flow into any state (a partially constructed sample) should match the flow out of it, given the reward associated with complete samples. The flow here refers to the expected transitions into or out of a state under the model's stochastic policy. 
 
@@ -175,7 +212,9 @@ Formally, a state \( s \) represents a partial object a certain stage in the gen
 
 A trajectory \( \tau \) is formed by a sequence of actions \( a_1, a_2, ..., a_T \), where each action \( a_t \) transitions the model from state \( s_{t-1} \) to state \( s_t \). The sequence of actions is governed by a policy \( \pi \), which defines the probability of choosing a particular action given the current state.
 
-The flow \( F(\tau) \) of a trajectory \( \tau \) is defined as the product of the probabilities of each transition along the trajectory, multiplied by the reward \( R(s_T) \) of the terminal state, normalized by a partition function \( Z \):
+% A reward is used to evaluate complete objects [could also be partial]. 
+
+The flow \( F(\tau) \) of a trajectory \( \tau \) is defined as the product of the probabilities of each transition along the trajectory, multiplied by the reward \( R(s_T) \) of the terminal state, normalized by a partition function \( Z \).
 
 \begin{equation} \label{eq:flow}
     F(\tau) = \frac{R(s_T)}{Z} \prod_{t=0}^{T-1} \pi_\theta(s_{t+1} | s_{t})
@@ -223,277 +262,155 @@ The trajectory balance loss is the squared difference:
     \mathcal{L}_{TB} = \left(\log Z_\theta + \sum_{i=0}^{T-1} \log \pi_\theta(s_{t+1}|s_{t}) - \log R(s_T) - \sum_{t=0}^{T-1} \log \beta_\theta(s_{t}|s_{t+1})\right)^2
 \end{equation}
 
-Now, since we are solving tasks \( x \in X \), we have a conditional reward distribution $R(s_T|x)$, as well as a conditional forward policy $\pi_\theta(s_T|x)$ and partition function $Z_\theta(x)$.
 
-
-
-
-
-
-
-
-
-\begin{itemize}
-    \item Now, apply it to our problem
-    \item We have tasks x in X, so we get a conditional reward
-    \item States are encoded as rules, and we are using a transformer
-    \item So a trajectory is a sequence of rules of the CFG. 
-    \item Linearizd tree + syntactic, get rid of the backward policy
-    \item EM
-\end{itemize}
-
-
-
-
-
-
-
-
-
-
-However, since I am essentially predicting a linearized tree, each node can only have one parent. Therefore, $\beta$ will always be $1$ and can be disregarded from the equation. + dependencies. This gives us the final loss 
+In order to mitigate the computational [cost], I am embedding all rules rather than primitives, such that each rule is unique. Thus, every predicted node (rule) has exactly one parent, in other words, I am essentially linearizing the tree. Therefore, $\beta$ will always be $1$ and can be disregarded from the equation. 
+Moreover, since we are solving tasks \( x \in X \), we have a conditional reward distribution $R(s_T|x)$, as well as a conditional forward policy $\pi_\theta(s_T|x)$ and partition function $Z_\theta(x)$.
+This gives us the final loss:
 
 \begin{align}
-     \mathcal{L}_{TB} = \left(\log Z_\theta + \sum_{t=0}^{T} \log \pi_\theta(s_{t+1}|s_{t};\theta) - \log R(s_T \vert x)\right)^2
+     \mathcal{L}_{TB} = \left(\log Z_\theta(x) + \sum_{t=0}^{T} \log \pi_\theta(s_{t+1}|s_{t}, x) - \log R(s_T \vert x)\right)^2
 \end{align}     
 
 
 
 
+\subsection{Expectation-Maximization}
+I am following the idea of separating the world model from the inference model (system 1 and 2) and use an expectation maximization algorithm [GFN-EM, DC, ... ] to train the models.
 
+The core principle of Expectation-Maximization (EM) involves an iterative two-step process: the Expectation (E) step computes an expectation of the log-likelihood evaluated using the current estimate for the parameters, and the Maximization (M) step, computes parameters maximizing the expected log-likelihood found on the E step.
 
+In the E-step I optimize the recognition model, i.e. the forward policy of the GFlowNet that is proportional to the posterior and to the reward function. 
 
+Here, I'm sampling real data as well as a trajectory and use the trajectory balance loss to update the parameters of the forward policy.
 
+In the M-step I sample a trajectory and only use the reward to update the parameters of the generative model.
 
 
+INCLUDE PSEUDOCODE
+I freeze the weights separately in training. 
 
+\subsubsection{Sleep}
+\paragraph{Replay}
+\paragraph{Fantasy}
 
 
 
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% MODEL %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Model}
 
 
+\paragraph{generative model}
+As we have seen in the Transformer part, self-attention is an algorithm which lets the transformer learn syntactic and semantic structure from its data. This inductive bias is stronger than the purely syntactical nature of the PCFG.
+[neural PCFG, etc. ]
 
+The GEN model is. a transformer
 
 
+\paragraph{Recognition model}
+while the recognition model si a MLP on top of the transformer. The partition function Z is also parameterized sa a MLP ib top of the transformer. 
+% the recognition model is a mlp. the exact parameterearzation can be found in app:par 
+% same for Z
+% $q(z|x_i)$ is parameterized as a neural network. The goal is to approximate $q$ such that $q(z|x_i) \propto p(z|x_i)$, i.e. the true posterior. 
 
 
+\paragraph{IOEncoder}
+Task embedding 
+The IOEncoder is tasked with encoding input-output (IO) pairs into continuous vector representations.
+It encodes an IO pair into a flat sequence with special tokens ('IN' and 'OUT') indicating the boundary between input and output.
+- Show the exact model (transformer, how many layers, etc. and make a table of that? or is it already in the table? )
 
+- explain how tasks are created (and that it also takes time if we create new tasks from scratch for replay and fantasy.)
 
+from Deepsynth[Input encoding Each list in the examples is encoded in a naive way by mapping each element of Lin to [0, 60]. We additionally use two special symbols PAD and NOPAD, leading to a fixed size encoding of a list into a vector of size 2Lmax. Hence an example is encoded as a tensor of shape (ninputs,2Lmax) where ninputs is the number of inputs in the example.]
 
+- I deviate from the DeepSynth and DreamCoder implementation to make it more suitable for a Transformer.
+Therefore, I \dots
 
 
+See \ref{table:params} for parameter details (i think there are more, check it.). 
 
 
 
+\subsection{RuleEncoder}
+State embedding
+- DSL and syntactic constraints are compiled into a CFG
+The RuleEncoder is designed to transform programming rules derived from a Context-Free Grammar (CFG) into continuous vector representations, or embeddings.
+in order to have semantics and not just syntax, i.e. use additional information of the CFG, I create a neural PCFG. (see kim)
+In each step, I predict the next rule from the cfg, until a trajectory is done. This means that a state is a trajectory of rules and a program is represented as such a list.
+Other ideas to represent ASTs are GNNs, or Tree-Transformers [which were explored, but the computational complexity gets higher [source]. also distributed representations of aggregations are an option like in GFN-EM.], however, I settled on using a regular transformer, since it has been shown that it can learn tree structures implicitly, through positional encoding and also [source] show that the performance is similar.
+since we are representing trees, it might be beneficial to embed programs in hyperbolic space [see conceptual spaces]. 
+There are other ways to embed the cfg, [e.g. see kim].
 
 
+since im using the cfg to extract only the allowed rules, it was easier to embed rules rather than primitives, 
 
+Rules could be encoded including additional information like tree depth, arg idx, parents, siblings, etc. 
+since an AST is two dimensional, there are many expansion orders. 
+my model is a transformer with a MLP on top to predict logits for the rule. I could have another, to predict the position to attach the next node. Other than that if i only embed primitives instead of rules, 
+We could use a GNN and do both node and edge prediction. 
+Otherwise, we also need to decide expansion order since rules are context free, i.e. if we only predict the rule there may be multiple parts of the tree where this could be applied to. However, there may be benefits in expanding in different orders. We could apply a second GFN to predict the next best node to expand.
+In the cfg we have terminals and nonterminals
 
+When constructing an AST, it can be expanded in various orders.
+E.g. we could predict the tree bottom up, i.e. predict terminal nodes and then connect them progressively. The benefit of this is that we can evaluate partial expression. However, once a partial tree is predicted, the other arguments of the function are dependent on it so we have to keep expanding nodes upwards until ...
 
+since we are representing the tree as an array of rules, so that we can use them with transformer, we need to reformat it back into a tree to evaluate it. i.e. we need to fisrt construct it and then go through it again for evaluation. this slows down the computation. 
 
 
+- heapsearch, evaluation, using sub-trees, etc. 
+Another expansion is using a depth first search (DFS) [source] approach (note that this is not about searching through the CFG, but constructing the AST). Since we are essentially linearising a tree when giving it as input to the transformer, the transformer has additional order information, which in combination with positional encoding lets it learn better. 
 
+Moreover, in the original GFN, as explained above [ref] we need a prediction for the backward logits. however, since we are creating trees top-down, every state has exactly one parent. therefore, we can make the calculations simpler and omit the backward logits. 
+In general, it might not be a bad idea to include it since we can use it to do other kinds of inferences [e.g. in using subtrajectory balance].
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\subsection{EM}
-
-$q(z|x_i)$ is parameterized as a neural network. The goal is to approximate $q$ such that $q(z|x_i) \propto p(z|x_i)$, i.e. the true posterior. 
-
-In the E-step we optimize $q$ such as to minimize $D_{KL}\left( q(z|x_i) || p(z|x_i) \right)$.
-In the M-step we optimize $\mathcal{L}$ w.r.t. the parameters of $p$
-$$ \mathbb{E}_i \left[ \mathbb{E}_{z \sim q(z|x_i)} \log p_\theta(z) p_\theta(x_i|z) \right] $$
-
-When $z$ is high dimensional, we must be wary of posterior collapse. Wake-sleep [SOURCE] mitigates this by minimizing $$ \mathbb{E}_{z \sim p_\theta(z), x \sim p_\theta(x|z)} \left[- \log q_\phi (z|x)\right] $$ which is equivalent to minimizing $D_{KL}\left( p(z|x_i) || q(z|x_i) \right)$, the KL is opposite direction, which makes $q$ seek a broad approximation to the true posterior, capturing all modes.
-
-
-
-% Differences between DC and FlowCoder
-% \begin{itemize}
-%     \item Implicit vs explicit generative model, neuralPCFG, embedding rules. 
-%     \item MAP vs  (convergent vs divergent thinking.)
-%     \item One shot (predicting bigram transition matrix) vs trajectory (predicting logits in each step)
-% \end{itemize}
-
-
-
-% In DreamCoder, they do something similar. They have a generative model in the form of a PCFG, and a recognition model which takes a task as input and outputs a bigram transition tensor, which serves as a policy over actions. Here $Q$ is a conditional distribution, a mapping between IOs and programs. This is essentially an encoding of programs as tasks, which can also be seen in their visualization of task embeddings.
-% The PCFG is completely syntactical.
-% So they train the model to predict better weights and then search in the pcfg enumeratively. 
-
-% for each task they have a beam, which they marginalize over. 
-
-% - What is the prior, likelihood, etc. how is it operationalised
-
-% An EM algorithm is used to estimate the parameters of the generative model.
-
-
-
-% \begin{itemize}
-%     \item argument for attention and why it might be necessary to capture semantics.
-%     \item transformers learn nested relationships (see chapter wolfram) (relationships of increasing complexity)
-% \end{itemize}
-
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%% Methods %%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Methods}
+\begin{enumerate}
+    \item We get a task (how do we sample?)
+    \item the task gets encoded
+    \item goes through transformer, 
+    \item GFN predicts a rule, which is now the next state
+    \item we repeat this until we have a program
+    \item construct the program from the array of rules
+    \item evaluate program against ideal output
+    \item calculate TB loss
+    \item Update model
+\end{enumerate}
+\begin{enumerate}
+    \item same as above, but different loss. update generative model rather than 
+\end{enumerate}
 
 \begin{itemize}
-    \item Reasons for using a GFlowNet 
-    \item Transformer allows for semantic relationships (although we still don't use control or data flow, but we could in principle)
-    \item We want to approximate a multimodal distribution, unlike DreamCoder in which the MAP estimate refrains from finding semantically equal but syntactically different solutions.
-\end{itemize}
-
-
-
-\section{FlowCoder}
-\begin{figure*}[htbp]
-    \centering
-    \begin{adjustbox}{width=\textwidth}
-        \begin{tikzpicture}[
-            node distance=2cm, 
-            auto, 
-            thick,
-            box/.style={
-                rectangle,
-                rounded corners,
-                draw=black, 
-                align=center,
-                drop shadow,
-                minimum height=1cm,
-                minimum width=2cm
-            },
-            arrow/.style={
-                ->,
-                -{Stealth[length=10pt]}
-            }
-        ]
-        
-            % Nodes
-            \node[box, fill=yellow!50] (task) {Task};
-            \node[box, fill=yellow!70, right=3cm of task] (ioencoder) {IOEncoder};
-            \node[box, fill=blue!20, below=1cm of task] (state) {State};
-            \node[box, fill=blue!50, right=3cm of state] (ruleencoder) {RuleEncoder};
-            
-            % Positioning the Transformer node in between IOEncoder and RuleEncoder
-            \coordinate (middle) at ($(ioencoder.east)!0.5!(ruleencoder.east)$);
-            \node[box, fill=green!20, right=3cm of middle] (transformer) {Transformer};
-            
-            % Nodes for FORWARD and Z at 45 degree angles
-            \node[box, fill=purple!30, above right=0.5cm and 2cm of transformer] (forward) {FORWARD};
-            \node[box, fill=purple!50, below right=0.5cm and 2cm of transformer] (z) {Z};
-        
-            % Edges
-            \draw[arrow] (task) -- (ioencoder);
-            \draw[arrow] (state) -- (ruleencoder);
-            \draw[arrow] (ioencoder) -- (transformer);
-            \draw[arrow] (ruleencoder) -- (transformer);
-            \draw[arrow] (transformer) -- (forward);
-            \draw[arrow] (transformer) -- (z);
-        
-        \end{tikzpicture}
-    \end{adjustbox}
-    \caption{Insert explanation + maybe change task to an actual task; same with state; maybe also show the forward and Z output better.}
-    \label{ref:model_diagram}
-\end{figure*}
-
-
-
-
-
-\begin{itemize}
-    \item I embed all the rules (check this with neuralPCFG and maybe embed the cfg so that you have a better generative model) (not the depth, arg number etc. )
-    \item I am searching for the posterior (aligning with active inference), because i want diverse solutions, i.e. i want to learn the solution space for each task, multiple modes, not just the max mode. (how does this compare to MDL)
-    \item 
-\end{itemize}
-
-
-\begin{itemize}
-    \item does the model align with FEP
-    \item If the CFG is generative, is that not a causal model? can there be a generative causal model? be clear about those terms. 
-\end{itemize}
-
-
-What do we need? Differently from the other models which do not embed programs (they do have a programencoder, so what is that then? the output). The output tensor is encoded as a program. The programs themselves are never embedded. What is the difference?
-
-In this work, I am implementing a novel program synthesizer, which integrates with the DeepSynth framework. 
-
-I am separating the generative model (world model) from the inference model. And am using a full transformer.
-Tasks are encoded using the transformer encoder. [explain in detail], which states are encoded using the decoder. A state is represented as a rule of the cfg.
-at each step of the trajectory, the combined inputs are used for the forward logit network to predict logits over possible actions which are then added to the state.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\begin{itemize}
+    \item Data augmentation
+    \item Self-supervised learning
+    \item Sleep phase
+    \item Replay 
+    \item Fantasy
+    \item Overfitting
+    \item Loss optimality. Quality vs Quantity
+    \item Explain CFG, parameters like program depth, sizemax etc. 
+    \item How many programs can actually be created?
+    \item Exploration
+    \item What is the generative model? The CFG or the Transformer?
+    \item Minimum description length (how is that achieved in DC (MAP?) and DS(Expectation of number of programs created before a solution is found)?)
+    \item In the paper they say they produce programs up to depth 6
+    \item We want to find a probability distribution that is proportional to a reward.
+    \item Explain the parameterization. I.e. we could parameterize the rules vs the primitives. 
+    \item Write about the marginalization. Can we marginalize the CFG? How does DC do it? (they only marginalize over a beam) 
     \item Do we want multiple solutions? MAP vs MLE + how could we convert one to another (Talk also about DC, and why they chose MAP)
     \item Surfaces and Essences analogy example abc:xyz :: abd: (wyz/ xya) 
     \item Neural PCFG (Compare to Neural PCFG from Rush and GFN-EM)
@@ -513,19 +430,48 @@ at each step of the trajectory, the combined inputs are used for the forward log
     \item we want to show that using the transformer for semantics makes sense, therefore we need to show that it learnt program embedding. relating tasks to programs and also relationships between tasks and relationships between programs. Also relate that to the embeddings of tasks in DC, which shows that similar tasks are approximately in the same space.
     \item Explain what exactly this task shows or is supposed to represent. Algorithmic thinking, or any type? Dehaene, (also sensory data pattern prediction machine paper)
     \item explain what the batches do
+    \item I embed all the rules (check this with neuralPCFG and maybe embed the cfg so that you have a better generative model) (not the depth, arg number etc. )
+    \item I am searching for the posterior (aligning with active inference), because i want diverse solutions, i.e. i want to learn the solution space for each task, multiple modes, not just the max mode. (how does this compare to MDL)
+    \item does the model align with FEP
+    \item If the CFG is generative, is that not a causal model? can there be a generative causal model? be clear about those terms. 
+    \item What do we need? Differently from the other models which do not embed programs (they do have a programencoder, so what is that then? the output). The output tensor is encoded as a program. The programs themselves are never embedded. What is the difference?
+    \item Reasons for using a GFlowNet 
+    \item Transformer allows for semantic relationships (although we still don't use control or data flow, but we could in principle)
+    \item We want to approximate a multimodal distribution, unlike DreamCoder in which the MAP estimate refrains from finding semantically equal but syntactically different solutions.
+    \item Implicit vs explicit generative model, neuralPCFG, embedding rules. 
+    \item MAP vs  (convergent vs divergent thinking.)
+    \item One shot (predicting bigram transition matrix) vs trajectory (predicting logits in each step)
+    \item argument for attention and why it might be necessary to capture semantics.
+    \item transformers learn nested relationships (see chapter wolfram) (relationships of increasing complexity)
+\end{itemize}
+    
+
+
+
+% In DreamCoder, they do something similar. They have a generative model in the form of a PCFG, and a recognition model which takes a task as input and outputs a bigram transition tensor, which serves as a policy over actions. Here $Q$ is a conditional distribution, a mapping between IOs and programs. This is essentially an encoding of programs as tasks, which can also be seen in their visualization of task embeddings.
+% The PCFG is completely syntactical.
+% So they train the model to predict better weights and then search in the pcfg enumeratively. 
+
+% for each task they have a beam, which they marginalize over. Is that not the same essentially as a GFN????
+
+% - What is the prior, likelihood, etc. how is it operationalised
+
+% An EM algorithm is used to estimate the parameters of the generative model.
+
+
+\begin{itemize}
+    \item Nathaniel compare enumeration based methods with sampling methods. quality vs quantity.
+    \item If the sampler is good enough, there is no need for search
+    \item We have seen that if a GFN is trained well enough, it should act as a really good sampler. So we use that 
 \end{itemize}
 
 
+Code available at \url{https://github.com/R1704/master_thesis}
+% In this work, I am implementing a novel program synthesizer, which integrates with the DeepSynth framework. 
 
-
-
-\ref{app:dsl}
-
-
-
-
-
-
+% I am separating the generative model (world model) from the inference model. And am using a full transformer.
+% Tasks are encoded using the transformer encoder. [explain in detail], which states are encoded using the decoder. A state is represented as a rule of the cfg.
+% at each step of the trajectory, the combined inputs are used for the forward logit network to predict logits over possible actions which are then added to the state.
 
 
 
@@ -535,14 +481,6 @@ at each step of the trajectory, the combined inputs are used for the forward log
 
 
 
-
-
-
-
-
-
-
-\subsubsection{Framework}
 
 % Make a diagram of the pipeline, sample forward, until a state is constructed, evaluation, etc. maybe also with sleep
 
@@ -550,93 +488,6 @@ at each step of the trajectory, the combined inputs are used for the forward log
 
 
 
-\begin{itemize}
-    \item Explain CFG, parameters like program depth, sizemax etc. 
-    \item How many programs can actually be created?
-    \item Exploration
-    \item What is the generative model? The CFG or the Transformer?
-    \item Minimum description length (how is that achieved in DC (MAP?) and DS(Expectation of number of programs created before a solution is found)?)
-    \item In the paper they say they produce programs up to depth 6
-    \item We want to find a probability distribution that is proportional to a reward.
-    \item Explain the parameterization. I.e. we could parameterize the rules vs the primitives. 
-    \item Write about the marginalization. Can we marginalize the CFG? How does DC do it? (they only marginalize over a beam) 
-\end{itemize}
-
-
-\subsubsection{Model}
-
-
-
-
-
-
-
-
-
-\paragraph{Tasks}
-% We only work with tasks of type int list -> int list. We remove examples where lists have length greater than Lmax = 10 or where one of the elements of the input or output list are not in Lin = [−30; 30].
-We say that a task is solved if a program is found which satisfies all examples. The timeout of 100s only takes into account the search time and the evaluation times and not the time to query the neural network for predictions.
-
-\begin{itemize}
-    \item n dreamcoder Tasks, filtered like in DeepSynth to only have certain types.
-    \item We work with list editing tasks (give a couple of examples)
-    % \item from Deepsynth [We only work with tasks of type int list -> int list. We remove examples where lists have length greater than Lmax = 10 or where one of the elements of the input or output list are not in Lin = [−30; 30].
-    % We say that a task is solved if a program is found which satisfies all examples. The timeout of 100s only takes into account the search time and the evaluation times and not the time to query the neural network for predictions.]
-\end{itemize}
-
-
-
-
-
-
-- DSL and syntactic constraints are compiled into a CFG
-
-
-\paragraph{RuleEncoder}
-The RuleEncoder is designed to transform programming rules derived from a Context-Free Grammar (CFG) into continuous vector representations, or embeddings.
-in order to have semantics and not just syntax, i.e. use additional information of the CFG, I create a neural PCFG. (see kim)
-In each step, I predict the next rule from the cfg, until a trajectory is done. This means that a state is a trajectory of rules and a program is represented as such a list.
-Other ideas to represent ASTs are GNNs, or Tree-Transformers [which were explored, but the computational complexity gets higher [source]. also distributed representations of aggregations are an option like in GFN-EM.], however, I settled on using a regular transformer, since it has been shown that it can learn tree structures implicitly, through positional encoding and also [source] show that the performance is similar.
-since we are representing trees, it might be beneficial to embed programs in hyperbolic space [see conceptual spaces]. 
-There are other ways to embed the cfg, [e.g. see kim].
-
-
-
-since im using the cfg to extract only the allowed rules, it was easier to embed rules rather than primitives, 
-
-Rules could be encoded including additional information like tree depth, arg idx, parents, siblings, etc. 
-since an AST is two dimensional, there are many expansion orders. 
-my model is a transformer with a MLP on top to predict logits for the rule. I could have another, to predict the position to attach the next node. Other than that if i only embed primitives instead of rules, 
-We could use a GNN and do both node and edge prediction. 
-Otherwise, we also need to decide expansion order since rules are context free, i.e. if we only predict the rule there may be multiple parts of the tree where this could be applied to. However, there may be benefits in expanding in different orders. We could apply a second GFN to predict the next best node to expand.
-In the cfg we have terminals and nonterminals
-
-When constructing an AST, it can be expanded in various orders.
-E.g. we could predict the tree bottom up, i.e. predict terminal nodes and then connect them progressively. The benefit of this is that we can evaluate partial expression. However, once a partial tree is predicted, the other arguments of the function are dependent on it so we have to keep expanding nodes upwards until ...
-
-since we are representing the tree as an array of rules, so that we can use them with transformer, we need to reformat it back into a tree to evaluate it. i.e. we need to fisrt construct it and then go through it again for evaluation. this slows down the computation. 
-
-- heapsearch, evaluation, using sub-trees, etc. 
-Another expansion is using a depth first search (DFS) [source] approach (note that this is not about searching through the CFG, but constructing the AST). Since we are essentially linearising a tree when giving it as input to the transformer, the transformer has additional order information, which in combination with positional encoding lets it learn better. 
-
-Moreover, in the original GFN, as explained above [ref] we need a prediction for the backward logits. however, since we are creating trees top-down, every state has exactly one parent. therefore, we can make the calculations simpler and omit the backward logits. 
-In general, it might not be a bad idea to include it since we can use it to do other kinds of inferences [e.g. in using subtrajectory balance].
-
-
-\paragraph{IOEncoder}
-The IOEncoder is tasked with encoding input-output (IO) pairs into continuous vector representations.
-It encodes an IO pair into a flat sequence with special tokens ('IN' and 'OUT') indicating the boundary between input and output.
-- Show the exact model (transformer, how many layers, etc. and make a table of that? or is it already in the table? )
-
-- explain how tasks are created (and that it also takes time if we create new tasks from scratch for replay and fantasy.)
-
-from Deepsynth[Input encoding Each list in the examples is encoded in a naive way by mapping each element of Lin to [0, 60]. We additionally use two special symbols PAD and NOPAD, leading to a fixed size encoding of a list into a vector of size 2Lmax. Hence an example is encoded as a tensor of shape (ninputs,2Lmax) where ninputs is the number of inputs in the example.]
-
-- I deviate from the DeepSynth and DreamCoder implementation to make it more suitable for a Transformer.
-Therefore, I \dots
-
-
-See \ref{table:params} for parameter details (i think there are more, check it.). 
 
 
 
@@ -648,21 +499,131 @@ See \ref{table:params} for parameter details (i think there are more, check it.)
 
 
 
-\begin{itemize}
-    \item Data augmentation
-    \item Self-supervised learning
-    \item Sleep phase
-    \item Replay 
-    \item Fantasy
-    \item Overfitting
-    \item Loss optimality. Quality vs Quantity
-\end{itemize}
 
-\subsubsection{Wake-sleep}
-\begin{itemize}
-    \item Replay
-    \item Fantasy
-\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -716,36 +677,6 @@ See \ref{table:params} for parameter details (i think there are more, check it.)
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -809,6 +740,7 @@ Quantifying the result in this way gives us quite a good estimate of the model's
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsubsection{experiments}
 \begin{itemize}
     \item ablation
@@ -1376,3 +1308,72 @@ ASTs
     
 
     % todo: table of parameters and syntactic constraints (appendix)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    \begin{figure*}[htbp]
+        \centering
+        \begin{adjustbox}{width=\textwidth}
+            \begin{tikzpicture}[
+                node distance=2cm, 
+                auto, 
+                thick,
+                box/.style={
+                    rectangle,
+                    rounded corners,
+                    draw=black, 
+                    align=center,
+                    drop shadow,
+                    minimum height=1cm,
+                    minimum width=2cm
+                },
+                arrow/.style={
+                    ->,
+                    -{Stealth[length=10pt]}
+                }
+            ]
+            
+                % Nodes
+                \node[box, fill=yellow!50] (task) {Task};
+                \node[box, fill=yellow!70, right=3cm of task] (ioencoder) {IOEncoder};
+                \node[box, fill=blue!20, below=1cm of task] (state) {State};
+                \node[box, fill=blue!50, right=3cm of state] (ruleencoder) {RuleEncoder};
+                
+                % Positioning the Transformer node in between IOEncoder and RuleEncoder
+                \coordinate (middle) at ($(ioencoder.east)!0.5!(ruleencoder.east)$);
+                \node[box, fill=green!20, right=3cm of middle] (transformer) {Transformer};
+                
+                % Nodes for FORWARD and Z at 45 degree angles
+                \node[box, fill=purple!30, above right=0.5cm and 2cm of transformer] (forward) {FORWARD};
+                \node[box, fill=purple!50, below right=0.5cm and 2cm of transformer] (z) {Z};
+            
+                % Edges
+                \draw[arrow] (task) -- (ioencoder);
+                \draw[arrow] (state) -- (ruleencoder);
+                \draw[arrow] (ioencoder) -- (transformer);
+                \draw[arrow] (ruleencoder) -- (transformer);
+                \draw[arrow] (transformer) -- (forward);
+                \draw[arrow] (transformer) -- (z);
+            
+            \end{tikzpicture}
+        \end{adjustbox}
+        \caption{Insert explanation + maybe change task to an actual task; same with state; maybe also show the forward and Z output better.}
+        \label{ref:model_diagram}
+    \end{figure*}
+    
+    
+    
+    

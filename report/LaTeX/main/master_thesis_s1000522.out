@@ -1,76 +1,83 @@
 \BOOKMARK [1][-]{section.0.1}{Introduction}{}% 1
 \BOOKMARK [2][-]{subsection.0.1.1}{Main Contributions}{section.0.1}% 2
 \BOOKMARK [1][-]{section.0.2}{Cognition, Nested Multi-scale Hierarchies, and Self-Organisation}{}% 3
-\BOOKMARK [2][-]{subsection.0.2.1}{Compositionality}{section.0.2}% 4
-\BOOKMARK [2][-]{subsection.0.2.2}{Language of Thought}{section.0.2}% 5
-\BOOKMARK [1][-]{section.0.3}{Bayesian Inference}{}% 6
-\BOOKMARK [2][-]{subsection.0.3.1}{Game Engine in the Head}{section.0.3}% 7
-\BOOKMARK [1][-]{section.0.4}{Probabilistic Programming}{}% 8
-\BOOKMARK [2][-]{subsection.0.4.1}{DreamCoder}{section.0.4}% 9
-\BOOKMARK [3][-]{paragraph.0.4.1.0.1}{Wake}{subsection.0.4.1}% 10
-\BOOKMARK [4][-]{paragraph.0.4.1.0.2}{Sleep: Abstraction}{paragraph.0.4.1.0.1}% 11
-\BOOKMARK [4][-]{paragraph.0.4.1.0.3}{Sleep: Dreaming}{paragraph.0.4.1.0.1}% 12
-\BOOKMARK [1][-]{section.0.5}{Methods}{}% 13
-\BOOKMARK [1][-]{section.0.6}{FlowCoder}{}% 14
-\BOOKMARK [2][-]{subsection.0.6.1}{DeepSynth}{section.0.6}% 15
-\BOOKMARK [2][-]{subsection.0.6.2}{GFlowNet}{section.0.6}% 16
-\BOOKMARK [2][-]{subsection.0.6.3}{EM}{section.0.6}% 17
-\BOOKMARK [1][-]{section.0.7}{Methods}{}% 18
-\BOOKMARK [1][-]{section.0.8}{FlowCoder}{}% 19
-\BOOKMARK [2][-]{subsubsection.0.8.0.1}{Framework}{section.0.8}% 20
-\BOOKMARK [3][-]{subsubsection.0.8.0.2}{Model}{subsubsection.0.8.0.1}% 21
-\BOOKMARK [4][-]{paragraph.0.8.0.2.1}{Tasks}{subsubsection.0.8.0.2}% 22
-\BOOKMARK [4][-]{paragraph.0.8.0.2.2}{RuleEncoder}{subsubsection.0.8.0.2}% 23
-\BOOKMARK [4][-]{paragraph.0.8.0.2.3}{IOEncoder}{subsubsection.0.8.0.2}% 24
-\BOOKMARK [3][-]{subsubsection.0.8.0.3}{Wake-sleep}{subsubsection.0.8.0.1}% 25
-\BOOKMARK [3][-]{subsubsection.0.8.0.4}{Reward}{subsubsection.0.8.0.1}% 26
-\BOOKMARK [3][-]{subsubsection.0.8.0.5}{experiments}{subsubsection.0.8.0.1}% 27
-\BOOKMARK [2][-]{subsection.0.8.1}{Results}{section.0.8}% 28
-\BOOKMARK [2][-]{subsection.0.8.2}{Analysis}{section.0.8}% 29
-\BOOKMARK [3][-]{subsubsection.0.8.2.1}{Complexity Analysis}{subsection.0.8.2}% 30
-\BOOKMARK [2][-]{subsection.0.8.3}{Discussion}{section.0.8}% 31
-\BOOKMARK [3][-]{subsubsection.0.8.3.1}{Limitations}{subsection.0.8.3}% 32
-\BOOKMARK [2][-]{subsection.0.8.4}{Future Work}{section.0.8}% 33
-\BOOKMARK [2][-]{subsection.0.8.5}{Conclusion}{section.0.8}% 34
-\BOOKMARK [2][-]{subsection.0.8.6}{Discussion}{section.0.8}% 35
-\BOOKMARK [3][-]{subsubsection.0.8.6.1}{Comparison to other approaches}{subsection.0.8.6}% 36
-\BOOKMARK [3][-]{subsubsection.0.8.6.2}{Biological Plausibility}{subsection.0.8.6}% 37
-\BOOKMARK [0][-]{chapter.1}{Philosophical Ramifications}{}% 38
-\BOOKMARK [1][-]{section.1.1}{Who am I?}{chapter.1}% 39
-\BOOKMARK [2][-]{subsection.1.1.1}{The Genesis of Cognition}{section.1.1}% 40
-\BOOKMARK [2][-]{subsection.1.1.2}{Computational boundary of the self}{section.1.1}% 41
-\BOOKMARK [3][-]{subsubsection.1.1.2.1}{Body Patterning and Cognition: A Common Origin}{subsection.1.1.2}% 42
-\BOOKMARK [3][-]{subsubsection.1.1.2.2}{Multicellularity vs. Cancer: The Shifting Boundary of the Self}{subsection.1.1.2}% 43
-\BOOKMARK [3][-]{subsubsection.1.1.2.3}{Defining Individuation From a Cognitive Perspective}{subsection.1.1.2}% 44
-\BOOKMARK [2][-]{subsection.1.1.3}{Embodied cognition and circular causality: on the role of constitutive autonomy in the reciprocal coupling of perception and action}{section.1.1}% 45
-\BOOKMARK [1][-]{section.1.2}{Implications/ Consequences of the theory}{chapter.1}% 46
-\BOOKMARK [1][-]{section.1.3}{What is Truth?}{chapter.1}% 47
-\BOOKMARK [1][-]{section.1.4}{What is a Concept?}{chapter.1}% 48
-\BOOKMARK [2][-]{subsection.1.4.1}{Identity and Essence}{section.1.4}% 49
-\BOOKMARK [3][-]{subsubsection.1.4.1.1}{Categories}{subsection.1.4.1}% 50
-\BOOKMARK [3][-]{subsubsection.1.4.1.2}{Computational models of categorization}{subsection.1.4.1}% 51
-\BOOKMARK [2][-]{subsection.1.4.2}{concepts}{section.1.4}% 52
-\BOOKMARK [2][-]{subsection.1.4.3}{The Hierarchy of Mental Representations: From Sensory Neurons to Conceptual Structures}{section.1.4}% 53
-\BOOKMARK [2][-]{subsection.1.4.4}{Semantic Pointer Architecture}{section.1.4}% 54
-\BOOKMARK [2][-]{subsection.1.4.5}{Concept space}{section.1.4}% 55
-\BOOKMARK [1][-]{section.1.5}{What is Meaning?}{chapter.1}% 56
-\BOOKMARK [1][-]{section.1.6}{What is a thought?}{chapter.1}% 57
-\BOOKMARK [1][-]{section.1.7}{What Does It Mean to Understand?}{chapter.1}% 58
-\BOOKMARK [2][-]{subsubsection.1.7.0.1}{Operationalising "Understanding"}{section.1.7}% 59
-\BOOKMARK [2][-]{subsection.1.7.1}{Hemispheric Lateralisation}{section.1.7}% 60
-\BOOKMARK [1][-]{section.1.8}{What Is a Language?}{chapter.1}% 61
-\BOOKMARK [2][-]{subsection.1.8.1}{Language in Thought}{section.1.8}% 62
-\BOOKMARK [3][-]{subsubsection.1.8.1.1}{Neurosymbolic AI}{subsection.1.8.1}% 63
-\BOOKMARK [3][-]{subsubsection.1.8.1.2}{Formal Grammar}{subsection.1.8.1}% 64
-\BOOKMARK [1][-]{section.1.9}{What Is a Computation?}{chapter.1}% 65
-\BOOKMARK [2][-]{subsection.1.9.1}{Computational Mind}{section.1.9}% 66
-\BOOKMARK [2][-]{subsection.1.9.2}{Self-organization and predictive processing}{section.1.9}% 67
-\BOOKMARK [3][-]{subsubsection.1.9.2.1}{Poverty of the Stimulus}{subsection.1.9.2}% 68
-\BOOKMARK [2][-]{subsection.1.9.3}{LLMs/ Self-attention / transformers}{section.1.9}% 69
-\BOOKMARK [3][-]{subsubsection.1.9.3.1}{Limitations}{subsection.1.9.3}% 70
-\BOOKMARK [2][-]{subsection.1.9.4}{System 1 \046 System 2}{section.1.9}% 71
-\BOOKMARK [0][-]{section*.36}{Glossary}{}% 72
-\BOOKMARK [1][-]{section.Alph0.1}{Domain Specific Language \(DSL\)}{section*.36}% 73
-\BOOKMARK [2][-]{subsection.Alph0.1.1}{Semantics}{section.Alph0.1}% 74
-\BOOKMARK [2][-]{subsection.Alph0.1.2}{Primitive Types}{section.Alph0.1}% 75
-\BOOKMARK [1][-]{section.Alph0.2}{Parameters}{section*.36}% 76
+\BOOKMARK [2][-]{subsection.0.2.1}{LLMs/ Self-attention / transformers}{section.0.2}% 4
+\BOOKMARK [3][-]{subsubsection.0.2.1.1}{Limitations}{subsection.0.2.1}% 5
+\BOOKMARK [2][-]{subsection.0.2.2}{Compositionality}{section.0.2}% 6
+\BOOKMARK [2][-]{subsection.0.2.3}{Correlation Does Not Imply Causation}{section.0.2}% 7
+\BOOKMARK [2][-]{subsection.0.2.4}{Causal Models}{section.0.2}% 8
+\BOOKMARK [2][-]{subsection.0.2.5}{System 1 \046 System 2}{section.0.2}% 9
+\BOOKMARK [2][-]{subsection.0.2.6}{Language of Thought}{section.0.2}% 10
+\BOOKMARK [1][-]{section.0.3}{Bayesian Inference}{}% 11
+\BOOKMARK [2][-]{subsection.0.3.1}{Game Engine in the Head}{section.0.3}% 12
+\BOOKMARK [1][-]{section.0.4}{Probabilistic Programming}{}% 13
+\BOOKMARK [2][-]{subsection.0.4.1}{DreamCoder}{section.0.4}% 14
+\BOOKMARK [3][-]{paragraph.0.4.1.0.1}{Wake}{subsection.0.4.1}% 15
+\BOOKMARK [4][-]{paragraph.0.4.1.0.2}{Sleep: Abstraction}{paragraph.0.4.1.0.1}% 16
+\BOOKMARK [4][-]{paragraph.0.4.1.0.3}{Sleep: Dreaming}{paragraph.0.4.1.0.1}% 17
+\BOOKMARK [1][-]{section.0.5}{Methods}{}% 18
+\BOOKMARK [1][-]{section.0.6}{FlowCoder}{}% 19
+\BOOKMARK [2][-]{subsection.0.6.1}{DeepSynth}{section.0.6}% 20
+\BOOKMARK [3][-]{paragraph.0.6.1.0.1}{DSL}{subsection.0.6.1}% 21
+\BOOKMARK [4][-]{paragraph.0.6.1.0.2}{DSL}{paragraph.0.6.1.0.1}% 22
+\BOOKMARK [4][-]{paragraph.0.6.1.0.3}{Syntactic constraints}{paragraph.0.6.1.0.1}% 23
+\BOOKMARK [4][-]{paragraph.0.6.1.0.4}{Tasks}{paragraph.0.6.1.0.1}% 24
+\BOOKMARK [4][-]{paragraph.0.6.1.0.5}{Rules}{paragraph.0.6.1.0.1}% 25
+\BOOKMARK [2][-]{subsection.0.6.2}{GFlowNet}{section.0.6}% 26
+\BOOKMARK [2][-]{subsection.0.6.3}{Expectation-Maximization}{section.0.6}% 27
+\BOOKMARK [3][-]{subsubsection.0.6.3.1}{Sleep}{subsection.0.6.3}% 28
+\BOOKMARK [4][-]{paragraph.0.6.3.1.1}{Replay}{subsubsection.0.6.3.1}% 29
+\BOOKMARK [4][-]{paragraph.0.6.3.1.2}{Fantasy}{subsubsection.0.6.3.1}% 30
+\BOOKMARK [1][-]{section.0.7}{Model}{}% 31
+\BOOKMARK [2][-]{paragraph.0.7.0.0.1}{generative model}{section.0.7}% 32
+\BOOKMARK [3][-]{paragraph.0.7.0.0.2}{Recognition model}{paragraph.0.7.0.0.1}% 33
+\BOOKMARK [4][-]{paragraph.0.7.0.0.3}{IOEncoder}{paragraph.0.7.0.0.2}% 34
+\BOOKMARK [2][-]{subsection.0.7.1}{RuleEncoder}{section.0.7}% 35
+\BOOKMARK [3][-]{subsubsection.0.7.1.1}{Reward}{subsection.0.7.1}% 36
+\BOOKMARK [3][-]{subsubsection.0.7.1.2}{experiments}{subsection.0.7.1}% 37
+\BOOKMARK [2][-]{subsection.0.7.2}{Results}{section.0.7}% 38
+\BOOKMARK [2][-]{subsection.0.7.3}{Analysis}{section.0.7}% 39
+\BOOKMARK [3][-]{subsubsection.0.7.3.1}{Complexity Analysis}{subsection.0.7.3}% 40
+\BOOKMARK [2][-]{subsection.0.7.4}{Discussion}{section.0.7}% 41
+\BOOKMARK [3][-]{subsubsection.0.7.4.1}{Limitations}{subsection.0.7.4}% 42
+\BOOKMARK [2][-]{subsection.0.7.5}{Future Work}{section.0.7}% 43
+\BOOKMARK [2][-]{subsection.0.7.6}{Conclusion}{section.0.7}% 44
+\BOOKMARK [2][-]{subsection.0.7.7}{Discussion}{section.0.7}% 45
+\BOOKMARK [3][-]{subsubsection.0.7.7.1}{Comparison to other approaches}{subsection.0.7.7}% 46
+\BOOKMARK [3][-]{subsubsection.0.7.7.2}{Biological Plausibility}{subsection.0.7.7}% 47
+\BOOKMARK [0][-]{chapter.1}{Philosophical Ramifications}{}% 48
+\BOOKMARK [1][-]{section.1.1}{Who am I?}{chapter.1}% 49
+\BOOKMARK [2][-]{subsection.1.1.1}{The Genesis of Cognition}{section.1.1}% 50
+\BOOKMARK [2][-]{subsection.1.1.2}{Computational boundary of the self}{section.1.1}% 51
+\BOOKMARK [3][-]{subsubsection.1.1.2.1}{Body Patterning and Cognition: A Common Origin}{subsection.1.1.2}% 52
+\BOOKMARK [3][-]{subsubsection.1.1.2.2}{Multicellularity vs. Cancer: The Shifting Boundary of the Self}{subsection.1.1.2}% 53
+\BOOKMARK [3][-]{subsubsection.1.1.2.3}{Defining Individuation From a Cognitive Perspective}{subsection.1.1.2}% 54
+\BOOKMARK [2][-]{subsection.1.1.3}{Embodied cognition and circular causality: on the role of constitutive autonomy in the reciprocal coupling of perception and action}{section.1.1}% 55
+\BOOKMARK [1][-]{section.1.2}{Implications/ Consequences of the theory}{chapter.1}% 56
+\BOOKMARK [1][-]{section.1.3}{What is Truth?}{chapter.1}% 57
+\BOOKMARK [1][-]{section.1.4}{What is a Concept?}{chapter.1}% 58
+\BOOKMARK [2][-]{subsection.1.4.1}{Identity and Essence}{section.1.4}% 59
+\BOOKMARK [3][-]{subsubsection.1.4.1.1}{Categories}{subsection.1.4.1}% 60
+\BOOKMARK [3][-]{subsubsection.1.4.1.2}{Computational models of categorization}{subsection.1.4.1}% 61
+\BOOKMARK [2][-]{subsection.1.4.2}{concepts}{section.1.4}% 62
+\BOOKMARK [2][-]{subsection.1.4.3}{The Hierarchy of Mental Representations: From Sensory Neurons to Conceptual Structures}{section.1.4}% 63
+\BOOKMARK [2][-]{subsection.1.4.4}{Semantic Pointer Architecture}{section.1.4}% 64
+\BOOKMARK [2][-]{subsection.1.4.5}{Concept space}{section.1.4}% 65
+\BOOKMARK [1][-]{section.1.5}{What is Meaning?}{chapter.1}% 66
+\BOOKMARK [1][-]{section.1.6}{What is a thought?}{chapter.1}% 67
+\BOOKMARK [1][-]{section.1.7}{What Does It Mean to Understand?}{chapter.1}% 68
+\BOOKMARK [2][-]{subsubsection.1.7.0.1}{Operationalising "Understanding"}{section.1.7}% 69
+\BOOKMARK [2][-]{subsection.1.7.1}{Hemispheric Lateralisation}{section.1.7}% 70
+\BOOKMARK [1][-]{section.1.8}{What Is a Language?}{chapter.1}% 71
+\BOOKMARK [2][-]{subsection.1.8.1}{Language in Thought}{section.1.8}% 72
+\BOOKMARK [3][-]{subsubsection.1.8.1.1}{Neurosymbolic AI}{subsection.1.8.1}% 73
+\BOOKMARK [3][-]{subsubsection.1.8.1.2}{Formal Grammar}{subsection.1.8.1}% 74
+\BOOKMARK [1][-]{section.1.9}{What Is a Computation?}{chapter.1}% 75
+\BOOKMARK [2][-]{subsection.1.9.1}{Computational Mind}{section.1.9}% 76
+\BOOKMARK [2][-]{subsection.1.9.2}{Self-organization and predictive processing}{section.1.9}% 77
+\BOOKMARK [3][-]{subsubsection.1.9.2.1}{Poverty of the Stimulus}{subsection.1.9.2}% 78
+\BOOKMARK [0][-]{section*.37}{Glossary}{}% 79
+\BOOKMARK [1][-]{section.Alph0.1}{Domain Specific Language \(DSL\)}{section*.37}% 80
+\BOOKMARK [2][-]{subsection.Alph0.1.1}{Semantics}{section.Alph0.1}% 81
+\BOOKMARK [2][-]{subsection.Alph0.1.2}{Primitive Types}{section.Alph0.1}% 82
+\BOOKMARK [1][-]{section.Alph0.2}{Parameters}{section*.37}% 83

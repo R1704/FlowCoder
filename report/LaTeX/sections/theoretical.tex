@@ -1,9 +1,6 @@
-% \chapter{Theoretical Framework}
 
 
-
-
-% Examples of holarchies:
+% \section{Examples of holarchies:}
 
 % Language: The construction of language from letters to words, sentences, paragraphs, etc. forms a hierarchy where the basic building blocks are combined to create increasingly complex structures.
 
@@ -36,7 +33,95 @@ Biological systems demonstrate remarkable complexity through self-organization, 
 Biological organization is composed of nested goal-seeking agents, maintaining operational and organizational closure through homeostasis and allostasis \cite{ciaunica_nested_2023, vernon_embodied_2015} [explain terms in more detail, or is glossary enough?].
 
 Atoms form molecules, which form cells, tissues, organs, organisms, groups, societies, civilizations, and so on. Levin describes this as a multiscale competency architecture, which is not only structural but also functional \cite{Levin_2023}. Each level of this organization has some competency and solves problems in its own action space. Moreover, each level interacts with the levels above and below which is reflected in the idea of circular causality \cite{ciaunica_nested_2023, vernon_embodied_2015}. 
-% Douglas Hofstadter calls this a heterarchy and gives the examp
+% Douglas Hofstadter calls this a heterarchy and gives the example
+
+
+
+
+
+
+\subsection{LLMs/ Self-attention / transformers}
+% generative models. 
+% explain the encoder decoder architecture.
+% grounding, etc. 
+% embedding spaces.
+% show that this allows for analogical thought and reasoning
+% perhaps include bit from AAPS proposal
+
+\begin{itemize}
+    \item could LLMs be regarded as symbolic like models? since each token is a vector and then the model builds aggregate representations given those vectors?
+\end{itemize}
+
+In his recent book "What is ChatGPT doing?", Stephen Wolfram analyses the internal mechanisms of ChatGPT \cite{wolfram2023chatgpt}.
+
+It would be remiss to not describe and analyze large language models (LLMs) such as ChatGPT [source], Bard [source], and Llama [source], given their recent undeniable and phenomenal successes. These models are descendents of the Transformer architecture, originally introduced in 2017 by Vaswani et al. \cite{Vaswani_Shazeer_Parmar_Uszkoreit_Jones_Gomez_Kaiser_Polosukhin_2017} and are trained on massive datasets of text and code. This allows them to learn the statistical relationships between words and phrases, and to \source[inline]{generate human-quality text, translate languages, write different kinds of creative content, and answer questions in an informative way}.
+
+[in order to try to be self-contained,] I will briefly outline the inner workings of these neural network architectures. 
+
+Embedding is the process of converting tokens into dense vectors of numbers. These vectors represent the semantic and syntactic information about the tokens. The embedding layer is important for LLMs because it allows them to learn the relationships between tokens in a high-dimensional space.
+Akin to Gördenford's conceptual spaces \ref{subsec:gordenford}, tokens are essentially laid out in a high-dimensional space with the intention of tokens being organized according to their semantic meaning. E.g. "dog" should be closer to "canine" than to "panda". 
+Various levels of embeddings are encoded, which gives aggregate words, sentences, paragraphs, etc. positions in this latent space.
+
+At the heart of the Transformer lies the self-attention mechanism, which enables the model to weigh the significance of different tokens in a sentence relative to a given token.
+
+Formally, 
+\begin{equation}
+    \text{Attention}(Q, K, V) = \text{softmax}(\frac{QK^T}{\sqrt{d_k}})V
+\end{equation}
+where:
+\begin{conditions*}
+    Q & A matrix of query vectors, where each row represents a query for a single word in the input sequence. \\
+    K & A matrix of key vectors, where each row represents a key for a single word in the input sequence. \\
+    V & A matrix of value vectors, where each row represents a value for a single word in the input sequence. \\
+    d_k & The dimension of the key and query vectors. \\
+    \text{softmax} & A function that normalizes the attention scores such that they sum to 1.
+\end{conditions*}
+
+The significance of each part of the formula is as follows:
+
+Q, K, and V: These matrices are obtained by projecting the input sequence into three different spaces using three separate weight matrices. This projection allows the model to learn different representations of the input sequence, which can be useful for different tasks.
+$\frac{QK^T}{\sqrt{dk}}$: This term calculates the similarity between each query vector and each key vector. The dot product of two vectors is a measure of their similarity, but it is also sensitive to the scale of the vectors. Dividing by the square root of the dimension of the key vectors helps to normalize the attention scores such that they are comparable across different words in the input sequence.
+softmax: The softmax function normalizes the attention scores such that they sum to 1. This ensures that the attention weights represent a probability distribution over the words in the input sequence.
+V: The value matrix contains the representations of the words in the input sequence that will be attended to. The attention weights are multiplied by the value matrix to produce a weighted sum of the value vectors. This weighted sum represents the context-aware representation of the current word in the input sequence.
+Self-attention is a powerful mechanism that allows models to learn long-range dependencies in input sequences. This is because the attention weights can be used to focus on different parts of the input sequence, depending on the context of the current word.
+
+Multi-Head Attention: Instead of a single set of attention weights, the model uses multiple sets, enabling it to focus on different parts of the input for different tasks simultaneously.
+Feed-forward Networks: Each layer of the transformer contains a feed-forward neural network, which is applied independently to each position. [This allows the transformer to make statistics over compounded sentences (does wolfram explain it?)]
+
+The \emph{encoder} is a block that takes an input sequence of tokens and produces a sequence of hidden states. The hidden states represent the information that the encoder has extracted from the input sequence.
+
+The \emph{decoder} is a neural network that takes the hidden states from the encoder and produces an output sequence of tokens. The decoder is trained to predict the next word in the sequence, given the previous words and the hidden states.
+
+Next token prediction.
+
+In his book, Wolfram shows that GPT doesn't have any explicit knowledge of grammar and the parse trees that govern natural language, yet they learn these nested syntax trees implicitly. 
+Nonsense sentences such as Chomsky's famous example "Colorless green ideas sleep furiously", or jabberwocky sentences, show that there is more to language than syntax. There seems to be a semantic grammar, which LLM models learn implicitly.
+
+Because LLMs have seen vast amount of sentences of the structure if $X$ then $Y$
+Logic is a way of saying that sentences that follow certain patterns are reasonable, while others are not. For example, it's reasonable to say "All X are Y. This is not Y, so it's not an X" (as in "All giraffes are tall. This is not tall, so it's not a giraffe.").
+
+It's possible that LLMs have "discovered" syllogistic logic by looking at huge amounts of text. However, when it comes to more sophisticated formal logic, they fail [source], since they learned this implicit logic by correlation and they don't "know" the actual rules of logic.
+
+- we don't know yet whether implicit logic has actually been discovered or whether the model is just that good by correlation, since it has seen so much data.
+
+
+This is the learnt semantic space. We can look e.g. at analogies such as man is to king as woman to queen.
+
+When LLMs create a sentence, they are essentially following a trajectory in semantic space. This can be seen as a POMDP?
+
+
+\subsubsection{Limitations}
+\rephrase[inline]{from JB: LLMs learn how to complete sequences, they do statistics over patterns}
+Stephen shows that when LLMs create statistics over text, they first discover patterns, then syntax, then style, and only lastly semantics. Humans however start out by discovering semantics and then find patterns, syntax and lastly style. 
+
+
+
+
+
+
+
+
+
 
 
 
@@ -54,30 +139,65 @@ Compositionality is central to cognitive productivity and learning. It allows fo
 Humans are endowed with an intuitive grasp of causality, which functions as the underpinning for both predictive and counterfactual reasoning.  This enables humans to extrapolate beyond the confines of empirical data, to conjure hypothetical worlds e.g. in imagination, play, and dreaming.
 
 
+- Can LLMs extract composable entities to recombine?
+\subsection{Correlation Does Not Imply Causation}
 
-% \subsection{Correlation Does Not Imply Causation}
+Generative models assign probability distributions, representing observations in such a way that they can generate new data points similar to the observations. The mapping between the probability distributions and the data is correlational. 
 
-% Generative models assign probability distributions, representing observations in such a way that they can generate new data points similar to the observations. The mapping between the probability distributions and the data is correlational. 
-
-% Causal models in contrast, represent hypotheses of how observations were generated. They do not just represent the observations by correlation, but aim to accurately reflect the mechanisms by which the data originated.[source]
+Causal models in contrast, represent hypotheses of how observations were generated. They do not just represent the observations by correlation, but aim to accurately reflect the mechanisms by which the data originated.[source]
 
 
 
-% \subsection{Causal Models}
-% A causal model typically consists of a set of variables and a set of directed edges between these variables, often represented as a Directed Acyclic Graph (DAG) [ref from GFN]. The vertices in this graph denote variables, which, in this context, could be seen as cognitive states. The directed edges, meanwhile, signify causal relationships, pointing from cause to effect.
+\subsection{Causal Models}
+A causal model typically consists of a set of variables and a set of directed edges between these variables, often represented as a Directed Acyclic Graph (DAG) [ref from GFN]. The vertices in this graph denote variables, which, in this context, could be seen as cognitive states. The directed edges, meanwhile, signify causal relationships, pointing from cause to effect.
 
-% these directed edges often correspond to conditional probability distributions. For instance, if we have a directed edge from 
-% $X \to Y$, it implies that the distribution of 
-% $Y$ is conditional on $X$, i.e. $P(Y \vert X)$. The model encompasses these conditional distributions for all variables given their parents in the DAG, encapsulating the joint distribution over all variables.
+these directed edges often correspond to conditional probability distributions. For instance, if we have a directed edge from 
+$X \to Y$, it implies that the distribution of 
+$Y$ is conditional on $X$, i.e. $P(Y \vert X)$. The model encompasses these conditional distributions for all variables given their parents in the DAG, encapsulating the joint distribution over all variables.
 
-% Causal models facilitate interventions, counterfactuals, and causal inference. Intervention is the ability to model the outcome of purposeful changes, represented mathematically as "do" operations [pearl]. For example, if one were to intervene to set 
-% $X = x$, the model would enable us to compute the distribution over $Y$ post-intervention.
+Causal models facilitate interventions, counterfactuals, and causal inference. Intervention is the ability to model the outcome of purposeful changes, represented mathematically as "do" operations [pearl]. For example, if one were to intervene to set 
+$X = x$, the model would enable us to compute the distribution over $Y$ post-intervention.
 
-% Counterfactual reasoning allows us to traverse back in time, in a sense, and assess alternative realities—what would have happened to $Y$ if $X$ had been different? This provides a structured framework for hindsight, and one could argue, even a modicum of wisdom.
+Counterfactual reasoning allows us to traverse back in time, in a sense, and assess alternative realities—what would have happened to $Y$ if $X$ had been different? This provides a structured framework for hindsight, and one could argue, even a modicum of wisdom.
 
-% [refer to pearls paper of three levels of causality \cite{Pearl_2018}, go more in detail?]
+[refer to pearls paper of three levels of causality \cite{Pearl_2018}, go more in detail?]
 
 Using GFlowNet we can make inferences about intermediate variables. This is because we approximate probability distributions and not point estimates.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{System 1 \& System 2}
+
+Kahneman describes two distinct systems that characterize the dual aspects of human cognition [source]:
+\emph{System 1} operates automatically and quickly, with little or no effort and no sense of voluntary control. It encompasses intuitive judgments and perceptual associations — it allows for rapid, heuristic-based processing that is often subconscious.
+This system is akin to the generative model in Bayesian inference. Just as System 1 can produce instantaneous responses and intuitions, the generative model provides immediate perceptual hypotheses and predictions that guide behavior in a fluid and dynamic manner without the need for conscious deliberation.
+
+\emph{System 2} allocates attention to the effortful mental activities that demand it, including complex computations. It is associated with the conscious, rational mind and is deliberate, effortful, and orderly. It can be equated to the recognition density in Bayesian inference. The process of updating the recognition density is more reflective and can be related to the slow, controlled inference that characterizes conscious thought. Adjusting the recognition density is akin to the effortful correction or modulation of System 1's rapid predictions when errors are detected or when more complex reasoning is required.
+
+- example: when learning to play piano, we need conscious effort on certain phrases. Once chunked, we can use them to learn more complex phrases.
+
+
+\cite{Lake_Ullman_Tenenbaum_Gershman_2017}
+
+
+[how do we get those primitives? I think we can get them innately, through extraction, or perhaps else, so there may be multiple sources. this means that we dont only improve the dsl internally, but perhaps also through communication (memes) or further extraction; however, don't mistake the explanation of something as the actual thought. you can never see how to actually construct a thought. but concepts are symbols and people can show you the symbolic trajectory you need to take to get to the result. ]
+
+
+
+
+
 
 
 
@@ -92,15 +212,6 @@ Keep this here or in discussion?
     \item IBE + abduction
     \item Markpoel 7 criteria
 \end{itemize}
-
-
-
-
-
-
-
-
-
 
 
 

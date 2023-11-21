@@ -32,10 +32,30 @@ Michael Levin.
   scaling from physiology to mind.
 \newblock {\em Animal Cognition}, May 2023.
 
+\bibitem{wolfram2023chatgpt}
+S.~Wolfram.
+\newblock {\em What Is ChatGPT Doing ... and Why Does It Work?}
+\newblock Wolfram Media, Incorporated, 2023.
+
+\bibitem{Vaswani_Shazeer_Parmar_Uszkoreit_Jones_Gomez_Kaiser_Polosukhin_2017}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+  Aidan~N Gomez, Łukasz Kaiser, and Illia Polosukhin.
+\newblock Attention is all you need.
+\newblock In {\em Advances in Neural Information Processing Systems},
+  volume~30. Curran Associates, Inc., 2017.
+
 \bibitem{Lake_Ullman_Tenenbaum_Gershman_2017}
 Brenden~M. Lake, Tomer~D. Ullman, Joshua~B. Tenenbaum, and Samuel~J. Gershman.
 \newblock Building machines that learn and think like people.
 \newblock {\em Behavioral and Brain Sciences}, 40:e253, 2017.
+
+\bibitem{Pearl_2018}
+Judea Pearl.
+\newblock Theoretical impediments to machine learning with seven sparks from
+  the causal revolution.
+\newblock In {\em Proceedings of the Eleventh ACM International Conference on
+  Web Search and Data Mining}, page 3–3, Marina Del Rey CA USA, February
+  2018. ACM.
 
 \bibitem{friston_free-energy_2010}
 Karl Friston.
@@ -226,17 +246,5 @@ Adam Santoro, Andrew Lampinen, Kory Mathewson, Timothy Lillicrap, and David
 Douglas~R. Hofstadter.
 \newblock {\em Gödel, Escher, Bach: an Eternal Golden Braid}.
 \newblock Basic Books Inc., 1979.
-
-\bibitem{wolfram2023chatgpt}
-S.~Wolfram.
-\newblock {\em What Is ChatGPT Doing ... and Why Does It Work?}
-\newblock Wolfram Media, Incorporated, 2023.
-
-\bibitem{Vaswani_Shazeer_Parmar_Uszkoreit_Jones_Gomez_Kaiser_Polosukhin_2017}
-Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
-  Aidan~N Gomez, Łukasz Kaiser, and Illia Polosukhin.
-\newblock Attention is all you need.
-\newblock In {\em Advances in Neural Information Processing Systems},
-  volume~30. Curran Associates, Inc., 2017.
 
 \end{thebibliography}

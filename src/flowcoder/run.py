@@ -9,22 +9,20 @@ from flowcoder.state_encoder import RuleEncoder
 from flowcoder.config import *
 
 import torch
-from torch.optim import Adam
 import logging
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 logging.getLogger('matplotlib.font_manager').disabled = True
 
-from_checkpoint = True
-save_checkpoint = False
+from_checkpoint = False
+save_checkpoint = True
 train = True
 inference = True
 
+
 d_model = 512
 
-# TODO: Try different model sizes
-
-data = Data(max_program_depth=6)
+data = Data(max_program_depth=3, shuffle=False)
 
 io_encoder = IOEncoder(
     n_examples_max=data.nb_examples_max,
@@ -47,39 +45,36 @@ model = GFlowNet(
     num_layers=2,
     dropout=0.1
     )
-learning_rate = 0.001
-optimizer = Adam(model.parameters(), lr=learning_rate)
 
 if from_checkpoint:
-    checkpoint = torch.load(FROM_CHECKPOINT_PATH)
-    model.load_state_dict(checkpoint['model_state_dict'])
+    model = torch.load(FROM_CHECKPOINT_PATH)
     logging.info(f'Model parameters loaded from checkpoint in {FROM_CHECKPOINT_PATH}.')
 
 model.to(device)
-if inference:
-    model.eval()
 
 training = Training(
-    min_program_depth=5,
+    min_program_depth=3,
     max_program_depth=data.max_program_depth,
-    epochs=145,
+    n_tasks=min(1, 145), # This is the amount of tasks we want to solve from the dreamcoder dataset (max is 145)
+    epochs=2,
     batch_size=4,
-    learning_rate_trn=1e-4,
-    learning_rate_gfn=1e-4,
+    learning_rate_gen=1e-4,
+    learning_rate_pol=1e-4,
     e_steps=500,
     m_step_threshold_init=150,
-    m_steps=150,
+    m_steps=500,
+    inference_steps=2500,
     alpha=0.3,
     beta=0.7,
     epsilon=0.3,
-    replay_prob=0.3,
-    fantasy_prob=0.005,
+    replay_prob=1, #0.2,
+    fantasy_prob=1, #0.2, # TODO: maybe a bit less of that, innit?!
     data=data,
     model=model,
-    optimizer=optimizer,
     save_checkpoint=save_checkpoint,
     )
 
-training.train()
-
-
+if train:
+    training.train()
+if inference:
+    training.inference()
