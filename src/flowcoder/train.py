@@ -37,23 +37,10 @@ from flowcoder.reward import *
 from flowcoder.model import freeze_parameters, unfreeze_parameters
 
 
-
-# TODO: show that Z approximates total flow
-# TODO: fantasy batch in replay
-# TODO: check all TODOs
-# TODO: ablation sleep
-# TODO: EM vs normal
-# TODO: learning rate scheduler
-# TODO: hyperparameter search
-
-
-
-
 @dataclass
 class Training:
     min_program_depth: int
     max_program_depth: int
-    n_tasks: int
     epochs: int
     batch_size: int
     learning_rate_gen: float
@@ -72,8 +59,6 @@ class Training:
     save_checkpoint: bool
 
     def __post_init__(self):
-        # self.epochs = self.data.dataset_size // (self.e_steps * self.m_steps * self.batch_size)
-        # self.epochs = self.data.dataset_size // self.batch_size
 
         # Threshold decrement value for linearly decreasing the threshold over the training period; adjust as needed
         self.threshold_decrement = self.m_step_threshold_init / (self.e_steps * self.m_steps)
@@ -91,7 +76,7 @@ class Training:
 
         # Saving data for analysis
         self.csv_file = os.path.join(RESULTS, f'stats_{datetime.datetime.now()}.csv')
-        headers = ['Mode', 'Depth', 'Epoch', 'Steps', 'Task Name', 'Program', 'Examples']
+        headers = ['Mode', 'Depth', 'Epoch', 'Steps', 'Task Name', 'Program', 'Solved', 'Reward']
         create_csv(self.csv_file, headers)
 
         # Create a dictionary of CFGs of different depths, so we can learn it gradually
@@ -106,7 +91,7 @@ class Training:
         mask = torch.tensor(mask, device=device)
         return mask
 
-    def sample_program_dfs(self, batch_IOs, depth, epsilon=0., beta=1.):
+    def sample_program(self, batch_IOs, depth, epsilon=0., beta=1.):
 
         # Initialize the state of each program in the batch to 'START'
         states = [['START'] for _ in range(len(batch_IOs))]
@@ -177,40 +162,25 @@ class Training:
                              for program in programs]
             return final_logZs, total_forwards, reconstructed, states
 
-
-
-
-
-
-
-
-
-
-
-
-    ################################
-    ################################
-    ########## Replay ##############
-    ################################
-    ################################
-    def replay(self, correct_programs):
+    #########################################
+    #########################################
+    ############### REPLAY ##################
+    #########################################
+    #########################################
+    def replay(self, data):
         """
         We guide the model towards the correct trajectory,
         given that we have programs that solved the tasks correctly.
         """
 
-        logging.info(f'\nReplay')
-
         # Prepare the batch from correct_programs
-        batch_programs, correct_states_list, batch_IOs, _, _ = zip(*correct_programs)
-
-        # TODO: make fantasy batch with correct program
+        batch_programs, correct_states_list, batch_IOs = zip(*data)
 
         # Initialise container for forward logits accumulation
-        total_forwards = torch.zeros(len(correct_programs), device=device)
+        total_forwards = torch.zeros(len(data), device=device)
 
         # Initial state
-        states = [['START'] for _ in range(len(correct_programs))]
+        states = [['START'] for _ in range(len(data))]
 
         # Maximum trajectory length
         max_traj_length = max([len(correct_states) for correct_states in correct_states_list])
@@ -234,34 +204,20 @@ class Training:
                     # Update the state for the next prediction
                     states[i].append(rule)
 
-        replay_loss = -10 * total_forwards.mean()  # TODO: multiply with replay weight *10
+        replay_loss = -10 * total_forwards.mean()
         self.optimizer_policy.zero_grad()
         replay_loss.backward()
         self.optimizer_policy.step()  # (E-step sleep)
 
-
-
-
-
-
-
-
-
-
-
-
-
-    ########################################
-    ########################################
-    ################ Fantasy ###############
-    ########################################
-    ########################################
+    #########################################
+    #########################################
+    ############## FANTASY ##################
+    #########################################
+    #########################################
     def fantasy(self, data, depth):
 
-        logging.info(f'\nFantasy')
-
         # Prepare the batch from
-        batch_programs, batch_states, batch_IOs, _, _ = data
+        batch_programs, batch_states, batch_IOs = data
 
         # Create a batch of inputs from empirical data and outputs from imagined programs
         batch_programs, batch_states, fantasy_batch = self.make_fantasy_batch(
@@ -292,7 +248,7 @@ class Training:
                     states[i].append(rule)
 
         # Update model
-        fantasy_loss = -10 * total_forwards.mean()  # TODO: Try weighting it (e.g. -10 * ...)
+        fantasy_loss = -10 * total_forwards.mean()
         self.optimizer_policy.zero_grad()
         fantasy_loss.backward()
         self.optimizer_policy.step()  # (E-step sleep)
@@ -331,35 +287,11 @@ class Training:
         while (program_counter := self.batch_size - len(new_batch_programs)) != 0:
             inputs_for_resample = [self.data.sample_input() for _ in range(program_counter)]
 
-            with torch.no_grad():
-                _, _, reconstructed, new_states = self.sample_program_dfs(batch_IOs[:len(inputs_for_resample)], depth)
+            _, _, reconstructed, new_states = self.sample_program(batch_IOs[:len(inputs_for_resample)], depth)
 
             process_programs(reconstructed, new_states, inputs_for_resample)
 
         return new_batch_programs, new_batch_states, fantasy_batch
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     #########################################
     #########################################
@@ -367,39 +299,27 @@ class Training:
     #########################################
     #########################################
     def e_step(self, epoch, depth, batch_IOs, task_names):
-        logging.info(f'\nComputing E-step')
-        solved = False
+        solved = np.zeros(self.batch_size)
         e_step_losses = []
         e_step_logZs = []
-
         e_step_data = []
 
-        # Unfreeze GFlowNet parameters and freeze transformer parameters for the E-step optimization
-        # unfreeze_parameters(self.model.forward_logits)
-        # freeze_parameters(self.model.transformer)
-
-        e_step_tqdm = tqdm.tqdm(range(self.e_steps), position=0, desc='e_step', leave=False, colour='blue', ncols=80)
+        e_step_tqdm = tqdm.tqdm(range(self.e_steps), position=0, desc='e_step', leave=False, colour='magenta', ncols=80)
         for e_step in e_step_tqdm:
 
             # Predict programs and calculate associated log partition functions and other parameters
             # epsilon and beta for exploration
-            logZs, total_forwards, programs, states = self.sample_program_dfs(batch_IOs, depth,
-                                                                              epsilon=self.epsilon,
-                                                                              beta=self.beta)
+            logZs, total_forwards, programs, states = self.sample_program(batch_IOs,
+                                                                          depth,
+                                                                          epsilon=self.epsilon,
+                                                                          beta=self.beta)
 
             # Calculate rewards for the predicted programs
             rewards_ = rewards(programs, batch_IOs, self.data.dsl, self.data.lexicon, self.max_reward)
 
-            for program, reward in zip(programs, rewards_):
-                e_step_tqdm.write(f'reward: {reward}, program: {program}')
-
-            # Collect data for stats and training
-            e_step_data.append((programs, states, batch_IOs, task_names, rewards_))
-
             # Compute the loss and perform backpropagation
             e_loss = (logZs + total_forwards - torch.log(rewards_).clip(-20)).pow(2)  # Trajectory Balance Loss
             e_loss = e_loss.mean()
-            # TODO: Add e_step to loss, to prefer programs of MDL?
 
             # Update moving average of the GFlowNet's training loss
             self.moving_average_loss = e_loss.item() if self.moving_average_loss is None \
@@ -413,40 +333,30 @@ class Training:
             # Record the loss and logZ
             e_step_losses.append(e_loss.item())
             e_step_logZs.append(logZs.mean().item())
+
+            # Set tqdm
             e_step_tqdm.set_postfix({'e_step loss': e_loss.item(), 'Z': logZs.mean().exp().item()})
 
             # Save results to csv
-            if self.max_reward in rewards_:
-                logging.info(f'Task: {task_names[0]} solved.')
-                solved = True
-                save_results('e-step', depth, epoch, e_step, task_names, programs, rewards_, batch_IOs, self.batch_size, self.max_reward, self.csv_file)
+            save_results('e-step', depth, epoch, e_step, task_names, programs, rewards_,
+                                          self.batch_size, self.max_reward, self.csv_file)
 
+            # Save correct data and apply replay and fantasy
+            if self.max_reward in rewards_:
                 replay_data = []
                 for i in range(self.batch_size):
                     if rewards_[i] == self.max_reward:
-                        replay_data.append((programs[i], states[i], batch_IOs[i], task_names[i], rewards_[i]))
+                        e_step_tqdm.write(f'Solved task: {task_names[i]} \t program: {programs[i]}')
+                        solved[i] = True
+                        replay_data.append((programs[i], states[i], batch_IOs[i]))
+                # TODO: maybe that's a bit excessive?
                 self.replay(replay_data)
-
-                # If we solved it, continue with the next task.
-                # Comment this return out if you want the chance for multiple solutions.
-                # return e_step_data, e_step_losses, e_step_logZs, solved
+                e_step_data.extend(replay_data)
 
             if random.random() < self.fantasy_prob:
-                self.fantasy(e_step_data[-1], depth)
+                self.fantasy((programs, states, batch_IOs), depth)
 
-        # if not solved:
-        #     logging.info(f'Task: {task_names[0]} not solved. :-(')
-        #     epoch_data = [depth, epoch, '', task_names[0], '', batch_IOs[0]]
-        #     append_to_csv(self.csv_file, epoch_data)``
-
-
-        logging.debug(f'Finished e-step')
         return e_step_data, e_step_losses, e_step_logZs, solved
-
-
-
-
-
 
     #########################################
     #########################################
@@ -454,32 +364,18 @@ class Training:
     #########################################
     #########################################
     def m_step(self, epoch, depth, batch_IOs, task_names):
-        solved = False
+        solved = np.zeros(self.batch_size)
         m_step_losses = []
         m_step_data = []
 
-        # unfreeze_parameters(self.model.transformer)  # Unfreeze transformer parameters
-        # freeze_parameters(self.model.forward_logits)  # Freeze GFlowNet parameters
-
-
-        m_step_tqdm = tqdm.tqdm(range(self.m_steps), leave=False)
+        m_step_tqdm = tqdm.tqdm(range(self.m_steps), position=0, desc='m_step', leave=False, colour='yellow', ncols=80)
         for m_step in m_step_tqdm:
 
             # Predict programs without specific parameters epsilon and beta
-            _, _, programs, states = self.sample_program_dfs(batch_IOs, depth)
+            _, _, programs, states = self.sample_program(batch_IOs, depth)
 
             # Calculate rewards for the predicted programs
             rewards_ = rewards(programs, batch_IOs, self.data.dsl, self.data.lexicon, self.max_reward)
-
-            for program, reward in zip(programs, rewards_):
-                m_step_tqdm.write(f'reward: {reward}, program: {program}')
-
-            if self.max_reward in rewards_:
-                logging.info(f'Task: {task_names[0]} solved.')
-                solved = True
-                save_results('m-step', depth, epoch, m_step, task_names, programs, rewards_, batch_IOs, self.batch_size, self.max_reward, self.csv_file)
-
-            m_step_data.append((programs, states, batch_IOs, task_names, rewards_))
 
             # Compute the M-step loss, which measures how well the generative model is performing
             # The loss is based on the negative log of the rewards, and it's clipped to avoid numerical instability
@@ -497,22 +393,21 @@ class Training:
             # Reset gradients for the next iteration
             self.optimizer_generative.zero_grad()
 
+            # Collect correct data
+            if self.max_reward in rewards_:
+                data = []
+                for i in range(self.batch_size):
+                    if rewards_[i] == self.max_reward:
+                        data.append((programs[i], states[i], batch_IOs[i]))
+                m_step_data.extend(data)
+
+            # Set tqdm
             m_step_tqdm.set_postfix({'m_step loss': m_loss.item()})
 
-        # if not solved:
-        #     logging.info(f'Task: {task_names[0]} not solved. :-(')
-        #     epoch_data = [depth, epoch, '', task_names[0], '', batch_IOs[0]]
-        #     append_to_csv(self.csv_file, epoch_data)
+            # Save results to csv
+            save_results('m-step', depth, epoch, m_step, task_names, programs, rewards_, self.batch_size, self.max_reward, self.csv_file)
 
-        return m_step_data, m_step_losses
-
-
-
-
-
-
-
-
+        return m_step_data, m_step_losses, solved
 
     #########################################
     #########################################
@@ -520,111 +415,76 @@ class Training:
     #########################################
     #########################################
     def train(self):
-        total_solved = 0
-        start_time = time.time()  # Store the start time of training for performance analysis
-
         # Current threshold value, initialized to the initial threshold
         current_threshold = self.m_step_threshold_init
 
         total_data = []
-        total_correct = []
-
         total_e_losses = []
         total_m_losses = []
         total_logZs = []
 
-        for depth in tqdm.tqdm(range(self.min_program_depth, self.max_program_depth + 1), position=0, desc='depth',
-                          leave=False, colour='green', ncols=80):
-            for _ in tqdm.tqdm(range(self.n_tasks), position=0, desc='epoch', leave=False, colour='green', ncols=80):
+        for depth in tqdm.tqdm(range(self.min_program_depth, self.max_program_depth + 1), position=0, desc='depth', leave=False, colour='green', ncols=80):
+            # TODO: N Train batches vary if variable_batch == True or False
+            task_range = int(np.ceil(self.data.n_train_tasks / self.batch_size)) if self.data.variable_batch else self.data.n_train_tasks
+            for _ in tqdm.tqdm(range(task_range), position=0, desc='task batch', leave=False, colour='blue', ncols=80):
 
-                # Sample tasks from the real distribution and try to solve them (wake phase)
-                batch_IOs, task_names = self.data.get_next_batch(self.batch_size)
-                logging.info(f'Working on task: {task_names[0]}')
-                logging.info(f'IOs: {batch_IOs[0]}')
+                batch_IOs, task_names = self.data.get_io_batch(self.batch_size, train=True)
+                logging.info(f'\n{"="*50}\nWorking on tasks: {task_names}\n{"="*50}')
 
-                epoch_tqdm = tqdm.tqdm(range(self.epochs), position=0, desc='epoch', leave=False, colour='green', ncols=80)
+                epoch_tqdm = tqdm.tqdm(range(self.epochs), position=0, desc='epoch', leave=False, colour='red', ncols=80)
                 for epoch in epoch_tqdm:
 
-
                     # E-step
-                    e_step_data, e_step_losses, e_step_logZs, solved = self.e_step(epoch, depth, batch_IOs, task_names)
-                    total_solved += solved
+                    e_step_data, e_step_losses, e_step_logZs, e_solved = self.e_step(epoch, depth, batch_IOs, task_names)
                     total_e_losses.extend(e_step_losses)
                     total_logZs.extend(e_step_logZs)
-                    e_step_correct = correct_programs(e_step_data)
-
                     total_data.extend(e_step_data)
-                    total_correct.extend(e_step_correct)
 
                     # Replay (training on all correct task-program pairs)
                     if rand := random.random() <= self.replay_prob:
-                        if total_correct:
-                            for b in batch(total_correct, self.batch_size):
+                        if total_data:
+                            for b in batch(total_data, self.batch_size):
                                 self.replay(b)
-
-                    # Fantasy
-                    if rand <= self.fantasy_prob:
-                        self.fantasy(total_data[-1], depth)
+                                # if rand <= self.fantasy_prob:
+                                #     self.fantasy(b, depth)
 
                     # M-step
                     # Optimize Generative Model
                     # Check whether the moving average of the GFlowNet's training loss is below the current threshold
                     if self.moving_average_loss < current_threshold or epoch == self.epochs - 1:
-                        m_step_data, m_step_losses = self.m_step(epoch, depth, batch_IOs, task_names)
+                        m_step_data, m_step_losses, m_solved = self.m_step(epoch, depth, batch_IOs, task_names)
                         total_m_losses.extend(m_step_losses)
-                        total_correct.extend(correct_programs(m_step_data))
                         total_data.extend(m_step_data)
+
                     # Decrease the threshold value linearly over the epochs
                     current_threshold -= self.threshold_decrement
-
-                    print_stats(start_time, total_correct, total_data, self.batch_size)
-                    epoch_tqdm.set_postfix({'Solved': total_solved})
 
                     if self.save_checkpoint:
                         torch.save(self.model, TO_CHECKPOINT_PATH)
 
-            plot_results(total_e_losses, total_m_losses, total_logZs, [], epoch, RESULTS)
-
+            plot_results(total_e_losses, total_m_losses, total_logZs, epoch, RESULTS)
 
     def inference(self):
-
-        self.data.reset_task_generator()
-
-        total_solved = 0
-        start_time = time.time()  # Store the start time of training for performance analysis
-
-        inference_data = []
-
-        self.model.eval()
-
-        for depth in tqdm.tqdm(range(self.min_program_depth, self.max_program_depth + 1), position=0, desc='depth',
-                          leave=False, colour='green', ncols=80):
-            task_tqdm = tqdm.tqdm(range(self.n_tasks), position=0, desc='epoch', leave=False, colour='green', ncols=80)
+        self.data.reset_task_generators()
+        for depth in tqdm.tqdm(range(self.min_program_depth, self.max_program_depth + 1), position=0, desc='depth', leave=False, colour='green', ncols=80):
+            task_range = int(np.ceil(self.data.n_tasks / self.batch_size)) if self.data.variable_batch else self.data.n_tasks
+            task_tqdm = tqdm.tqdm(range(task_range), position=0, desc='inference', leave=False, colour='green', ncols=80)
             for _ in task_tqdm:
-                solved = False
 
-                # Sample tasks from the real distribution and try to solve them (wake phase)
-                batch_IOs, task_names = self.data.get_next_batch(self.batch_size)
-                logging.info(f'Working on task: {task_names[0]}')
-                logging.info(f'IOs: {batch_IOs[0]}')
-                inference_tqdm = tqdm.tqdm(range(self.n_tasks), position=0, desc='inference steps', leave=False, colour='magenta', ncols=80)
-                for step in inference_tqdm:
+                with torch.no_grad():
 
-                    # Predict programs without specific parameters epsilon and beta
-                    _, _, programs, states = self.sample_program_dfs(batch_IOs, depth)
+                    # Sample tasks from the real distribution and try to solve them (wake phase)
+                    batch_IOs, task_names = self.data.get_io_batch(self.batch_size, all_tasks=True)
+                    logging.info(f'\n{"="*50}\nWorking on tasks: {task_names}\n{"="*50}')
 
-                    # Calculate rewards for the predicted programs
-                    rewards_ = rewards(programs, batch_IOs, self.data.dsl, self.data.lexicon, self.max_reward)
+                    inference_tqdm = tqdm.tqdm(range(self.inference_steps), position=0, desc='inference steps', leave=False, colour='cyan', ncols=80)
+                    for step in inference_tqdm:
 
-                    inference_data.append((programs, states, batch_IOs, task_names, rewards_))
+                        # Predict programs without specific parameters epsilon and beta
+                        _, _, programs, states = self.sample_program(batch_IOs, depth)
 
-                    if self.max_reward in rewards_:
-                        logging.info(f'Task: {task_names[0]} solved.')
-                        solved = True
-                        save_results('inference', depth, '', step, task_names, programs, rewards_, batch_IOs, self.batch_size,
-                                     self.max_reward, self.csv_file)
+                        # Calculate rewards for the predicted programs
+                        rewards_ = rewards(programs, batch_IOs, self.data.dsl, self.data.lexicon, self.max_reward)
 
-                if not solved:
-                    logging.info(f'Task: {task_names[0]} not solved. :-(')
-                    save_results('inference', depth, '', step, task_names, programs, rewards_, batch_IOs,
-                                 self.batch_size, self.max_reward, self.csv_file)
+                        save_results('inference', depth, '', step, task_names, programs, rewards_,
+                                     self.batch_size, self.max_reward, self.csv_file)

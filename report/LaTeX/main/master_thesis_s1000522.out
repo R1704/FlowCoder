@@ -25,26 +25,26 @@
 \BOOKMARK [4][-]{paragraph.0.6.1.0.5}{Rules}{paragraph.0.6.1.0.1}% 25
 \BOOKMARK [2][-]{subsection.0.6.2}{GFlowNet}{section.0.6}% 26
 \BOOKMARK [2][-]{subsection.0.6.3}{Expectation-Maximization}{section.0.6}% 27
-\BOOKMARK [3][-]{subsubsection.0.6.3.1}{Sleep}{subsection.0.6.3}% 28
-\BOOKMARK [4][-]{paragraph.0.6.3.1.1}{Replay}{subsubsection.0.6.3.1}% 29
-\BOOKMARK [4][-]{paragraph.0.6.3.1.2}{Fantasy}{subsubsection.0.6.3.1}% 30
-\BOOKMARK [1][-]{section.0.7}{Model}{}% 31
-\BOOKMARK [2][-]{paragraph.0.7.0.0.1}{generative model}{section.0.7}% 32
-\BOOKMARK [3][-]{paragraph.0.7.0.0.2}{Recognition model}{paragraph.0.7.0.0.1}% 33
-\BOOKMARK [4][-]{paragraph.0.7.0.0.3}{IOEncoder}{paragraph.0.7.0.0.2}% 34
-\BOOKMARK [2][-]{subsection.0.7.1}{RuleEncoder}{section.0.7}% 35
-\BOOKMARK [3][-]{subsubsection.0.7.1.1}{Reward}{subsection.0.7.1}% 36
-\BOOKMARK [3][-]{subsubsection.0.7.1.2}{experiments}{subsection.0.7.1}% 37
-\BOOKMARK [2][-]{subsection.0.7.2}{Results}{section.0.7}% 38
-\BOOKMARK [2][-]{subsection.0.7.3}{Analysis}{section.0.7}% 39
-\BOOKMARK [3][-]{subsubsection.0.7.3.1}{Complexity Analysis}{subsection.0.7.3}% 40
-\BOOKMARK [2][-]{subsection.0.7.4}{Discussion}{section.0.7}% 41
-\BOOKMARK [3][-]{subsubsection.0.7.4.1}{Limitations}{subsection.0.7.4}% 42
-\BOOKMARK [2][-]{subsection.0.7.5}{Future Work}{section.0.7}% 43
-\BOOKMARK [2][-]{subsection.0.7.6}{Conclusion}{section.0.7}% 44
-\BOOKMARK [2][-]{subsection.0.7.7}{Discussion}{section.0.7}% 45
-\BOOKMARK [3][-]{subsubsection.0.7.7.1}{Comparison to other approaches}{subsection.0.7.7}% 46
-\BOOKMARK [3][-]{subsubsection.0.7.7.2}{Biological Plausibility}{subsection.0.7.7}% 47
+\BOOKMARK [3][-]{paragraph.0.6.3.0.1}{Replay}{subsection.0.6.3}% 28
+\BOOKMARK [4][-]{paragraph.0.6.3.0.2}{Fantasy}{paragraph.0.6.3.0.1}% 29
+\BOOKMARK [1][-]{section.0.7}{Model}{}% 30
+\BOOKMARK [2][-]{paragraph.0.7.0.0.1}{generative model}{section.0.7}% 31
+\BOOKMARK [3][-]{paragraph.0.7.0.0.2}{Recognition model}{paragraph.0.7.0.0.1}% 32
+\BOOKMARK [4][-]{paragraph.0.7.0.0.3}{IOEncoder}{paragraph.0.7.0.0.2}% 33
+\BOOKMARK [2][-]{subsection.0.7.1}{RuleEncoder}{section.0.7}% 34
+\BOOKMARK [3][-]{subsubsection.0.7.1.1}{Reward}{subsection.0.7.1}% 35
+\BOOKMARK [2][-]{subsection.0.7.2}{Results}{section.0.7}% 36
+\BOOKMARK [3][-]{subsubsection.0.7.2.1}{Training}{subsection.0.7.2}% 37
+\BOOKMARK [3][-]{subsubsection.0.7.2.2}{Inference}{subsection.0.7.2}% 38
+\BOOKMARK [3][-]{subsubsection.0.7.2.3}{Embeddings}{subsection.0.7.2}% 39
+\BOOKMARK [2][-]{subsection.0.7.3}{Discussion}{section.0.7}% 40
+\BOOKMARK [3][-]{subsubsection.0.7.3.1}{Complexity Analysis}{subsection.0.7.3}% 41
+\BOOKMARK [3][-]{subsubsection.0.7.3.2}{Limitations}{subsection.0.7.3}% 42
+\BOOKMARK [3][-]{subsubsection.0.7.3.3}{Future Work}{subsection.0.7.3}% 43
+\BOOKMARK [2][-]{subsection.0.7.4}{Conclusion}{section.0.7}% 44
+\BOOKMARK [2][-]{subsection.0.7.5}{Discussion}{section.0.7}% 45
+\BOOKMARK [3][-]{subsubsection.0.7.5.1}{Comparison to other approaches}{subsection.0.7.5}% 46
+\BOOKMARK [3][-]{subsubsection.0.7.5.2}{Biological Plausibility}{subsection.0.7.5}% 47
 \BOOKMARK [0][-]{chapter.1}{Philosophical Ramifications}{}% 48
 \BOOKMARK [1][-]{section.1.1}{Who am I?}{chapter.1}% 49
 \BOOKMARK [2][-]{subsection.1.1.1}{The Genesis of Cognition}{section.1.1}% 50
@@ -81,3 +81,4 @@
 \BOOKMARK [2][-]{subsection.Alph0.1.1}{Semantics}{section.Alph0.1}% 81
 \BOOKMARK [2][-]{subsection.Alph0.1.2}{Primitive Types}{section.Alph0.1}% 82
 \BOOKMARK [1][-]{section.Alph0.2}{Parameters}{section*.37}% 83
+\BOOKMARK [2][-]{subsection.Alph0.2.1}{Big experiment}{section.Alph0.2}% 84

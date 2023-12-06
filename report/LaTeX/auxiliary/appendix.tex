@@ -124,3 +124,81 @@
     \caption{Parameters}
     \label{table:params}
     \end{table}
+
+
+    \subsection{Big experiment}
+
+    \begin{table}[ht]
+        \centering
+        \caption{Experiment Parameters}
+        \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Variable} & \textbf{Value} \\
+        \hline
+        \texttt{d\_model} & 512 \\
+        \hline
+        \texttt{max\_program\_depth} & 4 \\
+        \hline
+        \texttt{shuffle\_tasks} & True \\
+        \hline
+        \texttt{n\_tasks} & 145 \\
+        \hline
+        \texttt{variable\_batch} & False \\
+        \hline
+        \texttt{train\_ratio} & 0.5 \\
+        \hline
+        \texttt{seed} & 3 \\
+        \hline
+        \texttt{n\_examples\_max} & (based on \texttt{data.nb\_examples\_max}) \\
+        \hline
+        \texttt{size\_max} & 10 \\
+        \hline
+        \texttt{lexicon} & (based on \texttt{data.lexicon}) \\
+        \hline
+        \texttt{cfg} & (based on \texttt{data.cfg}) \\
+        \hline
+        \texttt{num\_heads} & 8 \\
+        \hline
+        \texttt{num\_layers} & 2 \\
+        \hline
+        \texttt{dropout} & 0.1 \\
+        \hline
+        \texttt{min\_program\_depth} & (based on \texttt{data.max\_program\_depth}) \\
+        \hline
+        \texttt{max\_program\_depth} & (based on \texttt{data.max\_program\_depth}) \\
+        \hline
+        \texttt{epochs} & 5 \\
+        \hline
+        \texttt{batch\_size} & 4 \\
+        \hline
+        \texttt{learning\_rate\_gen} & $1 \times 10^{-4}$ \\
+        \hline
+        \texttt{learning\_rate\_pol} & $1 \times 10^{-4}$ \\
+        \hline
+        \texttt{e\_steps} & 2000 \\
+        \hline
+        \texttt{m\_step\_threshold\_init} & 150 \\
+        \hline
+        \texttt{m\_steps} & 2000 \\
+        \hline
+        \texttt{inference\_steps} & 100 \\
+        \hline
+        \texttt{alpha} & 0.3 \\
+        \hline
+        \texttt{beta} & 0.7 \\
+        \hline
+        \texttt{epsilon} & 0.3 \\
+        \hline
+        \texttt{replay\_prob} & 1 \\
+        \hline
+        \texttt{fantasy\_prob} & 1 \\
+        \hline
+        \texttt{data} & (based on \texttt{data}) \\
+        \hline
+        \texttt{model} & (based on \texttt{model}) \\
+        \hline
+        \texttt{save\_checkpoint} & (based on \texttt{save\_checkpoint}) \\
+        \hline
+        \end{tabular}
+        \end{table}
+    

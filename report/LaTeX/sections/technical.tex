@@ -42,7 +42,7 @@ I follow the assumption that we don't start from a blank slate but from some ini
 
 
 \subsection{DreamCoder}
-
+[which supercede previous models, e.g. RobustFill, DeepCoder, etc. ]
 One of the most successful models in this regard is DreamCoder - a model that synthesises programs from initial primitives and a set of tasks with the objective of learning its own domain specific language \cite{ellis_dreamcoder_2021}. The model utilises a modified version of a wake-sleep algorithm introduced by Hinton to learn a generative model and a recognition network in tandem, following the paradigm of separating the world model from the inference model \cite{hinton1995wake} [reference to earlier section, sys 1,2]. The generative model learns a probability distribution over programs while the recognition network learns to map from tasks to programs in order to perform neurally guided search over the program space.
 Commonly used sub-routines, are chunked and abstracted into concepts which become more accessible. This narrows the search tree immensely and enables scalability. In sum, abstraction narrows the depth, while the recognition model narrows the breadth of the search space.
 
@@ -158,7 +158,10 @@ Programs are represented as abstract syntax trees (ASTs). An AST is a tree repre
 - typed Lambda calculus 
 
 \paragraph{Syntactic constraints}
-[show constraints]
+% [show constraints]
+% nb_arguments_max: maximum number of inputs
+% size_max: maximum number of elements in a list
+% lexicon: list of symbols that can appear (for instance range(-10,10))
 
 \paragraph{Tasks}
 We are using n? tasks, originally from DreamCoder and filtered and provided by DeepSynth.
@@ -275,7 +278,9 @@ This gives us the final loss:
 
 
 \subsection{Expectation-Maximization}
-I am following the idea of separating the world model from the inference model (system 1 and 2) and use an expectation maximization algorithm [GFN-EM, DC, ... ] to train the models.
+% https://github.com/GFNOrg/GFlowNet-EM/
+
+% I am following the idea of separating the world model from the inference model (system 1 and 2) and use an expectation maximization algorithm [GFN-EM, DC, ... ] to train the models.
 
 The core principle of Expectation-Maximization (EM) involves an iterative two-step process: the Expectation (E) step computes an expectation of the log-likelihood evaluated using the current estimate for the parameters, and the Maximization (M) step, computes parameters maximizing the expected log-likelihood found on the E step.
 
@@ -287,11 +292,54 @@ In the M-step I sample a trajectory and only use the reward to update the parame
 
 
 INCLUDE PSEUDOCODE
-I freeze the weights separately in training. 
 
-\subsubsection{Sleep}
+
+
+Solving the joint optimization problem is difficult. I'm taking inspiration from DC and GFN-EM to use wake-sleep to train the models.
 \paragraph{Replay}
+In replay, I train the recognition model to not forget previously solved tasks.
 \paragraph{Fantasy}
+[also generative model?]
+In fantasy I train the recognition model to solve out of distribution tasks, so it learns to extrapolate to unseen data.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -379,6 +427,15 @@ In general, it might not be a bad idea to include it since we can use it to do o
 
 
 
+
+
+
+
+
+
+
+
+
 \begin{enumerate}
     \item We get a task (how do we sample?)
     \item the task gets encoded
@@ -407,6 +464,7 @@ In general, it might not be a bad idea to include it since we can use it to do o
     \item Exploration
     \item What is the generative model? The CFG or the Transformer?
     \item Minimum description length (how is that achieved in DC (MAP?) and DS(Expectation of number of programs created before a solution is found)?)
+    \item syntactic symmetries, symmetry breaking, show DC MAP vs POST, avoid adding 0, mult 1, etc. 
     \item In the paper they say they produce programs up to depth 6
     \item We want to find a probability distribution that is proportional to a reward.
     \item Explain the parameterization. I.e. we could parameterize the rules vs the primitives. 
@@ -462,6 +520,7 @@ In general, it might not be a bad idea to include it since we can use it to do o
 \begin{itemize}
     \item Nathaniel compare enumeration based methods with sampling methods. quality vs quantity.
     \item If the sampler is good enough, there is no need for search
+    \item does anything prevent DC from training further, improving the recognition model, making it a sampler? (it doesn't take partial programs, it only takes tasks.)
     \item We have seen that if a GFN is trained well enough, it should act as a really good sampler. So we use that 
 \end{itemize}
 
@@ -709,8 +768,6 @@ The formula for filling in the matrix is:
 
 The value of \( d(m, n) \) will then be the Levenshtein distance between \( s \) and \( t \).
 
-The edit distance algorithm, when implemented using dynamic programming, has a time complexity of 
-$\mathcal{O}(m \times n)$, where $m$ and  $n$ are the lengths of the two input strings.
 
 Since the Levenshtein distance returns a discrete value, I normalize it over the max length of the sequences, and since there may be more than one example per task, I average it over all examples.
 Quantifying the result in this way gives us quite a good estimate of the model's capabilities. E.g. when we have two lists [1,2,3] [1,2,3] ...
@@ -733,20 +790,81 @@ Quantifying the result in this way gives us quite a good estimate of the model's
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%% Experiments %%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% Design %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{experiments}
+%%% Training
 \begin{itemize}
-    \item ablation
-    \item different sizes (program length)
-    \item different rewards?
+    \item The model was trained on the filtered DC tasks 
+    \item with a random 50 50 train test split
+    \item batch size 4
+    \item syntactical constraints
+    \item GPU NVIDIA Tesla A100
+    \item 2000 e-m steps 
+    \item with thresholding
+    \item 
+\end{itemize} 
+
+%%% Inference
+\begin{itemize}
+    \item In inference, the model still has batchsize 4
+    \item syntactic constraints
+    \item we give it a 100 inference steps (400 programs are created)
+    \item run on all 145 tasks
+    \item 
 \end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+% I am training the model on about a quarter of the tasks, 37 of 145 [see appendix].
+% im training on batches of size 4 with the same task the whole batch. This is for efficiency. This means that in training, I am solving the tasks n_epochs x e_steps x m_steps x batch_size times. Here 5 x 2000 x 2000 x 4 = 80.000.000 times per task. (compare to DC 400.000.000 programs per task)
+% we can solve 28/31 ? of all tasks:
+
+% I keep training on the second half of the train data and again doing inference on all.
+% Check again.
+
 
 
 
@@ -775,61 +893,151 @@ Quantifying the result in this way gives us quite a good estimate of the model's
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Results}
+
+\subsubsection{Training}
 \begin{itemize}
     \item How many programs are solved?
     \item Diverse solutions?
+    \item did the model converge? 
+    \item how long did it take to find a program?
+    \item what are the other programs created?
 \end{itemize}
 
 
 
 
 
+inference:
+- (especially when the model solved extrapolated tasks, were these programs found before in training?)
+- how long to solve tasks? 
+- if solved, how often?
+- which other programs were created when trying to solve a task?
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\subsection{Analysis}
 \begin{itemize}
     \item Speed/ how long did it take to solve the tasks
     \item How long does it take to solve a program?
     \item Which tasks are solved
-    \item Which tasks are not solved, why
+    \item Which tasks are not solved, why?
     \item Comparison with deepsynth
-    \item How many programs are uniquely created? vs solevd.
+    \item How many programs are uniquely created? vs solved.
 	\item Make a histogram of all the programs. Can we make it over time? I.e. for each program we should see how often it is created over time. 
     \item The program is not loss optimal, i.e. we may get stuck in a local minimum
     \item Compare to baseline (Uniform PCFG?)
-    \item Ablation study
-    \item Show the partition function 
-    \item losses graph
     \item my hopes would be that similar programs are embedded close in space. - how can we check that?
     \item visualize task embeddings (from DC) and the according programs. Maybe take the programs with the highest reward even if it didn't solve it
     \item Visualize rule embeddings. what would i expect? 
     \item Training vs. inference (check the speed of finding solution before and after training and compare. Is the inference really fast? then it means that in principle we can get a good approximation to the reward)
-    \item In Deepsynth they train on 10.000 examples from a random PCFG. then the model is shown the examples once, and they search through the PCFG for n seconds until they hopefully find the correct program. the problem is that the randomly created programs suck. they don't resemble real world programs in the slightest. if i train the network directly on the tasks, then yeah, were training it first which shouold be amortized and then inference should be fast.
+    \item In Deepsynth they train on 10.000 examples from a random PCFG. then the model is shown the examples once, and they search through the PCFG for n seconds until they hopefully find the correct program. the problem is that the randomly created programs suck. they don't resemble real world programs in the slightest. if i train the network directly on the tasks, then yeah, were training it first which should be amortized and then inference should be fast.
+    \item Check the DC paper. What can we actually compare?
 \end{itemize}
 
-\subsubsection{Complexity Analysis}
+
+
+
+We can see that even after several training rounds, the model still explores alternative solutions. This indicates. The human analogue is divergent thinking. 
+
+
+\subsubsection{Inference}
+
+
+
+
+
+
+\subsubsection{Embeddings}
+We can visualize embeddings using  t-SNE (t-distributed Stochastic Neighbor Embedding). The goal of t-SNE is to group similar points together and separate dissimilar ones. If certain tasks are clustered together on the plot, this suggests that the model finds them to be similar in some way.
+
+
+
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../img/plot_program_creation_frequency.png}
+    \caption{}
+    \label{fig:program_creation_frequency}
+\end{figure}
+Figure \ref{fig:program_creation_frequency} presents a histogram illustrating the frequency distribution of program creations across various tasks. This visualization aids in understanding the commonality of specific programs in solving different tasks, highlighting the most frequently utilized programs. The x-axis represents the frequency of program creation, while the y-axis indicates the count of occurrences within the dataset.
+
+
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{../img/plot_solution_variations.png}
+    \caption{}
+    \label{fig:solution_variations}
+\end{figure}
+Figure \ref{fig:solution_variations} showcases a bar chart detailing the diversity of solutions per task. Each bar corresponds to a specific task, with the height representing the number of unique solutions that successfully solved the task. This chart effectively conveys the variability and complexity of solutions across different tasks, illustrating tasks that exhibit a higher degree of solution diversity.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{../img/plot_solution_rate_per_task.png}
+    \caption{}
+    \label{fig:solution_rate_per_task}
+\end{figure}
+In Figure \ref{fig:solution_rate_per_task}, a bar chart is used to depict the solution rate for each task. The tasks are displayed along the x-axis, and the corresponding solution rates are plotted on the y-axis. This chart provides a clear comparison of the relative difficulty or tractability of each task within the dataset, as indicated by the proportion of successful solutions.
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{../img/plot_reward_distribution.png}
+    \caption{}
+    \label{fig:reward_distribution}
+\end{figure}
+Figure \ref{fig:reward_distribution} displays a histogram of the reward distribution across all attempts. This graph offers insights into the typical reward outcomes, including the most common reward values and the spread of rewards. The x-axis indicates the reward magnitude, while the y-axis shows the frequency of each reward range, highlighting the central tendency and variability of the reward structure.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{../img/plot_depth_analysis.png}
+    \caption{}
+    \label{fig:depth_analysis}
+\end{figure}
+Figure \ref{fig:depth_analysis} is a line chart that explores the relationship between the depth of the programs and their success rates. The depth of a program is plotted on the x-axis, and the corresponding success rate is indicated on the y-axis. This analysis is crucial for understanding how the complexity of a program, as measured by its depth, affects its likelihood of successfully solving a task.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{../img/plot_epoch_steps_analysis.png}
+    \caption{}
+    \label{fig:epoch_steps_analysis}
+\end{figure}
+
+In Figure \ref{fig:epoch_steps_analysis}, two line charts are presented, one for the success rate over different epochs and the other for the success rate over a number of steps. These charts elucidate the progression of success rates over time (epochs) and the iterative solving process (steps), providing a dynamic view of the learning or problem-solving efficiency.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{../img/task_embeddings.png}
+    \caption{}
+    \label{}
+\end{figure}
+
+
+
+
+    
+
+
+
+
+
+
 
 \subsection{Discussion}
+
+Time comparison
+It is somewhat difficult to compare my method with other approaches.
+other approaches parallelize processes on multiple CPUs (20-100 CPUs in DC). It takes DC 10 wake-sleep cycles to converge in the list domain
+- I instead am working on one GPU (with possible interruptions from other users on the cluster)
+- they show that the refactoring algorithm (which i havent used) helps a lot in list processing tasks.
+- In DeepSynth, they only count the time of search, not of querying the model. 
+- In Gflownet-EM (and other GFN papers) they train on over 50.000 epochs for simple problems. So this approach takes long to converge, but we reap the benefits at inference time. 
+
+
 \begin{itemize}
+    \item discuss the variable/ non variable batching. (credit assignment.)
     \item mode seeking. difficulty of broad and focussed modes. 
-    \item MAP want to find the best (and shortest, given the right inductive bias) solution to the program. MLE tries to find a posterior distribution, i.e. all solutions of the task. (syntactically different but semantically equivalent solutions. Why do you think this would be necessary in real life. Argue. )
+    \item MAP want to find the best (and shortest, given the right inductive bias) solution to the program. MLE tries to find a posterior distribution, i.e. all solutions of the task. (syntactically different but semantically equivalent solutions. Why do you think this would be necessary in real life. Argue.) 
     \item Perhaps in this toy scenario we don't necessarily need many solutions, but in general we do. 
     \item Make the network choose where to expand (not DFS). Note that we are not going through the CFG DFS, but creating the AST with DFS
     \item Temporal dimension? (GLOM includes time)
@@ -838,19 +1046,48 @@ Quantifying the result in this way gives us quite a good estimate of the model's
     \item What should be the best order of solving tasks? should we try to solve a certain task for x amount of time and then move on to the next? curriculum learning? 
     \item infer the cfg rather than have it as given. in DC they use variable scoping rules to determine which primitives are allowed, in deepsynth they just create a cfg because its faster. 
     \item Reward should be learnt (Energy based model). Where does the brain get it from?
+    \item Is Levenshtein a reasonable reward? think about computational complexity (Kologorov complexity) 
 \end{itemize}
+
+
+\subsubsection{Complexity Analysis}
+
+The time complexity for encoding an IO pair is \(\mathcal{O}(n)\), where \(n\) is the length of the IO pair. 
+
+Similarly, the RuleEncoder's time complexity is \(\mathcal{O}(n)\) where \(n\) is the number of rules.
+
+In each step of the trajectory, I embed the task and the current state, and use the transformer to construct the trajectory until completion. 
+
+The transformer's complexity is \(O(num\_layers \times (d_{model}^2 \times n_{seq} + n_{seq}^2 \times d_{model}))\), where \(num\_layers\) is the number of layers, \(d_{model}\) is the model dimension, and \(n_{seq}\) is the sequence length.
+
+The linear layers within the forward policy $\pi_\theta$ and partition function $Z_\theta$ have a complexity of \(O(d_{model}^2)\) due to the matrix multiplication involved.
+
+The overall time complexity of a forward pass through the 'GFlowNet' model is dominated by the transformer's complexity, which is \(O(num\_layers \times (d_{model}^2 \times n_{seq} + n_{seq}^2 \times d_{model}))\).
+
+
+Since I have linearized the construction procedure, I reconstruct the list back to AST format and then evaluate the tree to get the program output.
+
+The reconstruction and evaluation are both recursive processes that depend on the depth of the tree and number of arguments in each partial program. 
+The worst-case complexity of program reconstruction, as well as the evaluation can be approximated as \(O(k^d)\), where \(d\) is the depth of the recursion, which corresponds to the length of the program list, and \(k\) is the average number of arguments for each function in the program. However, this worst-case scenario is likely to be rare in practical applications, where both \(d\) and \(k\) are bounded and relatively small. In these experiments only one argument per function is allowed.
+
+Subsequently, I compute the reward.
+
+The Levenshtein edit distance algorithm, when implemented using dynamic programming, has a time complexity of 
+$\mathcal{O}(m \times n)$, where $m$ and  $n$ are the lengths of the two input strings.
+
 
 
 \subsubsection{Limitations}
 
-
-\subsection{Future Work}
+\subsubsection{Future Work}
 \begin{itemize}
     \item Sub-trajectory balance
     \item Learning from dataset of good programs (akin to someone telling you a solution)
     \item Train from middle of states
     \item Train backward policy, then we can also see finished states and predict trajectories that led to them
     \item caching evaluations, bottom-up
+    \item we could let automate how long to train. if it is solving the task in 100 consecutive e steps and also in m stepts, it could also just move on. 
+
 \end{itemize}
 
 
@@ -865,16 +1102,22 @@ Quantifying the result in this way gives us quite a good estimate of the model's
 
 
 \subsection{Conclusion}
+\begin{itemize}
+    \item The conclusion here is that GFN is a viable method for program synthesis which could replace models such as DC. 
+    \item 
+\end{itemize}
 
 \subsection{Discussion}
 \begin{itemize}
-    \item Scaling the model 
+    \item Scaling the model (How does the model scale with larger CFGs?)
+    \item We need to show that with abstraction, we could theoretically scale
     \item Scaling neural search paper
     \item how would it work using GFNs
     \item how would it work if we use abstraction like in DC? 
     \item What have we learnt from autopoeisis, FEP, self-organisation, etc. Is my general approach a viable explanans to the eplanadum in question: is the conceptual world constructed by the same process we see in nature etc.
     \item If so, are programs a good representation?
-    \item What are the general pitfalls of symbols? 
+    \item What are the general pitfalls of symbols?  (maybe this should go in general discussion)
+    \item other models like GNN, other AST representations, other spaces, hyperbolic, etc. 
 \end{itemize}
 
 

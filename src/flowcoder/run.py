@@ -15,14 +15,21 @@ logger.setLevel(logging.DEBUG)
 logging.getLogger('matplotlib.font_manager').disabled = True
 
 from_checkpoint = False
-save_checkpoint = True
-train = True
-inference = True
+save_checkpoint = False
+train = False
+inference = False
 
 
 d_model = 512
 
-data = Data(max_program_depth=3, shuffle=False)
+data = Data(
+    max_program_depth=3,
+    shuffle_tasks=True,
+    n_tasks=145,  # if variable_batch is true, make sure you have enough tasks for the batch_size
+    variable_batch=False,  # if False, all tasks in the batch will be the same
+    train_ratio=0.5,
+    seed=3
+    )
 
 io_encoder = IOEncoder(
     n_examples_max=data.nb_examples_max,
@@ -53,28 +60,30 @@ if from_checkpoint:
 model.to(device)
 
 training = Training(
-    min_program_depth=3,
+    min_program_depth=data.max_program_depth,  # change this for gradual learning
     max_program_depth=data.max_program_depth,
-    n_tasks=min(1, 145), # This is the amount of tasks we want to solve from the dreamcoder dataset (max is 145)
-    epochs=2,
-    batch_size=4,
+    epochs=5,
+    batch_size=4,  # if data.variable_batch is True, this should be a divisor of data.n_tasks
     learning_rate_gen=1e-4,
     learning_rate_pol=1e-4,
-    e_steps=500,
+    e_steps=2000,
     m_step_threshold_init=150,
-    m_steps=500,
-    inference_steps=2500,
+    m_steps=2000,
+    inference_steps=100,
     alpha=0.3,
     beta=0.7,
     epsilon=0.3,
-    replay_prob=1, #0.2,
-    fantasy_prob=1, #0.2, # TODO: maybe a bit less of that, innit?!
+    replay_prob=1,
+    fantasy_prob=1,
     data=data,
     model=model,
     save_checkpoint=save_checkpoint,
     )
 
 if train:
+    model.train()
     training.train()
+
 if inference:
+    model.eval()
     training.inference()

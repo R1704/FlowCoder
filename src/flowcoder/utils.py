@@ -6,6 +6,7 @@ import os
 import time
 import matplotlib.pyplot as plt
 import numpy as np
+from sklearn.manifold import TSNE
 
 
 class PositionalEncoding(nn.Module):
@@ -47,17 +48,37 @@ def create_csv(filename, headers):
 
 # Make a unique filename (so we don't overwrite when saving to files) or get the last file, depending on context
 def get_checkpoint_filename(checkpoint_dir, find_last=False, base_name='gflownet', ext='pth'):
-    idx, last_file = -1, None
+    # List all checkpoint files in the directory
+    checkpoint_files = [file for file in os.listdir(checkpoint_dir) if file.startswith(f'{base_name}_') and file.endswith(f'.{ext}')]
 
-    while True:
-        idx += 1
-        filename = f'{base_name}_{idx}.{ext}'
-        filepath = os.path.join(checkpoint_dir, filename)
+    if not checkpoint_files:
+        # No checkpoint files found
+        return None if find_last else os.path.join(checkpoint_dir, f'{base_name}_0.{ext}')
 
-        if os.path.isfile(filepath):
-            last_file = filename
-        else:
-            return os.path.join(checkpoint_dir, last_file) if find_last else filepath
+    # Sort the checkpoint files by index
+    checkpoint_files.sort(key=lambda file: int(file.split('_')[1].split('.')[0]))
+
+    if find_last:
+        # Return the last checkpoint file
+        return os.path.join(checkpoint_dir, checkpoint_files[-1])
+    else:
+        # Generate a new unique filename
+        last_index = int(checkpoint_files[-1].split('_')[1].split('.')[0])
+        new_index = last_index + 1
+        return os.path.join(checkpoint_dir, f'{base_name}_{new_index}.{ext}')
+
+# def get_checkpoint_filename(checkpoint_dir, find_last=False, base_name='gflownet', ext='pth'):
+#     idx, last_file = -1, None
+#
+#     while True:
+#         idx += 1
+#         filename = f'{base_name}_{idx}.{ext}'
+#         filepath = os.path.join(checkpoint_dir, filename)
+#
+#         if os.path.isfile(filepath):
+#             last_file = filename
+#         else:
+#             return os.path.join(checkpoint_dir, last_file) if find_last else filepath
 
 
 def calculate_programs_per_second(start_time, program_counter):
@@ -66,21 +87,19 @@ def calculate_programs_per_second(start_time, program_counter):
     return avg_programs_per_sec
 
 
-def correct_programs(data):
+def correct_programs(data, max_reward):
     correct = [(prog[i], state[i], io[i], real_prog[i], rew[i])
                for (prog, state, io, real_prog, rew) in data
-               for i in range(len(rew)) if rew[i] == 1]
+               for i in range(len(rew)) if rew[i] == max_reward]
     return correct
 
 
-def save_results(mode, depth, epoch, e_step, batch_program_names, programs, rewards, batch_IOs, batch_size, max_reward, csv_file):
+def save_results(mode, depth, epoch, e_step, batch_program_names, programs, rewards, batch_size, max_reward, csv_file):
     for i in range(batch_size):
-        if rewards[i] == max_reward:
-            epoch_data = [mode, depth, epoch, e_step, batch_program_names[i], programs[i], batch_IOs[i]]
-            append_to_csv(csv_file, epoch_data)
+        epoch_data = [mode, depth, epoch, e_step, batch_program_names[i], programs[i], (rewards[i] == max_reward).item(), rewards[i].item()]
+        append_to_csv(csv_file, epoch_data)
 
-
-def print_stats(start_time, total_correct, total_data, batch_size):
+def print_stats(total_correct, total_data, batch_size):
     print(f'Solved {len(total_correct)} out of {len(total_data) * batch_size} tasks correctly')
     for i, (program, state, task, real_program, _) in enumerate(total_correct):
         print('=' * 50)
@@ -89,19 +108,17 @@ def print_stats(start_time, total_correct, total_data, batch_size):
         print(f'task        : {task}\n')
         print(f'real_program: {real_program}\n')
         print('=' * 50)
-    print(f'Average programs per second: {calculate_programs_per_second(start_time, len(total_data))}')
 
 
-def plot_results(e_step_losses, m_step_losses, all_logZs, program_ratios, epoch, filepath):
+def plot_results(e_step_losses, m_step_losses, all_logZs, epoch, filepath):
     plt.figure(figsize=(15, 15))
 
     data = [(e_step_losses, 'E-step Losses Over Time', 'e loss'),
             (m_step_losses, 'M-step Losses Over Time', 'm loss'),
-            (np.exp(all_logZs), 'Z Over Time', 'Z'),
-            (program_ratios, 'Correct Program Ratios Over Time', 'ratio')]
+            (np.exp(all_logZs), 'Z Over Time', 'Z')]
 
     for i, (d, title, ylabel) in enumerate(data, start=1):
-        plt.subplot(4, 1, i)
+        plt.subplot(3, 1, i)
         plt.plot(d)
         plt.title(title)
         plt.xlabel('epochs')
@@ -117,3 +134,12 @@ def batch(iterable, n=1):
     l = len(iterable)
     for ndx in range(0, l, n):
         yield iterable[ndx:min(ndx + n, l)]
+
+# Function to extract embeddings
+def extract_embeddings(encoder, dataset):
+    with torch.no_grad():
+        embeddings = []
+        for data in dataset:
+            embedding = encoder(data)  # Assuming data can be directly passed to the encoder
+            embeddings.append(embedding.cpu().numpy())
+    return np.vstack(embeddings)
