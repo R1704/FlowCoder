@@ -28,10 +28,6 @@ class PositionalEncoding(nn.Module):
         return self.dropout(x)
 
 
-def flatten(lst):
-    return [element for sublist in lst for element in sublist]
-
-
 # Define a function to append a new row to an existing CSV file
 def append_to_csv(filename, row_data):
     with open(filename, mode='a', newline='') as file:
@@ -67,47 +63,11 @@ def get_checkpoint_filename(checkpoint_dir, find_last=False, base_name='gflownet
         new_index = last_index + 1
         return os.path.join(checkpoint_dir, f'{base_name}_{new_index}.{ext}')
 
-# def get_checkpoint_filename(checkpoint_dir, find_last=False, base_name='gflownet', ext='pth'):
-#     idx, last_file = -1, None
-#
-#     while True:
-#         idx += 1
-#         filename = f'{base_name}_{idx}.{ext}'
-#         filepath = os.path.join(checkpoint_dir, filename)
-#
-#         if os.path.isfile(filepath):
-#             last_file = filename
-#         else:
-#             return os.path.join(checkpoint_dir, last_file) if find_last else filepath
 
-
-def calculate_programs_per_second(start_time, program_counter):
-    elapsed_time = time.time() - start_time
-    avg_programs_per_sec = program_counter / elapsed_time
-    return avg_programs_per_sec
-
-
-def correct_programs(data, max_reward):
-    correct = [(prog[i], state[i], io[i], real_prog[i], rew[i])
-               for (prog, state, io, real_prog, rew) in data
-               for i in range(len(rew)) if rew[i] == max_reward]
-    return correct
-
-
-def save_results(mode, depth, epoch, e_step, batch_program_names, programs, rewards, batch_size, max_reward, csv_file):
+def save_results(mode, depth, epoch, e_step, batch_program_names, programs, states, rewards, batch_size, max_reward, csv_file):
     for i in range(batch_size):
-        epoch_data = [mode, depth, epoch, e_step, batch_program_names[i], programs[i], (rewards[i] == max_reward).item(), rewards[i].item()]
+        epoch_data = [mode, depth, epoch, e_step, batch_program_names[i], programs[i], states[i], (rewards[i] == max_reward).item(), rewards[i].item()]
         append_to_csv(csv_file, epoch_data)
-
-def print_stats(total_correct, total_data, batch_size):
-    print(f'Solved {len(total_correct)} out of {len(total_data) * batch_size} tasks correctly')
-    for i, (program, state, task, real_program, _) in enumerate(total_correct):
-        print('=' * 50)
-        print(f'program     : {program}\n')
-        print(f'state       : {state}\n')
-        print(f'task        : {task}\n')
-        print(f'real_program: {real_program}\n')
-        print('=' * 50)
 
 
 def plot_results(e_step_losses, m_step_losses, all_logZs, epoch, filepath):
@@ -135,6 +95,15 @@ def batch(iterable, n=1):
     for ndx in range(0, l, n):
         yield iterable[ndx:min(ndx + n, l)]
 
+
+def add_unique_data(data_list: list, total_data: list, unique_solutions: set):
+    for data_tuple in data_list:
+        program, _, _, task_name = data_tuple
+        if (program, task_name) not in unique_solutions:
+            total_data.append(data_tuple)
+            unique_solutions.add((program, task_name))
+
+
 # Function to extract embeddings
 def extract_embeddings(encoder, dataset):
     with torch.no_grad():
@@ -143,3 +112,4 @@ def extract_embeddings(encoder, dataset):
             embedding = encoder(data)  # Assuming data can be directly passed to the encoder
             embeddings.append(embedding.cpu().numpy())
     return np.vstack(embeddings)
+

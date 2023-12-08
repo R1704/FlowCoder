@@ -13,10 +13,10 @@ from itertools import chain
 
 class Data:
 
-    def __init__(self, max_program_depth=6, shuffle_tasks=False, variable_batch=True, n_tasks=145, train_ratio=0.5, seed=42):
+    def __init__(self, max_program_depth=6, shuffle_tasks=False, variable_batch=True, n_tasks=95, train_ratio=0.5, seed=42):
         self.max_program_depth = max_program_depth
         self.shuffle_tasks = shuffle_tasks
-        self.n_tasks = min(n_tasks, 145)
+        self.n_tasks = min(n_tasks, 95)
         self.variable_batch = variable_batch
         self.train_ratio = train_ratio
         self.n_train_tasks = int(np.ceil(n_tasks * train_ratio))
@@ -42,7 +42,6 @@ class Data:
         if self.shuffle_tasks:
             rng.shuffle(self.tasks)
         self.tasks = self.tasks[:self.n_tasks]
-        # self.tasks = self.tasks[19:19*2]
 
         self.train_tasks, self.test_tasks = self.split_dataset()
 
@@ -73,6 +72,12 @@ class Data:
         # Filter tasks
         _, _, rules_predictor = build_dreamcoder_intlist_model(max_program_depth=self.max_program_depth)
         tasks = filter_tasks_for_model(tasks, rules_predictor)
+        with open("task_names.txt", "r") as file:
+            task_names = file.read().splitlines()
+        # Create a dictionary to map task names to their corresponding tasks
+        task_dict = {name: task for name, task in tasks}
+        # Filter the tasks based on whether they are in the task_names list and maintain the order
+        tasks = [(name, task_dict[name]) for name in task_names if name in task_dict]
         print("Remaining tasks after filter:", len(tasks), "tasks")
 
         # Format tasks array

@@ -35,57 +35,113 @@
 
 % \chapter{Technical Framework}
 
-
-\section{Probabilistic Programming}
-
-I follow the assumption that we don't start from a blank slate but from some initial concepts, here operationalized as primitives, fundamental program components. These initial primitives comprise a minimal domain-specific lanugage (DSL) and can be composed into more complex programs, which represent the causal structure generating the observations we perceive. As such, an agent learns its own DSL, which in terms of a language of thought is analogous to inferring a mental grammar and using it to learn new concepts.
-
+I am following the assumption that we don't start from a blank slate but from some initial concepts, here operationalised as primitives, fundamental program components. These initial primitives comprise a minimal domain-specific lanugage (DSL) and can be composed into more complex programs, which represent the causal structure generating the observations we perceive. As such, an agent learns its own DSL, which in terms of a language of thought is analogous to inferring a mental grammar and using it to learn new concepts.
+In the following, I will first introduce the state-of-the-art model in this regard in detail, to present the possibilities of this framework as well as the methods used, many of which inspired my own model.
+\section{Methods}
 
 \subsection{DreamCoder}
 [which supercede previous models, e.g. RobustFill, DeepCoder, etc. ]
-One of the most successful models in this regard is DreamCoder - a model that synthesises programs from initial primitives and a set of tasks with the objective of learning its own domain specific language \cite{ellis_dreamcoder_2021}. The model utilises a modified version of a wake-sleep algorithm introduced by Hinton to learn a generative model and a recognition network in tandem, following the paradigm of separating the world model from the inference model \cite{hinton1995wake} [reference to earlier section, sys 1,2]. The generative model learns a probability distribution over programs while the recognition network learns to map from tasks to programs in order to perform neurally guided search over the program space.
+One of the most successful models in this endeavor is DreamCoder - a model that synthesises programs from initial primitives and a set of tasks with the objective of learning its own domain specific language \cite{ellis_dreamcoder_2021}. The model utilises a modified version of a wake-sleep algorithm introduced by Hinton to learn a generative model and a recognition network in tandem, following the paradigm of separating the world model from the inference model \cite{hinton1995wake} [reference to earlier section, sys 1,2]. The generative model learns a probability distribution over programs while the recognition network learns to map from tasks to programs in order to perform neurally guided search over the program space. Using this recognition model, they build a parallel search algorithm which is a mixture of best-first and depth-first and enumerates programs with decreasing probabilities. See \cite{Ellis_Wong_Nye_Sable-Meyer_Cary_Morales_Hewitt_Solar-Lezama_Tenenbaum} for details.
 Commonly used sub-routines, are chunked and abstracted into concepts which become more accessible. This narrows the search tree immensely and enables scalability. In sum, abstraction narrows the depth, while the recognition model narrows the breadth of the search space.
 
 Tasks can be generative (e.g. creating an image) or conditional, (input-output relation, e.g. sorting a list).
 Figure \ref{fig:conc_library}(A) shows examples of tasks across different domains. 
-Figure \ref{fig:conc_library}(B) shows an example, in which the task to learn is to sort a list. On the left we see the initial primitives. The shaded region shows the learned library of concepts. On the right we see the final solution, which uses \texttt{concept15} , which itself uses previously abstracted concepts. Note the difference in the length of the program using abstracted concepts vs. only initial primitives, shown beneath.
+Figure \ref{fig:conc_library}(B) shows an example, in which the task to learn is to sort a list. On the left we see the initial primitives. The shaded region shows the learned library of concepts. On the right we see the final solution, which uses \texttt{concept15}, which itself uses previously abstracted concepts. Note the difference in the length of the program using abstracted concepts vs. only initial primitives, shown beneath.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{../img/conc_library.png}
-\caption{(A) 8 different domains of tasks. (B) Representation of the learned library of concepts. On the left we see the initial primitives from which the concepts in the middle region are composed. On the right we see a task as input-output relations and the found solution. On the bottom is the same solution expressed only with initial primitives. Image taken with permission from the original paper \cite{ellis_dreamcoder_2021}.}
-\label{fig:conc_library}
+\begin{figure*}[h]
+    \centering
+    \includegraphics[width=\textwidth]{../img/conc_library.png}
+    \caption{(A) 8 different domains of tasks. (B) Representation of the learned library of concepts. On the left we see the initial primitives from which the concepts in the middle region are composed. On the right we see a task as input-output relations and the found solution. On the bottom is the same solution expressed only with initial primitives. Image taken with permission from the original paper \cite{ellis_dreamcoder_2021}.}
+    \label{fig:conc_library}
 \end{figure*}
 
 
+\subsection{DeepSynth}
 
-Formally, the overall objective is to find the optimal DSL \(\mathcal{D}\), which is a set of typed \(\lambda\)-calculus expressions, along with optimal weights \( \theta \) to navigate it, such as to solve a given a set of tasks \(x \in X\).
+In their 2021 paper, Fijalkow et al. proposed a framework called "distribution-based search", in which they investigate the difficult problem of searching through a DSL to find programs matching a specification in a vast hypothesis space \cite{fijalkow_scaling_2021}.
+
+They introduce DeepSynth \footnote{\url{https://github.com/nathanael-fijalkow/DeepSynth}}, a general-purpose program synthesizer which constructs programs from input-output examples, and a useful framework allowing us to test different models and search methods (see section x for details).
+
+The authors discuss different program finding strategies. Specifically, they find that both enumerative search (such as in DreamCoder) and sampling are viable strategies, where search is associated with prioritising quantity, i.e.  creating many programs quickly, whereas sampling strategies prioritise quality but may be slower, since resampling the same programs can occur. An additional benefit of sampling over search is space efficiency - already created programs don't need to be memorised (with the possible downside of resampling).
+
+\subsection{GFlowNet}
+Generative Flow Networks (GFlowNets), introduced by Bengio et al., are a class of generative models designed to learn to construct objects from a target distribution over complex high-dimensional spaces, particularly where explicit density estimation is challenging and diverse candidates are encouraged \cite{bengio_flow_2021}. GFlowNets learn a stochastic policy for generating sequences of actions that lead to the construction of a sample. This sampling process is done in such a way that the frequency of generating any given sample is proportional to a given reward function associated with that sample. A trained GFlowNet can therefore act as an excellent sampler.
+
+
+
+
+
+
+
+
+
+
+
+\section{FlowCoder}
+
+In the following I will describe the DeepSynth framework, the DreamCoder architecture, and GFlowNets in detail and point out how I utilised each component to build my model, \textrm{FlowCoder}. \\
+
+
+Both in DreamCoder and DeepSynth, programs are represented as abstract syntax trees (ASTs). An AST is a tree representation of the syntactic structure of the program, with nodes representing operations or primitives and edges representing their compositional relationships. In order to avoid predicting variables, deBruijn indexing is used, which is a technique to represent bound variables in a way that avoids naming conflicts and simplifies variable substitution. Named variables are replaced with numeric indices representing the number of enclosing lambda abstractions that bind the variable. See figure \ref{fig:AST} for a visualisation of an AST using deBruijn indexing.
+
+
+
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        [
+        every node/.style={draw, inner sep=2pt},
+        level distance=1.5cm,
+        level 1/.style={sibling distance=2cm},
+        level 2/.style={sibling distance=1cm}
+        ]
+        
+        \node {+}
+        child {
+            node {var0}
+        }
+        child {
+            node {*}
+            child {
+            node {var1}
+            }
+            child {
+            node {var0}
+            }
+        };
+    \end{tikzpicture}
+    \caption{An example of an abstract syntax tree (AST) using deBruijn indexing. This translates to \texttt{var0 + var1 * var0}.}
+    \label{fig:AST}
+\end{figure}
+
+
+
+Formally, the overall objective of DreamCoder is to find the optimal DSL \(\mathcal{D}\), which is a set of typed \(\lambda\)-calculus expressions, along with optimal weights \( \theta \) to navigate it, such as to solve a given a set of tasks \(x \in X\).
 
 I.e. the objective is to find the joint distribution:
 \[ 
     J(\mathcal{D}, \theta) = P(\mathcal{D}, \theta) \prod_{x \in X} \sum_{\rho} P(x|\rho)P(\rho|\mathcal{D},\theta) 
 \]
+
 where:
 \begin{conditions*}
     P(\mathcal{D}, \theta) & Prior distribution over languages and parameters \\
     P(x|\rho) & Likelihood of task \(x \in X\) given program \(\rho\)
 \end{conditions*}
 
-Since computing \( J(\mathcal{D}, \theta) \) entails marginalizing over all programs, which is intractable, they instead marginalize over a finite beam [definition] per task \( {\mathcal{B}_x} \) which is operationalized as a lower bound on the joint density. This bound is even tighter than the ELBO [reference].
+Since computing \( J(\mathcal{D}, \theta) \) entails marginalising over all programs, which is intractable, they instead marginalise over a finite beam [definition] per task \( {\mathcal{B}_x} \) which is operationalized as a lower bound on the joint density. This bound is even tighter than the ELBO [reference].
 \[
     \mathcal{L}(\mathcal{D}, \theta, \{\mathcal{B}_x\}) = P(\mathcal{D}, \theta) \prod_{x \in X} \sum_{\rho \in \{\mathcal{B}_x\}} P(x|\rho)P(\rho|\mathcal{D},\theta)
 \]
 
-The model operates in three distinct phases. 
+The model operates in three distinct phases:
 
 \paragraph{Wake} In the wake phase, the objective is to find the best program $\rho$ for each task $x \in X$ DreamCoder is presented with. Each task consist of one or a few ($\sim10$) examples.
 The objective is to maximize \(\mathcal{L}\) w.r.t. to the beam \(\{\mathcal{B}_x\}\)
 
 \paragraph{Sleep: Abstraction} A key component of the success of DreamCoder is the refactoring of programs. In this phase, DreamCoder consolidates new abstractions from the programs it has found during the wake phase. Experiences are replayed, and commonalities between programs are found so that they can be abstracted into new concepts to use in the future. 
-
-% The objective is to find programs of minimum description length (MDL). 
-(version space etc. )
-In the abstraction phase they maximize \(\mathcal{L}\) w.r.t. \(\mathcal{D}\)
-% - DreamCoder uses a new data structure based on equivalence graphs and constructed via dynamic programming which can summarize a large number of possible refactorings to the original programs.
+In the abstraction phase \(\mathcal{L}\) w.r.t. \(\mathcal{D}\) is maximized.
 
 \paragraph{Sleep: Dreaming} The objective during the dreaming phase is to train the recognition model $Q$ to perform MAP inference by both fantasies, and replays. When fantasising, programs are drawn from the learned library as a generative model. The model is then trained on the produced tasks. This ensures a large and varied data-set to learn from and encourages out-of-distribution generalisation. Replays, simply training on previously seen task-program pairs, ensures that the model improves its predictions on the actual tasks it needs to learn and doesn't forget how to solve tasks it has already solved correctly.
 
@@ -106,67 +162,41 @@ The recognition model \(Q\) takes a task as input and outputs a 3-dimensional bi
 
 
 
-% “We use an EM algorithm to estimate the continuous parameters of the generative model, i.e. θ. Suppressing dependencies on D, the EM updates are θ = arg max θ log P (θ) + ∑ x Eqx [log P [ρ|θ]] (3) qx(ρ) ∝ P[x|ρ]P[ρ|θ]1 [ρ ∈ Bx] (4) In the M step of EM we will update θ by instead maximizing a lower bound on log P[ρ|θ], making our approach an instance of Generalized EM.” (from building hierarchical world models , one of the DreamCoder papers)
-
-
-
-
-\section{Methods}
-\section{FlowCoder}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%% DEEPSYNTH %%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{DeepSynth}
-
-In their 2021 paper, Fijalkow et al. proposed a framework called "distribution-based search", in which they tackle the difficult problem of searching through a DSL to find programs matching a specification in a vast hypothesis space \cite{fijalkow_scaling_2021}.
-
-They introduce DeepSynth \footnote{\url{https://github.com/nathanael-fijalkow/DeepSynth}}, a general-purpose program synthesizer which constructs programs from input-output examples, and a useful framework allowing us to test different models and search methods.
-\paragraph{DSL} 
-
-Here an initial DSL and suitable syntactic constraints compile into a context-free grammar (CFG), which defines the possible structures of programs within its DSL. A CFG consists of a set of production rules that describe how to generate strings (or tree structures) from a set of non-terminal and terminal symbols. It's "context-free" because the production rules are applied regardless of the surrounding symbols.
-
-Here a CFG is used rather than the more dynamic but computationally heavy inference of variable scoping rules [explain] to determine permitted rules.
-\todo[inline]{discuss that we actually need to infer the CFG but for computational reasons we just use the CFG. Otherwise, we have to find out which rules are allowed since we are dealing with types. Now is there a biologically plausible equivalent to types or is it completely a constraint of the method we are using? I suspect that there are no types. It's all dynamic. But that's okay for now.}
-
-A probabilistic CFG (PCFG) extends a CFG by associating probabilities with the production rules. This allows the grammar to not only generate the syntactic structure of a program but also to represent beliefs about the relative plausibility or frequency of different structures. This is similar to DreamCoder's transition matrix. Here, a PCFG is used to capture prior beliefs about the distribution of programs within a domain, which guides the search and inference process towards more likely programs.
-
-[discuss here that we are using a transformer to represent a neural PCFG?]
-
-Programs are represented as abstract syntax trees (ASTs). An AST is a tree representation of the syntactic structure of the program, with nodes representing operations or primitives and edges representing their compositional relationships.
-[insert debruin indexing definition]
-[and maybe a graph]
-
-[discuss here the difference between predicting primitives and rules?]
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%% DSL %%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{DSL}
 (see appendix \ref{app:dsl})
-- typed Lambda calculus 
+
+It is apparent that the abstraction phase is crucial for learning the DSL. In this project however, I want to focus on learning a good sampler. The model can subsequently always be extended to include the abstraction phase and thus expand the DSL. Therefore, I am using DeepSynth's framework.
+Here, an initial DSL along with suitable syntactic constraints compile into a context-free grammar (CFG), which defines the possible structures of programs within its DSL. A CFG consists of a set of production rules that describe how to generate strings from a set of non-terminal and terminal symbols. It's "context-free" because the production rules are applied regardless of the surrounding symbols.
+A prediction model is then used to predict weights for a probabilistic CFG (PCFG), extending the CFG by associating probabilities with the production rules. This allows the grammar to not only generate the syntactic structure of a program but also to represent beliefs about the relative plausibility or frequency of different structures. This is similar to DreamCoder's transition matrix which is outputted by the recognition model. The PCFG guides the search and inference process towards more likely programs. DreamCoder however, does not specifically use a PCFG. Both frameworks employ a typed $\lambda$-calculus, hence there are restrictions on program arguments, etc. (syntactical constraints). DreamCoder performs type inference during program generation. To spare computational cost, DeepSynth constructs the CFG beforehand which in turn increases the size of the CFG.
+
+
+% Similar to both approaches, I am separating the generative model from the recognition model
+
+DreamCoder enforces parsimonious programs during abstraction. Common patterns are refactored, shortening the programs. Deepsynth enforces programs of minimum description length by optimising for the expected number of programs before finding a correct solution. This works, if programs are considered in order of increasing length. Both of these methods however optimise for point estimates, i.e. the most likely program for a given task. Instead, I want to learn the posterior distribution, i.e. all solutions to a task, which of course is much harder.
+I do this, first, because if we see that the model finds the posterior, it can always be simplified to MAP. Second, given the analogy of humans understanding the world via program-like concepts, we know that we can represent the world in various ways and we can find multiple solutions to a problem. Consider the following example: the task 
+% [2,,6,8] -> 
+% [1,2,3] -> [2,4,9]
+
+% [123][987]
+% abc xyz
+% abd wyz/ xya
+
+I constrain the program depth to 3, which is enough to solve most programs and is not too computationally heavy.
+Since most tasks can be solved by short programs, 
+Despite the minimum description length being a factor which may be necessary, I relax this condition
 
 \paragraph{Syntactic constraints}
+Same constraints as DeepSynth:
 % [show constraints]
 % nb_arguments_max: maximum number of inputs
 % size_max: maximum number of elements in a list
 % lexicon: list of symbols that can appear (for instance range(-10,10))
+type: \texttt{int list -> int list}
+
 
 \paragraph{Tasks}
-We are using n? tasks, originally from DreamCoder and filtered and provided by DeepSynth.
-Tasks are input-output relations in the list editing domain. [See appendix for examples]. 
-we have tasks $x \in X$
+
+The tasks I am using are input-output relations in the list editing domain, originally from DreamCoder. These were filtered given the syntactic constraints (e.g. type, lexicon, etc.) and provided by DeepSynth. In their paper, Fijalkow et al. discuss that some of the tasks are impossible to be solved given the DSL, so I additionally filtered those out.
+[See appendix for examples]. 
 
 % We only work with tasks of type int list -> int list. We remove examples where lists have length greater than Lmax = 10 or where one of the elements of the input or output list are not in Lin = [−30; 30].
 We say that a task is solved if a program is found which satisfies all examples. The timeout of 100s only takes into account the search time and the evaluation times and not the time to query the neural network for predictions.
@@ -185,38 +215,39 @@ I am predicting rules in the CFG, rather than primitives. I.e. edges between two
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%% GFlowNet %%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{GFlowNet}
-
-
-% Incidentally, GFlowNets have been developed to construct molecules from atoms [source].
-
-% - introduce my tasks as X, my z as rules of the CFG (discuss later why rules rather than primitives; i have to look up whether they are allowed anyways so i used the rules + order? discuss pros and cons)
 
 
 
-Generative Flow Networks (GFlowNets), introduced by Bengio et al., are a class of generative models designed to learn to construct objects from a target distribution over complex high-dimensional spaces, particularly where explicit density estimation is challenging and diverse candidates are encouraged \cite{bengio_flow_2021}. GFlowNets learn a stochastic policy for generating sequences of actions that lead to the construction of a sample. This sampling process is done in such a way that the frequency of generating any given sample is proportional to a given reward function associated with that sample.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+So how can we build a good sampler?
+
 
 GFlowNets create a directed acyclic graph (DAG) over the state space, where vertices correspond to states or partial samples and edges denote transitions or adding a component to a partial sample, in which the edges carry a flow from source to targets.
-
-In GFlowNets, the "flow" in the network corresponds to the process by which the network constructs a sample, which can be thought of as a path in a graph where nodes are partial samples, and edges correspond to adding a component to the partial sample. The network is trained such that the flow into any completed sample is proportional to its reward.
-
-[put a diagram here? of partially constructed ASTs]
-
+In GFlowNets, the "flow" in the network corresponds to the process by which the network constructs a sample, which can be thought of as a path in a graph where nodes are partial samples, and edges correspond to adding a component to the partial sample.
 The core training objective for a GFlowNet is to satisfy the flow matching constraint. The idea is to ensure that the flow into any state (a partially constructed sample) should match the flow out of it, given the reward associated with complete samples. The flow here refers to the expected transitions into or out of a state under the model's stochastic policy. 
-
 Formally, a state \( s \) represents a partial object a certain stage in the generative process. A trajectory \( \tau \) is a sequence of states \( s_0, s_1, ..., s_T \) that the model traverses from an initial state \( s_0 \) to a terminal state \( s_T \), where the target structure is complete.
-
 A trajectory \( \tau \) is formed by a sequence of actions \( a_1, a_2, ..., a_T \), where each action \( a_t \) transitions the model from state \( s_{t-1} \) to state \( s_t \). The sequence of actions is governed by a policy \( \pi \), which defines the probability of choosing a particular action given the current state.
-
-% A reward is used to evaluate complete objects [could also be partial]. 
-
 The flow \( F(\tau) \) of a trajectory \( \tau \) is defined as the product of the probabilities of each transition along the trajectory, multiplied by the reward \( R(s_T) \) of the terminal state, normalized by a partition function \( Z \).
 
 \begin{equation} \label{eq:flow}
@@ -224,7 +255,6 @@ The flow \( F(\tau) \) of a trajectory \( \tau \) is defined as the product of t
 \end{equation}
 
 The partition function \( Z \) ensures that the sum of flows over all possible trajectories equals one, effectively normalizing the distribution. Since we don't know \( Z \), we can estimate it by parameterizing it as \( Z_{\theta} \).
-
 The flow matching constraint enforces that for any given non-terminal state \( s \), the total flow into \( s \) must equal the total flow out of \( s \):
 
 \begin{equation} \label{eq:flow_match}
@@ -232,7 +262,6 @@ The flow matching constraint enforces that for any given non-terminal state \( s
 \end{equation}
 
 where \( F(\tau') \) is the reverse trajectory.
-
 We can utilize this property to create a suitable loss function to train the GFlowNet. Combining equations \ref{eq:flow} and \ref{eq:flow_match} gives us:
 
 \begin{equation}
@@ -252,7 +281,6 @@ We can now take the log on both sides:
     \log \left(Z_{\theta} \prod_{t=0}^{T-1} \pi_\theta(s_{t+1} | s_{t})\right) = \log \left(R(s_T) \prod_{t=0}^{T-1} \beta_\theta(s_{t} | s_{t+1})\right)
 \end{equation}
 
-
 This can be rearranged to:
 
 \begin{equation}
@@ -264,7 +292,6 @@ The trajectory balance loss is the squared difference:
 \begin{equation}
     \mathcal{L}_{TB} = \left(\log Z_\theta + \sum_{i=0}^{T-1} \log \pi_\theta(s_{t+1}|s_{t}) - \log R(s_T) - \sum_{t=0}^{T-1} \log \beta_\theta(s_{t}|s_{t+1})\right)^2
 \end{equation}
-
 
 In order to mitigate the computational [cost], I am embedding all rules rather than primitives, such that each rule is unique. Thus, every predicted node (rule) has exactly one parent, in other words, I am essentially linearizing the tree. Therefore, $\beta$ will always be $1$ and can be disregarded from the equation. 
 Moreover, since we are solving tasks \( x \in X \), we have a conditional reward distribution $R(s_T|x)$, as well as a conditional forward policy $\pi_\theta(s_T|x)$ and partition function $Z_\theta(x)$.
@@ -302,6 +329,8 @@ In replay, I train the recognition model to not forget previously solved tasks.
 [also generative model?]
 In fantasy I train the recognition model to solve out of distribution tasks, so it learns to extrapolate to unseen data.
 
+- In sleep we are guiding the model with correct trajectoriees.
+- include consideration of how often and when to sleep. 
 
 
 
@@ -342,6 +371,9 @@ In fantasy I train the recognition model to solve out of distribution tasks, so 
 
 
 
+
+
+[discuss here that we are using a transformer to represent a neural PCFG?]
 
 
 
@@ -1025,6 +1057,10 @@ In Figure \ref{fig:epoch_steps_analysis}, two line charts are presented, one for
 
 \subsection{Discussion}
 
+Here a CFG is used rather than the more dynamic but computationally heavy inference of variable scoping rules [explain] to determine permitted rules.
+\todo[inline]{discuss that we actually need to infer the CFG but for computational reasons we just use the CFG. Otherwise, we have to find out which rules are allowed since we are dealing with types. Now is there a biologically plausible equivalent to types or is it completely a constraint of the method we are using? I suspect that there are no types. It's all dynamic. But that's okay for now.}
+
+
 Time comparison
 It is somewhat difficult to compare my method with other approaches.
 other approaches parallelize processes on multiple CPUs (20-100 CPUs in DC). It takes DC 10 wake-sleep cycles to converge in the list domain
@@ -1221,7 +1257,7 @@ ASTs
 
 
 
-
+[related work section ]
 
 
 

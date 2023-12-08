@@ -34,8 +34,6 @@ from flowcoder.data import Data
 from flowcoder.utils import *
 from flowcoder.config import *
 from flowcoder.reward import *
-from flowcoder.model import freeze_parameters, unfreeze_parameters
-
 
 @dataclass
 class Training:
@@ -75,8 +73,8 @@ class Training:
         self.max_reward = 10.
 
         # Saving data for analysis
-        self.csv_file = os.path.join(RESULTS, f'stats_{datetime.datetime.now()}.csv')
-        headers = ['Mode', 'Depth', 'Epoch', 'Steps', 'Task Name', 'Program', 'Solved', 'Reward']
+        self.csv_file = CSV_FILENAME
+        headers = ['Mode', 'Depth', 'Epoch', 'Steps', 'Task Name', 'Program', 'State', 'Solved', 'Reward']
         create_csv(self.csv_file, headers)
 
         # Create a dictionary of CFGs of different depths, so we can learn it gradually
@@ -174,7 +172,7 @@ class Training:
         """
 
         # Prepare the batch from correct_programs
-        batch_programs, correct_states_list, batch_IOs = zip(*data)
+        batch_programs, correct_states_list, batch_IOs, _ = zip(*data)
 
         # Initialise container for forward logits accumulation
         total_forwards = torch.zeros(len(data), device=device)
@@ -217,7 +215,7 @@ class Training:
     def fantasy(self, data, depth):
 
         # Prepare the batch from
-        batch_programs, batch_states, batch_IOs = data
+        batch_programs, batch_states, batch_IOs, _ = data
 
         # Create a batch of inputs from empirical data and outputs from imagined programs
         batch_programs, batch_states, fantasy_batch = self.make_fantasy_batch(
@@ -338,23 +336,23 @@ class Training:
             e_step_tqdm.set_postfix({'e_step loss': e_loss.item(), 'Z': logZs.mean().exp().item()})
 
             # Save results to csv
-            save_results('e-step', depth, epoch, e_step, task_names, programs, rewards_,
+            save_results('e-step', depth, epoch, e_step, task_names, programs, states, rewards_,
                                           self.batch_size, self.max_reward, self.csv_file)
 
             # Save correct data and apply replay and fantasy
             if self.max_reward in rewards_:
-                replay_data = []
-                for i in range(self.batch_size):
-                    if rewards_[i] == self.max_reward:
-                        e_step_tqdm.write(f'Solved task: {task_names[i]} \t program: {programs[i]}')
-                        solved[i] = True
-                        replay_data.append((programs[i], states[i], batch_IOs[i]))
-                # TODO: maybe that's a bit excessive?
-                self.replay(replay_data)
-                e_step_data.extend(replay_data)
+                if rand := random.random() < self.replay_prob:
+                    replay_data = []
+                    for i in range(self.batch_size):
+                        if rewards_[i] == self.max_reward:
+                            e_step_tqdm.write(f'Solved task: {task_names[i]} \t program: {programs[i]}')
+                            solved[i] = True
+                            replay_data.append((programs[i], states[i], batch_IOs[i], task_names[i]))
+                    self.replay(replay_data)
+                    e_step_data.extend(replay_data)
 
-            if random.random() < self.fantasy_prob:
-                self.fantasy((programs, states, batch_IOs), depth)
+                if rand < self.fantasy_prob:
+                    self.fantasy((programs, states, batch_IOs, task_names), depth)
 
         return e_step_data, e_step_losses, e_step_logZs, solved
 
@@ -398,16 +396,17 @@ class Training:
                 data = []
                 for i in range(self.batch_size):
                     if rewards_[i] == self.max_reward:
-                        data.append((programs[i], states[i], batch_IOs[i]))
+                        data.append((programs[i], states[i], batch_IOs[i], task_names[i]))
                 m_step_data.extend(data)
 
             # Set tqdm
             m_step_tqdm.set_postfix({'m_step loss': m_loss.item()})
 
             # Save results to csv
-            save_results('m-step', depth, epoch, m_step, task_names, programs, rewards_, self.batch_size, self.max_reward, self.csv_file)
+            save_results('m-step', depth, epoch, m_step, task_names, programs, states, rewards_, self.batch_size, self.max_reward, self.csv_file)
 
         return m_step_data, m_step_losses, solved
+
 
     #########################################
     #########################################
@@ -418,16 +417,17 @@ class Training:
         # Current threshold value, initialized to the initial threshold
         current_threshold = self.m_step_threshold_init
 
+        unique_solutions = set()
         total_data = []
         total_e_losses = []
         total_m_losses = []
         total_logZs = []
 
         for depth in tqdm.tqdm(range(self.min_program_depth, self.max_program_depth + 1), position=0, desc='depth', leave=False, colour='green', ncols=80):
-            # TODO: N Train batches vary if variable_batch == True or False
             task_range = int(np.ceil(self.data.n_train_tasks / self.batch_size)) if self.data.variable_batch else self.data.n_train_tasks
             for _ in tqdm.tqdm(range(task_range), position=0, desc='task batch', leave=False, colour='blue', ncols=80):
 
+                # Get tasks
                 batch_IOs, task_names = self.data.get_io_batch(self.batch_size, train=True)
                 logging.info(f'\n{"="*50}\nWorking on tasks: {task_names}\n{"="*50}')
 
@@ -438,15 +438,14 @@ class Training:
                     e_step_data, e_step_losses, e_step_logZs, e_solved = self.e_step(epoch, depth, batch_IOs, task_names)
                     total_e_losses.extend(e_step_losses)
                     total_logZs.extend(e_step_logZs)
-                    total_data.extend(e_step_data)
+
+                    # save unique solutions for replay
+                    add_unique_data(e_step_data, total_data, unique_solutions)
 
                     # Replay (training on all correct task-program pairs)
-                    if rand := random.random() <= self.replay_prob:
-                        if total_data:
-                            for b in batch(total_data, self.batch_size):
-                                self.replay(b)
-                                # if rand <= self.fantasy_prob:
-                                #     self.fantasy(b, depth)
+                    if total_data:
+                        for b in batch(total_data, self.batch_size):
+                            self.replay(b)
 
                     # M-step
                     # Optimize Generative Model
@@ -454,7 +453,9 @@ class Training:
                     if self.moving_average_loss < current_threshold or epoch == self.epochs - 1:
                         m_step_data, m_step_losses, m_solved = self.m_step(epoch, depth, batch_IOs, task_names)
                         total_m_losses.extend(m_step_losses)
-                        total_data.extend(m_step_data)
+
+                        # save unique solutions for replay
+                        add_unique_data(m_step_data, total_data, unique_solutions)
 
                     # Decrease the threshold value linearly over the epochs
                     current_threshold -= self.threshold_decrement
@@ -486,5 +487,5 @@ class Training:
                         # Calculate rewards for the predicted programs
                         rewards_ = rewards(programs, batch_IOs, self.data.dsl, self.data.lexicon, self.max_reward)
 
-                        save_results('inference', depth, '', step, task_names, programs, rewards_,
+                        save_results('inference', depth, '', step, task_names, programs, states, rewards_,
                                      self.batch_size, self.max_reward, self.csv_file)

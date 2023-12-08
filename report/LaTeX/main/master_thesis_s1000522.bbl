@@ -91,6 +91,13 @@ Geoffrey~E Hinton, Peter Dayan, Brendan~J Frey, and Radford~M Neal.
 \newblock The" wake-sleep" algorithm for unsupervised neural networks.
 \newblock {\em Science}, 268(5214):1158--1161, 1995.
 
+\bibitem{Ellis_Wong_Nye_Sable-Meyer_Cary_Morales_Hewitt_Solar-Lezama_Tenenbaum}
+Kevin Ellis, Catherine Wong, Maxwell Nye, Mathias Sable-Meyer, Luc Cary, Lucas
+  Morales, Luke Hewitt, Armando Solar-Lezama, and Joshua~B Tenenbaum.
+\newblock Dreamcoder: Building interpretable hierarchical knowledge
+  representations with wake-sleep bayesian program learning.
+\newblock page~68.
+
 \bibitem{fijalkow_scaling_2021}
 Nathanaël Fijalkow, Guillaume Lagarde, Théo Matricon, Kevin Ellis, Pierre
   Ohlmann, and Akarsh Potta.

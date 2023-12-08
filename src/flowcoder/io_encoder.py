@@ -49,12 +49,3 @@ class IOEncoder(nn.Module):
         ios = self.io_embedding(ios)
         ios = ios.transpose(0, 1)
         return ios
-
-    def attention_mask(self, IOs_encoded):
-        '''
-        creates attention mask for encoded IOs
-
-        attention mask is a tensor with the same size as IOs_encoded
-        where positions with 'PAD' token are 0 and all others are 1
-        '''
-        return (IOs_encoded != self.symbol2idx['PAD']).long().to(device)

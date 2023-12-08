@@ -3,44 +3,47 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: master_thesis_s1000522.aux
 The style file: unsrt.bst
 Database file #1: ../auxiliary/ref.bib
-You've used 41 entries,
+Warning--empty journal in Ellis_Wong_Nye_Sable-Meyer_Cary_Morales_Hewitt_Solar-Lezama_Tenenbaum
+Warning--empty year in Ellis_Wong_Nye_Sable-Meyer_Cary_Morales_Hewitt_Solar-Lezama_Tenenbaum
+You've used 42 entries,
             1791 wiz_defined-function locations,
-            697 strings with 11760 characters,
-and the built_in function-call counts, 9466 in all, are:
-= -- 830
-> -- 460
-< -- 8
-+ -- 171
-- -- 130
-* -- 645
-:= -- 1523
-add.period$ -- 134
-call.type$ -- 41
-change.case$ -- 39
+            702 strings with 12189 characters,
+and the built_in function-call counts, 9769 in all, are:
+= -- 847
+> -- 489
+< -- 9
++ -- 181
+- -- 139
+* -- 670
+:= -- 1574
+add.period$ -- 137
+call.type$ -- 42
+change.case$ -- 40
 chr.to.int$ -- 0
-cite$ -- 41
-duplicate$ -- 432
-empty$ -- 917
-format.name$ -- 130
-if$ -- 2113
+cite$ -- 44
+duplicate$ -- 446
+empty$ -- 936
+format.name$ -- 139
+if$ -- 2177
 int.to.chr$ -- 0
-int.to.str$ -- 41
-missing$ -- 43
-newline$ -- 209
-num.names$ -- 47
-pop$ -- 140
+int.to.str$ -- 42
+missing$ -- 44
+newline$ -- 214
+num.names$ -- 48
+pop$ -- 147
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 178
+skip$ -- 186
 stack$ -- 0
-substring$ -- 508
-swap$ -- 94
-text.length$ -- 8
+substring$ -- 512
+swap$ -- 99
+text.length$ -- 9
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 0
-while$ -- 83
-width$ -- 43
-write$ -- 457
+warning$ -- 2
+while$ -- 85
+width$ -- 44
+write$ -- 466
+(There were 2 warnings)

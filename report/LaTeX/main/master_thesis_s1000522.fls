@@ -418,6 +418,7 @@ INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/master_thesis_s1000522.toc
 OUTPUT /Users/ron/Code/master_thesis/report/LaTeX/main/master_thesis_s1000522.toc
 INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/master_thesis_s1000522.lof
 INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/master_thesis_s1000522.lof
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm
 OUTPUT /Users/ron/Code/master_thesis/report/LaTeX/main/master_thesis_s1000522.lof
 INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/master_thesis_s1000522.lot
 INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/master_thesis_s1000522.lot
@@ -431,7 +432,6 @@ INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../sections/theoretical.te
 INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../sections/theoretical.tex
 INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../sections/technical.tex
 INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../sections/technical.tex
-INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm
 INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/conc_library.png
 INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/conc_library.png
 INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/conc_library.png

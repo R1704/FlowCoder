@@ -35,11 +35,14 @@ class GFlowNet(nn.Module):
         state = self.state_encoder(state)
         state = self.positional_encoding(state)
 
-        # Generate mask
+        # Generate padding masks for IO
+        io_pad_mask = self.create_padding_mask(io, self.io_encoder.symbol2idx['PAD'])
+
+        # Generate square subsequent mask for State
         mask = self.generate_square_subsequent_mask(len(state))
 
-        # Pass through the transformer
-        transformer_output = self.transformer(io, state, tgt_mask=mask)
+        # Pass through the transformer with padding masks
+        transformer_output = self.transformer(io, state, src_key_padding_mask=io_pad_mask, tgt_mask=mask)
 
         # Predict the forward logits and total flow logZ
         forward_logits = self.forward_logits(transformer_output)[-1]
@@ -48,9 +51,15 @@ class GFlowNet(nn.Module):
         return forward_logits, logZ
 
     def generate_square_subsequent_mask(self, sz):
-        mask = (torch.triu(torch.ones(sz, sz)) == 1).transpose(0, 1)
-        mask = mask.float().masked_fill(mask == 0, float('-inf')).masked_fill(mask == 1, float(0.0))
-        return mask.to(device)
+        mask = torch.triu(torch.ones(sz, sz, device=device), diagonal=1)
+        mask = mask.masked_fill(mask == 1, float('-inf'))
+        return mask
+
+    def create_padding_mask(self, seqs, pad_idx):
+        # Create a mask where true values are where pad_idx is present
+        mask = (seqs == pad_idx)
+        mask = mask[:, :, 0]
+        return mask.transpose(0, 1).to(device)
 
 
 # Forward policy
@@ -81,13 +90,3 @@ class GFlowNet_Z(nn.Module):
 
     def forward(self, x):
         return self.logZ(x)
-
-
-def freeze_parameters(model):
-    for param in model.parameters():
-        param.requires_grad = False
-
-
-def unfreeze_parameters(model):
-    for param in model.parameters():
-        param.requires_grad = True
