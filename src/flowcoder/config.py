@@ -8,11 +8,10 @@ DREAMCODER_DATASET_PATH = '/vol/tensusers4/rhommelsheim/master_thesis/src/deepsy
 RESULTS = '/vol/tensusers4/rhommelsheim/master_thesis/results'
 CHECKPOINT = '/vol/tensusers4/rhommelsheim/master_thesis/checkpoints'
 
-EXPERIMENT_NAME = 'depth_3_48_tasks'
-EXPERIMENT_NAME += str(datetime.datetime.now().isoformat(sep=" ", timespec="seconds"))
+EXPERIMENT_NAME = 'depth_3_48_tasks2023-12-07 22:41:39'
 FROM_CHECKPOINT_PATH = os.path.join(CHECKPOINT, EXPERIMENT_NAME+'.pth')
+EXPERIMENT_NAME += str(datetime.datetime.now().isoformat(sep=" ", timespec="seconds"))
 TO_CHECKPOINT_PATH = FROM_CHECKPOINT_PATH
-CSV_FILENAME = os.path.join(RESULTS, EXPERIMENT_NAME+'.csv')
+CSV_FILENAME = os.path.join(RESULTS, EXPERIMENT_NAME+'_inference.csv')
 
-
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')

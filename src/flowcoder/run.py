@@ -14,17 +14,17 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 logging.getLogger('matplotlib.font_manager').disabled = True
 
-from_checkpoint = False
-save_checkpoint = True
-train = True
-inference = False
+from_checkpoint = True
+save_checkpoint = False
+train = False
+inference = True
 
 
 d_model = 512
 
 data = Data(
     max_program_depth=3,
-    shuffle_tasks=True,
+    shuffle_tasks=False,
     n_tasks=95,  # if variable_batch is true, make sure you have enough tasks for the batch_size
     variable_batch=False,  # if False, all tasks in the batch will be the same
     train_ratio=0.5,
@@ -72,6 +72,7 @@ training = Training(
     inference_steps=100,
     alpha=0.3,
     beta=0.7,
+    gamma=10.,
     epsilon=0.3,
     replay_prob=0.3,
     fantasy_prob=1,

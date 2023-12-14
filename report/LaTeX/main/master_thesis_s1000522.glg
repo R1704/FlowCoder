@@ -11,12 +11,11 @@ Scanning input file master_thesis_s1000522.glo...
    -- Illegal null field.
 !! Input index error (file = master_thesis_s1000522.glo, line = 5):
    -- Illegal null field.
-.
-!! Input index error (file = master_thesis_s1000522.glo, line = 8):
+!! Input index error (file = master_thesis_s1000522.glo, line = 6):
    -- Illegal null field.
-!! Input index error (file = master_thesis_s1000522.glo, line = 9):
+!! Input index error (file = master_thesis_s1000522.glo, line = 7):
    -- Illegal null field.
-done (2 entries accepted, 7 rejected).
+.done (2 entries accepted, 7 rejected).
 Sorting entries....done (2 comparisons).
 Generating output file master_thesis_s1000522.gls....done (9 lines written, 0 warnings).
 Output written in master_thesis_s1000522.gls.

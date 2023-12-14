@@ -50,12 +50,14 @@ class GFlowNet(nn.Module):
 
         return forward_logits, logZ
 
-    def generate_square_subsequent_mask(self, sz):
+    @staticmethod
+    def generate_square_subsequent_mask(sz):
         mask = torch.triu(torch.ones(sz, sz, device=device), diagonal=1)
         mask = mask.masked_fill(mask == 1, float('-inf'))
         return mask
 
-    def create_padding_mask(self, seqs, pad_idx):
+    @staticmethod
+    def create_padding_mask(seqs, pad_idx):
         # Create a mask where true values are where pad_idx is present
         mask = (seqs == pad_idx)
         mask = mask[:, :, 0]

@@ -102,7 +102,6 @@ class Data:
                 if task is None or self.variable_batch:
                     task = next(task_generator)
                 name, ios = task[0], task[1]
-                print(name)
                 batch_program_names.append(name)
                 batch_IOs.append(ios)
             except StopIteration:

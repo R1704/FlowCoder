@@ -83,10 +83,10 @@
 \end{lstlisting}
 
 \clearpage
-\section{Parameters}
+\section{Model Parameters}
 \begin{table}[h!]
     \centering
-    \begin{tabularx}{\textwidth}{|l|l|X|}
+    \begin{tabular}{|l|l|l|}
     \hline
     \textbf{Class} & \textbf{Parameter} & \textbf{Value} \\
     \hline
@@ -97,40 +97,32 @@
     RuleEncoder & & \\
      & d\_model & 512 \\
     \hline
-    GFlowNet &  & \\
+    Generative Model &  & \\
      & d\_model & 512 \\
      & num\_heads & 8 \\
      & num\_layers & 2 \\
      & dropout & 0.1 \\
     \hline
-    Training & & \\
-     & min\_program\_depth & 3 \\
-     & max\_program\_depth & 6 \\
-     & epochs & 145 \\
-     & batch\_size & 4 \\
-     & learning\_rate\_trn & $1 \times 10^{-4}$ \\
-     & learning\_rate\_gfn & $1 \times 10^{-4}$ \\
-     & e\_steps & 500 \\
-     & m\_step\_threshold\_init & 150 \\
-     & m\_steps & 150 \\
-     & alpha & 0.3 \\
-     & beta & 0.7 \\
-     & epsilon & 0.3 \\
-     & replay\_prob & 0.3 \\
-     & fantasy\_prob & 0.005 \\
-
+    Forward Policy & & \\
+    & d\_model & 512 \\
+    & num\_layers & 2 \\
+    & activation function & ReLU \\
     \hline
-    \end{tabularx}
-    \caption{Parameters}
+    Z & & \\
+    & d\_model & 512 \\
+    & num\_layers & 2 \\
+    & activation function & ReLU \\
+    \hline
+    \end{tabular}
+    \caption{Model Parameters}
     \label{table:params}
     \end{table}
 
 
     \subsection{Big experiment}
 
-    \begin{table}[ht]
+    \begin{table}[H]
         \centering
-        \caption{Experiment Parameters}
         \begin{tabular}{|l|l|}
         \hline
         \textbf{Variable} & \textbf{Value} \\
@@ -187,6 +179,8 @@
         \hline
         \texttt{beta} & 0.7 \\
         \hline
+        \texttt{gamma} & 10 \\
+        \hline
         \texttt{epsilon} & 0.3 \\
         \hline
         \texttt{replay\_prob} & 1 \\
@@ -199,6 +193,61 @@
         \hline
         \texttt{save\_checkpoint} & (based on \texttt{save\_checkpoint}) \\
         \hline
-        \end{tabular}
-        \end{table}
+    \end{tabular}
+    \caption{Experiment Parameters}
+    \label{}
+\end{table}
     
+
+\clearpage
+\section{Formal Grammars}\label{app:cfg}
+
+\textbf{Context-Free Grammars (CFGs)} are essential in defining the syntactical structures of many formal languages.
+We can formalize the notion of CFGs as follows:
+
+Let \( G = (N, \Sigma, P, S) \) be a Context-Free Grammar, where:
+
+\begin{itemize}
+    \item \( N \) is a finite set of non-terminal symbols.
+    \item \( \Sigma \) is a finite set of terminal symbols with \newline \( N \cap \Sigma = \emptyset \)
+    \item \( P \) is a finite set of production rules, where each rule is of the form \( N \rightarrow (N \cup \Sigma)^* \)
+    \item \( S \) is the start symbol, with \( S \in N \)
+\end{itemize}
+
+Given such a CFG, the derived sentence space \( \Pi(G) \) is the set of all possible strings (or sequences of symbols) derivable from \( S \).
+
+Given a Context-Free Grammar \( G \) and a defined objective function \( f \) that maps any program \( p \in \Pi(G) \) to a real value representing its desirability or fitness:
+
+Find \( p^* \) such that:
+\[ p^* = \arg\max_{p \in \Pi(G)} f(p) \]
+
+In other words, the problem is to locate a program \( p^* \) within the vast program space \( \Pi(G) \) defined by \( G \) that maximizes (or, alternatively, minimizes) the objective function \( f \). \\
+
+\noindent A \textbf{Probabilistic Context-Free Grammar (PCFG)} is an extension of a CFG \( G \), denoted as \( G' = (N, \Sigma, P', S) \), where:
+
+\begin{itemize}
+    \item \( N \) and \( \Sigma \) are as defined in the CFG.
+    \item \( P' \) is a set of production rules, where each rule \( A \rightarrow \alpha \) is associated with a probability \( P(A \rightarrow \alpha) \), representing the likelihood of selecting that particular rule. These probabilities are subject to the condition that, for each non-terminal \( A \), the sum of probabilities for all rules \( A \rightarrow \alpha \) is equal to 1.
+\end{itemize}
+
+
+\clearpage
+\section{Levenshtein Distance}\label{app:levenshtein}
+Given two strings \( s \) and \( t \) of lengths \( m \) and \( n \) respectively, the Levenshtein distance \( d(s, t) \) is defined as the cost of the cheapest sequence of edits needed to transform \( s \) into \( t \). 
+The Levenshtein distance can be efficiently computed using dynamic programming. The idea is to construct a matrix where each cell \( (i, j) \) represents the cost of transforming the first \( i \) characters of \( s \) into the first \( j \) characters of \( t \). 
+
+The formula for filling in the matrix is:
+\begin{enumerate}
+    \item If \( i = 0 \), then \( d(i, j) = j \) (cost of adding \( j \) characters).
+    \item If \( j = 0 \), then \( d(i, j) = i \) (cost of deleting \( i \) characters).
+    \item Otherwise:   \[
+        d(i, j) = \min \begin{cases} 
+        d(i-1, j) + 1 \\ 
+        d(i, j-1) + 1 \\ 
+        d(i-1, j-1) + \text{cost}(s_i, t_j) 
+        \end{cases}
+        \]
+        where \( \text{cost}(s_i, t_j) \) is 0 if \( s_i = t_j \) and 1 otherwise.
+\end{enumerate}
+
+The value of \( d(m, n) \) will then be the Levenshtein distance between \( s \) and \( t \).

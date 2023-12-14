@@ -49,6 +49,7 @@ class Training:
     inference_steps: int
     alpha: float
     beta: float
+    gamma: float
     epsilon: float
     replay_prob: float
     fantasy_prob: float
@@ -202,7 +203,7 @@ class Training:
                     # Update the state for the next prediction
                     states[i].append(rule)
 
-        replay_loss = -10 * total_forwards.mean()
+        replay_loss = -self.gamma * total_forwards.mean()
         self.optimizer_policy.zero_grad()
         replay_loss.backward()
         self.optimizer_policy.step()  # (E-step sleep)
@@ -246,7 +247,7 @@ class Training:
                     states[i].append(rule)
 
         # Update model
-        fantasy_loss = -10 * total_forwards.mean()
+        fantasy_loss = -self.gamma * total_forwards.mean()
         self.optimizer_policy.zero_grad()
         fantasy_loss.backward()
         self.optimizer_policy.step()  # (E-step sleep)

@@ -1,13 +1,15 @@
-\contentsline {figure}{\numberline {1}{\ignorespaces (A) 8 different domains of tasks. (B) Representation of the learned library of concepts. On the left we see the initial primitives from which the concepts in the middle region are composed. On the right we see a task as input-output relations and the found solution. On the bottom is the same solution expressed only with initial primitives. Image taken with permission from the original paper \cite {ellis_dreamcoder_2021}.}}{12}{figure.0.1}%
-\contentsline {figure}{\numberline {2}{\ignorespaces An example of an abstract syntax tree (AST) using deBruijn indexing. This translates to \texttt {var0 + var1 * var0}.}}{14}{figure.0.2}%
-\contentsline {figure}{\numberline {3}{\ignorespaces }}{25}{figure.0.3}%
-\contentsline {figure}{\numberline {4}{\ignorespaces }}{26}{figure.0.4}%
-\contentsline {figure}{\numberline {5}{\ignorespaces }}{27}{figure.0.5}%
-\contentsline {figure}{\numberline {6}{\ignorespaces }}{27}{figure.0.6}%
-\contentsline {figure}{\numberline {7}{\ignorespaces }}{28}{figure.0.7}%
-\contentsline {figure}{\numberline {8}{\ignorespaces }}{28}{figure.0.8}%
-\contentsline {figure}{\numberline {9}{\ignorespaces }}{29}{figure.0.9}%
-\contentsline {figure}{\numberline {10}{\ignorespaces Creation of trees showing the construction process.}}{33}{figure.0.10}%
-\contentsline {figure}{\numberline {11}{\ignorespaces Insert explanation + maybe change task to an actual task; same with state; maybe also show the forward and Z output better.}}{34}{figure.0.11}%
+\contentsline {figure}{\numberline {1}{\ignorespaces taken from google}}{10}{figure.0.1}%
+\contentsline {figure}{\numberline {2}{\ignorespaces image taken from \cite {dehaene_symbols_2022}}}{11}{figure.0.2}%
+\contentsline {figure}{\numberline {3}{\ignorespaces (A) 8 different domains of tasks. (B) Representation of the learned library of concepts. On the left we see the initial primitives from which the concepts in the middle region are composed. On the right we see a task as input-output relations and the found solution. On the bottom is the same solution expressed only with initial primitives. Image taken with permission from the original paper \cite {ellis_dreamcoder_2021}.}}{13}{figure.0.3}%
+\contentsline {figure}{\numberline {4}{\ignorespaces An example of an abstract syntax tree (AST) using deBruijn indexing. This translates to \texttt {var0 + var1 * var0}.}}{15}{figure.0.4}%
+\contentsline {figure}{\numberline {5}{\ignorespaces }}{25}{figure.0.5}%
+\contentsline {figure}{\numberline {6}{\ignorespaces }}{26}{figure.0.6}%
+\contentsline {figure}{\numberline {7}{\ignorespaces }}{26}{figure.0.7}%
+\contentsline {figure}{\numberline {8}{\ignorespaces }}{27}{figure.0.8}%
+\contentsline {figure}{\numberline {9}{\ignorespaces }}{27}{figure.0.9}%
+\contentsline {figure}{\numberline {10}{\ignorespaces }}{28}{figure.0.10}%
+\contentsline {figure}{\numberline {11}{\ignorespaces }}{29}{figure.0.11}%
+\contentsline {figure}{\numberline {12}{\ignorespaces Creation of trees showing the construction process.}}{37}{figure.0.12}%
+\contentsline {figure}{\numberline {13}{\ignorespaces Insert explanation + maybe change task to an actual task; same with state; maybe also show the forward and Z output better.}}{37}{figure.0.13}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {1.1}{\ignorespaces (a) A sensorimotor input, here a table, is compressed sequentially into a Semantic Pointer. (b) A Semantic Pointer is decompressed and returns a representation of a table. Due to the compression process the decompression results in noise. The figure is taken from Blouw et al. \cite {blouw2016concepts}.}}{46}{figure.1.1}%
+\contentsline {figure}{\numberline {1.1}{\ignorespaces (a) A sensorimotor input, here a table, is compressed sequentially into a Semantic Pointer. (b) A Semantic Pointer is decompressed and returns a representation of a table. Due to the compression process the decompression results in noise. The figure is taken from Blouw et al. \cite {blouw2016concepts}.}}{50}{figure.1.1}%

@@ -1,82 +1,111 @@
-\contentsline {section}{\numberline {1}Introduction}{5}{section.0.1}%
-\contentsline {subsection}{\numberline {1.1}Main Contributions}{5}{subsection.0.1.1}%
-\contentsline {section}{\numberline {2}Cognition, Nested Multi-scale Hierarchies, and Self-Organisation}{5}{section.0.2}%
-\contentsline {subsection}{\numberline {2.1}LLMs/ Self-attention / transformers}{6}{subsection.0.2.1}%
-\contentsline {subsubsection}{\numberline {2.1.1}Limitations}{8}{subsubsection.0.2.1.1}%
-\contentsline {subsection}{\numberline {2.2}Compositionality}{8}{subsection.0.2.2}%
-\contentsline {subsection}{\numberline {2.3}Correlation Does Not Imply Causation}{8}{subsection.0.2.3}%
-\contentsline {subsection}{\numberline {2.4}Causal Models}{8}{subsection.0.2.4}%
-\contentsline {subsection}{\numberline {2.5}System 1 \& System 2}{9}{subsection.0.2.5}%
-\contentsline {subsection}{\numberline {2.6}Language of Thought}{9}{subsection.0.2.6}%
-\contentsline {section}{\numberline {3}Bayesian Inference}{10}{section.0.3}%
-\contentsline {subsection}{\numberline {3.1}Game Engine in the Head}{10}{subsection.0.3.1}%
-\contentsline {section}{\numberline {4}Probabilistic Programming}{11}{section.0.4}%
-\contentsline {section}{\numberline {5}Methods}{12}{section.0.5}%
-\contentsline {subsection}{\numberline {5.1}DreamCoder}{12}{subsection.0.5.1}%
-\contentsline {subsection}{\numberline {5.2}DeepSynth}{13}{subsection.0.5.2}%
-\contentsline {subsection}{\numberline {5.3}GFlowNet}{13}{subsection.0.5.3}%
-\contentsline {section}{\numberline {6}FlowCoder}{13}{section.0.6}%
-\contentsline {paragraph}{\numberline {6.0.0.1}Wake}{14}{paragraph.0.6.0.0.1}%
-\contentsline {paragraph}{\numberline {6.0.0.2}Sleep: Abstraction}{14}{paragraph.0.6.0.0.2}%
-\contentsline {paragraph}{\numberline {6.0.0.3}Sleep: Dreaming}{14}{paragraph.0.6.0.0.3}%
-\contentsline {paragraph}{\numberline {6.0.0.4}Syntactic constraints}{15}{paragraph.0.6.0.0.4}%
-\contentsline {paragraph}{\numberline {6.0.0.5}Tasks}{16}{paragraph.0.6.0.0.5}%
-\contentsline {paragraph}{\numberline {6.0.0.6}Rules}{16}{paragraph.0.6.0.0.6}%
-\contentsline {subsection}{\numberline {6.1}Expectation-Maximization}{17}{subsection.0.6.1}%
-\contentsline {paragraph}{\numberline {6.1.0.1}Replay}{18}{paragraph.0.6.1.0.1}%
-\contentsline {paragraph}{\numberline {6.1.0.2}Fantasy}{18}{paragraph.0.6.1.0.2}%
-\contentsline {section}{\numberline {7}Model}{18}{section.0.7}%
-\contentsline {paragraph}{\numberline {7.0.0.1}generative model}{18}{paragraph.0.7.0.0.1}%
-\contentsline {paragraph}{\numberline {7.0.0.2}Recognition model}{18}{paragraph.0.7.0.0.2}%
-\contentsline {paragraph}{\numberline {7.0.0.3}IOEncoder}{18}{paragraph.0.7.0.0.3}%
-\contentsline {subsection}{\numberline {7.1}RuleEncoder}{18}{subsection.0.7.1}%
-\contentsline {subsubsection}{\numberline {7.1.1}Reward}{23}{subsubsection.0.7.1.1}%
-\contentsline {subsection}{\numberline {7.2}Results}{24}{subsection.0.7.2}%
-\contentsline {subsubsection}{\numberline {7.2.1}Training}{24}{subsubsection.0.7.2.1}%
-\contentsline {subsubsection}{\numberline {7.2.2}Inference}{25}{subsubsection.0.7.2.2}%
-\contentsline {subsubsection}{\numberline {7.2.3}Embeddings}{25}{subsubsection.0.7.2.3}%
-\contentsline {subsection}{\numberline {7.3}Discussion}{29}{subsection.0.7.3}%
-\contentsline {subsubsection}{\numberline {7.3.1}Complexity Analysis}{30}{subsubsection.0.7.3.1}%
-\contentsline {subsubsection}{\numberline {7.3.2}Limitations}{31}{subsubsection.0.7.3.2}%
-\contentsline {subsubsection}{\numberline {7.3.3}Future Work}{31}{subsubsection.0.7.3.3}%
-\contentsline {subsection}{\numberline {7.4}Conclusion}{31}{subsection.0.7.4}%
-\contentsline {subsection}{\numberline {7.5}Discussion}{31}{subsection.0.7.5}%
-\contentsline {subsubsection}{\numberline {7.5.1}Comparison to other approaches}{31}{subsubsection.0.7.5.1}%
-\contentsline {subsubsection}{\numberline {7.5.2}Biological Plausibility}{33}{subsubsection.0.7.5.2}%
-\contentsline {chapter}{\numberline {1}Philosophical Ramifications}{35}{chapter.1}%
-\contentsline {section}{\numberline {1}Who am I?}{35}{section.1.1}%
-\contentsline {subsection}{\numberline {1.1}The Genesis of Cognition}{35}{subsection.1.1.1}%
-\contentsline {subsection}{\numberline {1.2}Computational boundary of the self}{37}{subsection.1.1.2}%
-\contentsline {subsubsection}{\numberline {1.2.1}Body Patterning and Cognition: A Common Origin}{37}{subsubsection.1.1.2.1}%
-\contentsline {subsubsection}{\numberline {1.2.2}Multicellularity vs. Cancer: The Shifting Boundary of the Self}{37}{subsubsection.1.1.2.2}%
-\contentsline {subsubsection}{\numberline {1.2.3}Defining Individuation From a Cognitive Perspective}{37}{subsubsection.1.1.2.3}%
-\contentsline {subsection}{\numberline {1.3}Embodied cognition and circular causality: on the role of constitutive autonomy in the reciprocal coupling of perception and action}{39}{subsection.1.1.3}%
-\contentsline {section}{\numberline {2}Implications/ Consequences of the theory}{41}{section.1.2}%
-\contentsline {section}{\numberline {3}What is Truth?}{42}{section.1.3}%
-\contentsline {section}{\numberline {4}What is a Concept?}{42}{section.1.4}%
-\contentsline {subsection}{\numberline {4.1}Identity and Essence}{42}{subsection.1.4.1}%
-\contentsline {subsubsection}{\numberline {4.1.1}Categories}{42}{subsubsection.1.4.1.1}%
-\contentsline {subsubsection}{\numberline {4.1.2}Computational models of categorization}{42}{subsubsection.1.4.1.2}%
-\contentsline {subsection}{\numberline {4.2}concepts}{43}{subsection.1.4.2}%
-\contentsline {subsection}{\numberline {4.3}The Hierarchy of Mental Representations: From Sensory Neurons to Conceptual Structures}{45}{subsection.1.4.3}%
-\contentsline {subsection}{\numberline {4.4}Semantic Pointer Architecture}{45}{subsection.1.4.4}%
-\contentsline {subsection}{\numberline {4.5}Concept space}{45}{subsection.1.4.5}%
-\contentsline {section}{\numberline {5}What is Meaning?}{47}{section.1.5}%
-\contentsline {section}{\numberline {6}What is a thought?}{47}{section.1.6}%
-\contentsline {section}{\numberline {7}What Does It Mean to Understand?}{48}{section.1.7}%
-\contentsline {subsubsection}{\numberline {7.0.1}Operationalising "Understanding"}{48}{subsubsection.1.7.0.1}%
-\contentsline {subsection}{\numberline {7.1}Hemispheric Lateralisation}{49}{subsection.1.7.1}%
-\contentsline {section}{\numberline {8}What Is a Language?}{51}{section.1.8}%
-\contentsline {subsection}{\numberline {8.1}Language in Thought}{51}{subsection.1.8.1}%
-\contentsline {subsubsection}{\numberline {8.1.1}Neurosymbolic AI}{52}{subsubsection.1.8.1.1}%
-\contentsline {subsubsection}{\numberline {8.1.2}Formal Grammar}{53}{subsubsection.1.8.1.2}%
-\contentsline {section}{\numberline {9}What Is a Computation?}{53}{section.1.9}%
-\contentsline {subsection}{\numberline {9.1}Computational Mind}{53}{subsection.1.9.1}%
-\contentsline {subsection}{\numberline {9.2}Self-organization and predictive processing}{55}{subsection.1.9.2}%
-\contentsline {subsubsection}{\numberline {9.2.1}Poverty of the Stimulus}{57}{subsubsection.1.9.2.1}%
-\contentsline {chapter}{Glossary}{58}{section*.37}%
-\contentsline {section}{\numberline {1}Domain Specific Language (DSL)}{63}{section.Alph0.1}%
-\contentsline {subsection}{\numberline {1.1}Semantics}{63}{subsection.Alph0.1.1}%
-\contentsline {subsection}{\numberline {1.2}Primitive Types}{64}{subsection.Alph0.1.2}%
-\contentsline {section}{\numberline {2}Parameters}{65}{section.Alph0.2}%
-\contentsline {subsection}{\numberline {2.1}Big experiment}{65}{subsection.Alph0.2.1}%
+\contentsline {section}{\numberline {1}\leavevmode {\color {orange}Introduction}}{5}{section.0.1}%
+\contentsline {subsection}{\numberline {1.1}\leavevmode {\color {orange}Main Contributions}}{5}{subsection.0.1.1}%
+\contentsline {subsection}{\numberline {1.2}\leavevmode {\color {green}World model}}{5}{subsection.0.1.2}%
+\contentsline {subsection}{\numberline {1.3}\leavevmode {\color {green}Bayesian Model}}{6}{subsection.0.1.3}%
+\contentsline {subsection}{\numberline {1.4}\leavevmode {\color {green}Compositionality}}{7}{subsection.0.1.4}%
+\contentsline {subsection}{\numberline {1.5}\leavevmode {\color {green}Causal Models}}{7}{subsection.0.1.5}%
+\contentsline {subsection}{\numberline {1.6}\leavevmode {\color {green}Abduction}}{7}{subsection.0.1.6}%
+\contentsline {subsection}{\numberline {1.7}\leavevmode {\color {green}System 1 \& System 2}}{8}{subsection.0.1.7}%
+\contentsline {subsection}{\numberline {1.8}\leavevmode {\color {green}Concepts}}{8}{subsection.0.1.8}%
+\contentsline {subsection}{\numberline {1.9}\leavevmode {\color {red}Varied Representations}}{9}{subsection.0.1.9}%
+\contentsline {subsection}{\numberline {1.10}\leavevmode {\color {green}Large Language Models}}{9}{subsection.0.1.10}%
+\contentsline {subsection}{\numberline {1.11}\leavevmode {\color {green}Probabilistic Programming}}{10}{subsection.0.1.11}%
+\contentsline {section}{\numberline {2}\leavevmode {\color {orange}Methods}}{12}{section.0.2}%
+\contentsline {subsection}{\numberline {2.1}\leavevmode {\color {green}DreamCoder}}{12}{subsection.0.2.1}%
+\contentsline {paragraph}{\numberline {2.1.0.1}\leavevmode {\color {green}Wake}}{13}{paragraph.0.2.1.0.1}%
+\contentsline {paragraph}{\numberline {2.1.0.2}\leavevmode {\color {green}Sleep: Abstraction}}{13}{paragraph.0.2.1.0.2}%
+\contentsline {paragraph}{\numberline {2.1.0.3}\leavevmode {\color {green}Sleep: Dreaming}}{13}{paragraph.0.2.1.0.3}%
+\contentsline {paragraph}{\numberline {2.1.0.4}\leavevmode {\color {green}Parameterisation}}{14}{paragraph.0.2.1.0.4}%
+\contentsline {subsection}{\numberline {2.2}\leavevmode {\color {green}DeepSynth}}{14}{subsection.0.2.2}%
+\contentsline {subsection}{\numberline {2.3}\leavevmode {\color {green}GFlowNet}}{14}{subsection.0.2.3}%
+\contentsline {subsection}{\numberline {2.4}\leavevmode {\color {orange}FlowCoder}}{14}{subsection.0.2.4}%
+\contentsline {subsubsection}{\numberline {2.4.1}\leavevmode {\color {orange}DeepSynth Framework}}{15}{subsubsection.0.2.4.1}%
+\contentsline {subsubsection}{\numberline {2.4.2}\leavevmode {\color {green}GFlowNet}}{16}{subsubsection.0.2.4.2}%
+\contentsline {subsubsection}{\numberline {2.4.3}\leavevmode {\color {orange}Compositional Latent Variable Model}}{17}{subsubsection.0.2.4.3}%
+\contentsline {subsubsection}{\numberline {2.4.4}\leavevmode {\color {orange}Expectation-Maximisation}}{17}{subsubsection.0.2.4.4}%
+\contentsline {subsubsection}{\numberline {2.4.5}\leavevmode {\color {green}Sleep}}{18}{subsubsection.0.2.4.5}%
+\contentsline {paragraph}{\numberline {2.4.5.1}\leavevmode {\color {green}Replay}}{18}{paragraph.0.2.4.5.1}%
+\contentsline {paragraph}{\numberline {2.4.5.2}\leavevmode {\color {green}Fantasy}}{18}{paragraph.0.2.4.5.2}%
+\contentsline {subsubsection}{\numberline {2.4.6}\leavevmode {\color {green}Optimisation Techniques}}{18}{subsubsection.0.2.4.6}%
+\contentsline {paragraph}{\numberline {2.4.6.1}\leavevmode {\color {green}E-step Loss Thresholding}}{18}{paragraph.0.2.4.6.1}%
+\contentsline {paragraph}{\numberline {2.4.6.2}\leavevmode {\color {green}Exploration}}{18}{paragraph.0.2.4.6.2}%
+\contentsline {subsection}{\numberline {2.5}\leavevmode {\color {orange}Parameterisation}}{19}{subsection.0.2.5}%
+\contentsline {subsubsection}{\numberline {2.5.1}\leavevmode {\color {green}Generative Model}}{19}{subsubsection.0.2.5.1}%
+\contentsline {subsubsection}{\numberline {2.5.2}\leavevmode {\color {green}Forward Policy}}{20}{subsubsection.0.2.5.2}%
+\contentsline {subsubsection}{\numberline {2.5.3}\leavevmode {\color {green}Partition Function}}{20}{subsubsection.0.2.5.3}%
+\contentsline {subsubsection}{\numberline {2.5.4}\leavevmode {\color {green}IOEncoder}}{20}{subsubsection.0.2.5.4}%
+\contentsline {subsubsection}{\numberline {2.5.5}\leavevmode {\color {green}RuleEncoder}}{20}{subsubsection.0.2.5.5}%
+\contentsline {subsubsection}{\numberline {2.5.6}\leavevmode {\color {green}Sampling Programs}}{21}{subsubsection.0.2.5.6}%
+\contentsline {subsubsection}{\numberline {2.5.7}\leavevmode {\color {green}Reward}}{21}{subsubsection.0.2.5.7}%
+\contentsline {paragraph}{\numberline {2.5.7.1}\leavevmode {\color {orange}Syntactic constraints}}{23}{paragraph.0.2.5.7.1}%
+\contentsline {paragraph}{\numberline {2.5.7.2}\leavevmode {\color {orange}Tasks}}{23}{paragraph.0.2.5.7.2}%
+\contentsline {section}{\numberline {3}\leavevmode {\color {orange}Results}}{23}{section.0.3}%
+\contentsline {subsection}{\numberline {3.1}\leavevmode {\color {red}Training}}{23}{subsection.0.3.1}%
+\contentsline {subsection}{\numberline {3.2}\leavevmode {\color {red}Inference}}{24}{subsection.0.3.2}%
+\contentsline {subsection}{\numberline {3.3}\leavevmode {\color {orange}Embeddings}}{25}{subsection.0.3.3}%
+\contentsline {section}{\numberline {4}\leavevmode {\color {orange}Discussion}}{28}{section.0.4}%
+\contentsline {subsubsection}{\numberline {4.0.1}\leavevmode {\color {green}Complexity Analysis}}{30}{subsubsection.0.4.0.1}%
+\contentsline {subsubsection}{\numberline {4.0.2}\leavevmode {\color {red}Limitations}}{30}{subsubsection.0.4.0.2}%
+\contentsline {subsubsection}{\numberline {4.0.3}\leavevmode {\color {orange}Comparison to other approaches}}{34}{subsubsection.0.4.0.3}%
+\contentsline {subsubsection}{\numberline {4.0.4}\leavevmode {\color {red}Biological Plausibility}}{35}{subsubsection.0.4.0.4}%
+\contentsline {subsubsection}{\numberline {4.0.5}\leavevmode {\color {red}Future Work}}{36}{subsubsection.0.4.0.5}%
+\contentsline {subsection}{\numberline {4.1}\leavevmode {\color {red}Conclusion}}{36}{subsection.0.4.1}%
+\contentsline {chapter}{\numberline {1}Philosophical Ramifications}{38}{chapter.1}%
+\contentsline {section}{\numberline {1}\leavevmode {\color {orange}Language of Thought}}{38}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1}\leavevmode {\color {red}What is a Symbol? - Semiotics}}{38}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.2}\leavevmode {\color {orange}Semiotics}}{39}{subsection.1.1.2}%
+\contentsline {subsection}{\numberline {1.3}\leavevmode {\color {orange}Formal Grammar}}{39}{subsection.1.1.3}%
+\contentsline {subsection}{\numberline {1.4}\leavevmode {\color {red}Incompleteness Theorem}}{40}{subsection.1.1.4}%
+\contentsline {subsection}{\numberline {1.5}\leavevmode {\color {red}Chomsky's Hierarchy}}{40}{subsection.1.1.5}%
+\contentsline {section}{\numberline {2}\leavevmode {\color {orange}What is Truth?}}{40}{section.1.2}%
+\contentsline {subsection}{\numberline {2.1}\leavevmode {\color {red}Where do the symbols/ primitives come from?}}{41}{subsection.1.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.1}\leavevmode {\color {green}Neurosymbolic AI}}{41}{subsubsection.1.2.1.1}%
+\contentsline {section}{\numberline {3}\leavevmode {\color {orange}What is Meaning?}}{41}{section.1.3}%
+\contentsline {subsubsection}{\numberline {3.0.1}\leavevmode {\color {green}Poverty of the Stimulus}}{42}{subsubsection.1.3.0.1}%
+\contentsline {subsection}{\numberline {3.1}\leavevmode {\color {orange}Abduction}}{42}{subsection.1.3.1}%
+\contentsline {subsection}{\numberline {3.2}Abduction Proper}{43}{subsection.1.3.2}%
+\contentsline {paragraph}{\numberline {3.2.0.1}Isotropy}{43}{paragraph.1.3.2.0.1}%
+\contentsline {paragraph}{\numberline {3.2.0.2}Open-endedness}{43}{paragraph.1.3.2.0.2}%
+\contentsline {paragraph}{\numberline {3.2.0.3}Novelty}{43}{paragraph.1.3.2.0.3}%
+\contentsline {paragraph}{\numberline {3.2.0.4}Groundedness}{43}{paragraph.1.3.2.0.4}%
+\contentsline {paragraph}{\numberline {3.2.0.5}Sensibility}{43}{paragraph.1.3.2.0.5}%
+\contentsline {paragraph}{\numberline {3.2.0.6}Psychological realism}{44}{paragraph.1.3.2.0.6}%
+\contentsline {paragraph}{\numberline {3.2.0.7}Computational tractability}{44}{paragraph.1.3.2.0.7}%
+\contentsline {subsection}{\numberline {3.3}Inference to the Best Explanation}{44}{subsection.1.3.3}%
+\contentsline {paragraph}{\numberline {3.3.0.1}Representation}{44}{paragraph.1.3.3.0.1}%
+\contentsline {paragraph}{\numberline {3.3.0.2}Inference}{45}{paragraph.1.3.3.0.2}%
+\contentsline {subsection}{\numberline {3.4}\leavevmode {\color {red}Subsymbolic Parse Trees}}{45}{subsection.1.3.4}%
+\contentsline {section}{\numberline {4}\leavevmode {\color {orange}What Is a Computation?}}{46}{section.1.4}%
+\contentsline {subsection}{\numberline {4.1}\leavevmode {\color {orange}Computational Mind}}{46}{subsection.1.4.1}%
+\contentsline {section}{\numberline {5}\leavevmode {\color {orange}What is a thought?}}{46}{section.1.5}%
+\contentsline {section}{\numberline {6}\leavevmode {\color {orange}What Does It Mean to Understand?}}{47}{section.1.6}%
+\contentsline {subsubsection}{\numberline {6.0.1}\leavevmode {\color {red}Operationalising "Understanding"}}{47}{subsubsection.1.6.0.1}%
+\contentsline {section}{\numberline {7}\leavevmode {\color {orange}What is a Concept?}}{47}{section.1.7}%
+\contentsline {subsection}{\numberline {7.1}\leavevmode {\color {red}Identity and Essence}}{47}{subsection.1.7.1}%
+\contentsline {subsubsection}{\numberline {7.1.1}\leavevmode {\color {orange}Categories}}{48}{subsubsection.1.7.1.1}%
+\contentsline {subsubsection}{\numberline {7.1.2}\leavevmode {\color {orange}Computational models of categorization}}{48}{subsubsection.1.7.1.2}%
+\contentsline {subsection}{\numberline {7.2}\leavevmode {\color {orange}concepts}}{49}{subsection.1.7.2}%
+\contentsline {subsection}{\numberline {7.3}\leavevmode {\color {orange}How do concepts form}}{49}{subsection.1.7.3}%
+\contentsline {subsection}{\numberline {7.4}\leavevmode {\color {green}Semantic Pointer Architecture}}{50}{subsection.1.7.4}%
+\contentsline {subsection}{\numberline {7.5}\leavevmode {\color {green}Concept space} }{50}{subsection.1.7.5}%
+\contentsline {subsection}{\numberline {7.6}\leavevmode {\color {orange}Hemispheric Lateralisation}}{52}{subsection.1.7.6}%
+\contentsline {section}{\numberline {8}\leavevmode {\color {green}Cognition, Nested Multi-scale Hierarchies, and Self-Organisation}}{54}{section.1.8}%
+\contentsline {section}{\numberline {9}\leavevmode {\color {green}Who am I?}}{54}{section.1.9}%
+\contentsline {subsection}{\numberline {9.1}\leavevmode {\color {green}The Genesis of Cognition}}{54}{subsection.1.9.1}%
+\contentsline {subsection}{\numberline {9.2}\leavevmode {\color {green}Computational boundary of the self}}{56}{subsection.1.9.2}%
+\contentsline {subsubsection}{\numberline {9.2.1}\leavevmode {\color {green}Body Patterning and Cognition: A Common Origin}}{56}{subsubsection.1.9.2.1}%
+\contentsline {subsubsection}{\numberline {9.2.2}\leavevmode {\color {green}Multicellularity vs. Cancer: The Shifting Boundary of the Self}}{56}{subsubsection.1.9.2.2}%
+\contentsline {subsubsection}{\numberline {9.2.3}\leavevmode {\color {green}Defining Individuation From a Cognitive Perspective}}{56}{subsubsection.1.9.2.3}%
+\contentsline {subsection}{\numberline {9.3}\leavevmode {\color {orange}Embodied cognition and circular causality: on the role of constitutive autonomy in the reciprocal coupling of perception and action}}{58}{subsection.1.9.3}%
+\contentsline {section}{\numberline {10}\leavevmode {\color {orange}What is a Holarchy?}}{60}{section.1.10}%
+\contentsline {subsection}{\numberline {10.1}\leavevmode {\color {orange}Active Inference}}{61}{subsection.1.10.1}%
+\contentsline {subsection}{\numberline {10.2}\leavevmode {\color {orange}Self-organization and predictive processing}}{63}{subsection.1.10.2}%
+\contentsline {section}{\numberline {11}\leavevmode {\color {red}Implications/ Consequences of the theory}}{64}{section.1.11}%
+\contentsline {chapter}{Glossary}{65}{section*.37}%
+\contentsline {section}{\numberline {1}Domain Specific Language (DSL)}{71}{section.Alph0.1}%
+\contentsline {subsection}{\numberline {1.1}Semantics}{71}{subsection.Alph0.1.1}%
+\contentsline {subsection}{\numberline {1.2}Primitive Types}{72}{subsection.Alph0.1.2}%
+\contentsline {section}{\numberline {2}Model Parameters}{73}{section.Alph0.2}%
+\contentsline {subsection}{\numberline {2.1}Big experiment}{74}{subsection.Alph0.2.1}%
+\contentsline {section}{\numberline {3}Formal Grammars}{75}{section.Alph0.3}%
+\contentsline {section}{\numberline {4}Levenshtein Distance}{76}{section.Alph0.4}%
