@@ -103,6 +103,11 @@
     keepspaces=true
 }
 
+% CSV
+\usepackage{csvsimple}
+\usepackage{longtable}
+\usepackage{booktabs}
+
 % Glossary
 \usepackage[toc]{glossaries}
 \usepackage[automake]{glossaries-extra}
@@ -115,6 +120,9 @@
 \newcolumntype{C}[1]{>{\PreserveBackslash\centering}p{#1}}
 \newcolumntype{R}[1]{>{\PreserveBackslash\raggedleft}p{#1}}
 \newcolumntype{L}[1]{>{\PreserveBackslash\raggedright}p{#1}}
+
+% For sidewaystable
+\usepackage{rotating}
 
 
 %% Defining title and subtitle

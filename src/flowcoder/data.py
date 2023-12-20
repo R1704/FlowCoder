@@ -72,7 +72,7 @@ class Data:
         # Filter tasks
         _, _, rules_predictor = build_dreamcoder_intlist_model(max_program_depth=self.max_program_depth)
         tasks = filter_tasks_for_model(tasks, rules_predictor)
-        with open("task_names.txt", "r") as file:
+        with open("../task_names.txt", "r") as file:
             task_names = file.read().splitlines()
         # Create a dictionary to map task names to their corresponding tasks
         task_dict = {name: task for name, task in tasks}

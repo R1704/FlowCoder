@@ -169,26 +169,6 @@ Sumit Gulwani, Oleksandr Polozov, and Rishabh Singh.
 \newblock Number 4.2017, 1-2 in Foundations and trends in programming
   languages. Now Publishers, Hanover, MA Delft, 2017.
 
-\bibitem{oliveira_abstract_2013}
-Bruno C. D.~S. Oliveira and Andres Löh.
-\newblock Abstract syntax graphs for domain specific languages.
-\newblock In {\em Proceedings of the {ACM} {SIGPLAN} 2013 workshop on {Partial}
-  evaluation and program manipulation}, pages 87--96, Rome Italy, January 2013.
-  ACM.
-
-\bibitem{zhang_novel_2019}
-Jian Zhang, Xu~Wang, Hongyu Zhang, Hailong Sun, Kaixuan Wang, and Xudong Liu.
-\newblock A {Novel} {Neural} {Source} {Code} {Representation} {Based} on
-  {Abstract} {Syntax} {Tree}.
-\newblock In {\em 2019 {IEEE}/{ACM} 41st {International} {Conference} on
-  {Software} {Engineering} ({ICSE})}, pages 783--794, Montreal, QC, Canada, May
-  2019. IEEE.
-
-\bibitem{bouizegarene_narrative_2020}
-Nabil Bouizegarene, Maxwell Ramstead, Axel Constant, Karl Friston, and Laurence
-  Kirmayer.
-\newblock Narrative as active inference, July 2020.
-
 \bibitem{sep-leibniz-logic-influence}
 Volker Peckhaus.
 \newblock {Leibniz's Influence on 19th Century Logic}.
@@ -354,5 +334,11 @@ Hae-Jeong Park and Karl Friston.
 \newblock Structural and functional brain networks: from connections to
   cognition.
 \newblock {\em Science (New York, N.Y.)}, 342(6158):1238411, November 2013.
+
+\bibitem{causal_representation_learning}
+Bernhard Schölkopf, Francesco Locatello, Stefan Bauer, Nan~Rosemary Ke, Nal
+  Kalchbrenner, Anirudh Goyal, and Yoshua Bengio.
+\newblock Toward causal representation learning.
+\newblock {\em Proceedings of the IEEE}, 109(5):612–634, May 2021.
 
 \end{thebibliography}
