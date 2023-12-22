@@ -1,55 +1,40 @@
-\section{\green{Results}}
 
-\subsection{\green{Training}}
-Throughout the five epochs, each consisting of 2.000 E- and M-steps with a batch size of four, the model generated approximately 80.000 programs per task, training for about three days. During this phase, the model successfully solved 33 out of the 48 tasks it was trained on, representing a 50\% split.
+\section{\green{Results}}\label{sec:results}
+
+\subsection{\green{Experiment 1}}\label{exp:1}
+This experiment tested the model's ability to generalize to unseen tasks. I set the program depth to 4 and trained on a random selection of only 17 out of 95 tasks. I set both the \texttt{replay\_prob} as well as the \texttt{fantasy\_prob} parameters to 1, increasing the sleep frequency.
+Replay and fantasy are applied within each E-step, whenever a correct solution is found as well as after each E-step.
+All correct task-program pairs are saved and trained on after each E-step. The training took approximately one week. The model solved 15 tasks during training and 33 during inference. Notably, 8 tasks solved in training were not solved during inference, suggesting the model occasionally lost correct solutions found during training. During inference, the model therefore solved 26 tasks it had not seen before. Out of these, 7 were from previously unobserved task groups, demonstrating the model's capacity for generalization.
+
+\subsection{\green{Experiment 2}}
+In this experiment I want to examine the model's frequency of resampling, whether the model proposes varied solutions, and analyse its efficiency. Moreover, I analyze whether the EM cycles prove to be useful.
+
+In this experiment I trained the model on a random 50/50 train-test split, which took about 3 days. All programs can be solved with a maximum program depth of 3, so I limited the model to that depth. This was merely done for efficiency. Moreover, \texttt{replay\_prob} and \texttt{fantasy\_prob} were set to 0.3 and 1, respectively, and only a set (meaning no duplicates) of correct task-program pairs were saved and trained on, limiting the model's exposure to already correctly solved tasks [see sec for discussion on sleep]. 
+The model successfully solved 33 out of the 48 tasks it was trained on. Although the model was trained on half of the tasks in the dataset, it does not generalize as well as FlowCoder in the first experiment. Sleep seems to be a crucial aspect of the algorithm.
 
 As depicted in Figure \ref{fig:program_variations_binary_train}, an average of about 11.000 unique programs were created per task, indicating that approximately one-eighth of the programs were resampled, while the rest were distinct. This data also reveals certain task groups that posed more significant challenges than others. For instance, none of the tasks in the \texttt{caesar-cipher-k-modulo-n} group were solved, whereas all tasks in the \texttt{prepend-index-k} or \texttt{mult-k} groups were successfully completed. Refer to Tables \ref{tab:task_ex} and \ref{tab:task_programs} for examples and correct solutions, respectively.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{../img/plot_program_variations_binary_train.png}
+    \includegraphics[width=\textwidth]{../img/plot_program_variations_binary_depth_3_48_tasks2023-12-07 22:24:45.png}
     \caption{Bar plot of unique programs created per task. The sorted tasks the model has been trained are on the x-axis and the number of unique programs that have been created per task are on the y-axis. Bars of tasks that have been solved are coloured green and unsolved tasks are coloured red. The black dotted line demarcates the average number of uniquely created programs.}
     \label{fig:program_variations_binary_train}
 \end{figure}
 
+During inference, the model attempted to solve all 95 tasks sequentially, producing 400 programs in about 100 steps, taking roughly 30 seconds for each task. FlowCoder solved 42 tasks, of which 13 were unseen during training, as shown in Figure \ref{fig:solution_variations_inference}. 11 of these tasks belong to groups where at least one task was solved during training, e.g. the model was trained on (and solved) tasks \texttt{append-k} with \texttt{k=0, k=2, k=3} and during inference the model solved tasks \texttt{append-k} with \texttt{k=1, k=4, k=5}, which were previously unseen. 2 tasks were solved during inference without any precedent of tasks of a similar task group being seen in training. Additionally, all tasks solved exclusively during inference had not been exposed to the model in the training phase.
+The distribution of unique solutions also reveals that multiple tasks, irrespective of their exposure during training, exhibited a range of solutions. 
+This diversity in solutions reflects the model's capacity to explore the solution space comprehensively, aligning with our goal of not merely finding a point estimate but understanding the entire posterior distribution of solutions for each task.
 
-An examination of the model's improvement across consecutive Expectation-Maximization (E-M) cycles is shown in Figure \ref{fig:em_cycles}. The plot shows a clear upward trend in the average cumulative number of solutions, suggesting progressive improvement in both the forward policy and the generative model.
-
-\begin{figure}[H]
+\begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{../img/em_cycles.png}
-    \caption{The plot displays the cumulative number of tasks solved (y-axis) against the number of steps (x-axis). Each step represents an iteration in the E-M cycle. The initial 2.000 steps correspond to the first E-step, marked with a blue background, followed by the first M-step spanning the next 2.000 steps (up to step 4.000), distinguished by a purple background. This pattern constitutes one complete epoch. The graph includes a dotted line representing the average number of tasks solved over all epochs, offering a benchmark for comparison. Furthermore, the intensity of the color hue in the plot encodes the temporal sequence of the epochs: brighter bars on the left signify earlier epochs (the first epoch), with the hue gradually darkening towards the right, culminating in the fifth and final epoch.}
-    \label{fig:em_cycles}
-\end{figure}
-
-
-\subsection{\green{Inference}}
-During inference, the model attempted to solve all 95 tasks sequentially, producing 400 programs in about 100 steps, taking roughly 30 seconds for each task. FlowCoder solved 42 tasks.
-
-Figure \ref{fig:program_variations_binary_inference} demonstrates the variance in task difficulty during inference. The \texttt{caesar} tasks often resulted in similar solutions, as seen from the limited diversity in program attempts, whereas a broader range of strategies was explored in other unsolved tasks. The solved tasks showed varying degrees of program exploration. On average, approximately 145 unique programs were generated per task.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{../img/plot_program_variations_binary_inference.png}
-    \caption{Analysis of the number of unique programs generated per task during inference, as shown in Figure \ref{fig:program_variations_binary_inference}. Tasks are listed on the x-axis, and the count of unique programs is on the y-axis. The figure highlights the variance in program generation across tasks, with \texttt{caesar} tasks often showing limited program diversity, in contrast to other tasks that exhibit a wide range of attempts. The average number of unique programs created per task is approximately 145, indicating varied program attempts.}
-    \label{fig:program_variations_binary_inference}
-\end{figure}
-
-\todo[inline]{maybe take this plot out?}
-
-A key finding is that 13 tasks, unsolved and unseen during training, were successfully tackled in the inference phase, as shown in Figure \ref{fig:solution_variations_inference}. Notably, 11 of these tasks belong to groups where at least one task was solved during training, e.g. the model was trained (and solved) tasks \texttt{append-k} with \texttt{k=0, k=2, k=3} and during inference the model solved tasks \texttt{append-k} with \texttt{k=1, k=4, k=5}, which were previously unseen. Interestingly, 2 tasks were solved during inference without any precedent of tasks of a similar task group being seen in training. Additionally, it is observed that all tasks solved exclusively during inference had not been exposed to the model in the training phase.
-The distribution of unique solutions also reveals that multiple tasks, irrespective of their exposure during training, exhibited a range of solutions. This diversity in solutions reflects the model's capacity to explore the solution space comprehensively, aligning with our goal of not merely finding a point estimate but understanding the entire posterior distribution of solutions for each task.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=\textwidth]{../img/plot_solution_variations_inference.png}
+    \includegraphics[width=\textwidth]{../img/plot_solution_variations_depth_3_48_tasks2023-12-07 22:24:45_inference.png}
     \caption{Distribution of unique solutions per task during inference, displayed in a log-scaled bar chart. The y-axis lists the task names, while the x-axis quantifies the number of unique solutions. The chart reveals that 13 tasks not solved in training were resolved during inference, with 11 belonging to groups with at least one task previously solved in training. Only solved tasks are shown.}
     \label{fig:solution_variations_inference}
     \end{figure}
 
 In table \ref{tab:multiple_solutions} we can see an example of varied solutions to a task. The model has found the shortest solution but also alternate solutions of the same task.
 
-\begin{table}[H]
+\begin{table}
     \centering
     \begin{tabular}{|l|c|}
         \hline
@@ -64,11 +49,33 @@ In table \ref{tab:multiple_solutions} we can see an example of varied solutions 
     \label{tab:multiple_solutions}
 \end{table}
 
-On average, FlowCoder efficiently solves a task within approximately 8 steps. Notably, as illustrated in Figure \ref{fig:plot_min_step_for_solution_inference}, around half of the tasks are successfully resolved on the initial attempt. The model is able to rapidly solve many tasks that it had not encountered previously, often requiring fewer steps than the average.
+On average, FlowCoder efficiently solves a task within approximately 8 steps. Notably, as illustrated in Figure \ref{fig:plot_min_step_for_solution_inference}, around half of the tasks are successfully resolved on the initial attempt. The model is able to rapidly solve many tasks that it had not encountered previously, often requiring fewer steps than the average. This suggests that when trained to convergence, the model may act as an efficient sampler. 
 
-\begin{figure}[H]
+\begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{../img/plot_min_step_for_solution_inference.png}
+    \includegraphics[width=\textwidth]{../img/plot_min_step_for_solution_inference_depth_3_48_tasks2023-12-07 22:24:45_inference.png}
     \caption{Analysis of the minimum number of steps required to solve tasks during inference. The x-axis represents the number of steps, and the y-axis lists the task names, sorted by the number of steps taken to find a solution. The dotted line indicates the average number of steps needed. Tasks solved both during training and inference are highlighted in green, whereas tasks exclusively solved during inference are in purple. Only solved tasks are shown.}
     \label{fig:plot_min_step_for_solution_inference}
 \end{figure}
+
+An examination of the model's improvement across consecutive Expectation-Maximization (E-M) cycles is shown in Figure \ref{fig:em_cycles}. The plot shows a clear upward trend in the average cumulative number of solutions, suggesting progressive improvement in both the forward policy and the generative model. The results of experiment 1 \ref{exp:1} are similar. As expected, the generative model during the M-step performs better than the GFlowNet during the E-step, since the E-step includes exploration while the M-step does not.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{../img/em_cycles_depth_3_48_tasks2023-12-07 22:24:45.png}
+    \caption{The plot displays the cumulative number of tasks solved (y-axis) against the number of steps (x-axis). Each step represents an iteration in the E-M cycle. The initial 2.000 steps correspond to the first E-step, marked with a blue background, followed by the first M-step spanning the next 2.000 steps (up to step 4.000), distinguished by a purple background. This pattern constitutes one complete epoch. The graph includes a dotted line representing the average number of tasks solved over all epochs, offering a benchmark for comparison. Furthermore, the intensity of the color hue in the plot encodes the temporal sequence of the epochs: brighter bars on the left signify earlier epochs (the first epoch), with the hue gradually darkening towards the right, culminating in the fifth and final epoch.}
+    \label{fig:em_cycles}
+\end{figure}
+
+
+% Figure \ref{fig:program_variations_binary_inference} demonstrates the variance in task difficulty during inference. The \texttt{caesar} tasks often resulted in similar solutions, as seen from the limited diversity in program attempts, whereas a broader range of strategies was explored in other unsolved tasks. The solved tasks showed varying degrees of program exploration. On average, approximately 145 unique programs were generated per task.
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=\textwidth]{../img/plot_program_variations_binary_depth_3_48_tasks2023-12-07 22:24:45_inference.png}
+%     \caption{Analysis of the number of unique programs generated per task during inference, as shown in Figure \ref{fig:program_variations_binary_inference}. Tasks are listed on the x-axis, and the count of unique programs is on the y-axis. The figure highlights the variance in program generation across tasks, with \texttt{caesar} tasks often showing limited program diversity, in contrast to other tasks that exhibit a wide range of attempts. The average number of unique programs created per task is approximately 145, indicating varied program attempts.}
+%     \label{fig:program_variations_binary_inference}
+% \end{figure}
+
+% \todo[inline]{maybe take this plot out?}
+

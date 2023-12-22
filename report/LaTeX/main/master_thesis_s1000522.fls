@@ -277,6 +277,12 @@ INPUT /usr/local/texlive/2020/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libr
 INPUT /usr/local/texlive/2020/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.meta.code.tex
 INPUT /usr/local/texlive/2020/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.meta.code.tex
 INPUT /usr/local/texlive/2020/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.meta.code.tex
+INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/caption/subcaption.sty
+INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/caption/subcaption.sty
+INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/caption/caption.sty
+INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/caption/caption.sty
+INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/caption/caption3.sty
+INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/caption/caption3.sty
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/listings/listings.sty
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/listings/listings.sty
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/listings/lstmisc.sty
@@ -379,6 +385,8 @@ INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.st
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/caption/ltcaption.sty
+INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/caption/ltcaption.sty
 INPUT ../auxiliary/titlepage.tex
 INPUT ../auxiliary/titlepage.tex
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/map/fontname/texfonts.map
@@ -460,25 +468,31 @@ INPUT ../sections/methods.tex
 INPUT ../sections/methods.tex
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmtt8.tfm
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmtt8.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmr9.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmmi9.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmsy9.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex9.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT ../sections/results.tex
 INPUT ../sections/results.tex
-INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_program_variations_binary_train.png
-INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_program_variations_binary_train.png
-INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_program_variations_binary_train.png
-INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/em_cycles.png
-INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/em_cycles.png
-INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/em_cycles.png
-INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_program_variations_binary_inference.png
-INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_program_variations_binary_inference.png
-INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_program_variations_binary_inference.png
-INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_solution_variations_inference.png
-INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_solution_variations_inference.png
-INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_solution_variations_inference.png
-INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_min_step_for_solution_inference.png
-INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_min_step_for_solution_inference.png
-INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_min_step_for_solution_inference.png
+INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_program_variations_binary_depth_3_48_tasks2023-12-07 22:24:45.png
+INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_program_variations_binary_depth_3_48_tasks2023-12-07 22:24:45.png
+INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_program_variations_binary_depth_3_48_tasks2023-12-07 22:24:45.png
+INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_solution_variations_depth_3_48_tasks2023-12-07 22:24:45_inference.png
+INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_solution_variations_depth_3_48_tasks2023-12-07 22:24:45_inference.png
+INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_solution_variations_depth_3_48_tasks2023-12-07 22:24:45_inference.png
+INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_min_step_for_solution_inference_depth_3_48_tasks2023-12-07 22:24:45_inference.png
+INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_min_step_for_solution_inference_depth_3_48_tasks2023-12-07 22:24:45_inference.png
+INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/plot_min_step_for_solution_inference_depth_3_48_tasks2023-12-07 22:24:45_inference.png
+INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/em_cycles_depth_3_48_tasks2023-12-07 22:24:45.png
+INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/em_cycles_depth_3_48_tasks2023-12-07 22:24:45.png
+INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/em_cycles_depth_3_48_tasks2023-12-07 22:24:45.png
 INPUT ../sections/discussion.tex
 INPUT ../sections/discussion.tex
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmss10.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmss12.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmssbx10.tfm
 INPUT ../sections/philosophical.tex
 INPUT ../sections/philosophical.tex
 INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/../img/semPointer.jpg
@@ -494,12 +508,6 @@ INPUT ../auxiliary/appendix.tex
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/listings/lstlang1.sty
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/listings/lstlang1.sty
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmtt9.tfm
-INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmr9.tfm
-INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmmi9.tfm
-INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmsy9.tfm
-INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex9.tfm
-INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
-INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/master_thesis_s1000522.aux
 INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/master_thesis_s1000522.out
 INPUT /Users/ron/Code/master_thesis/report/LaTeX/main/master_thesis_s1000522.out
@@ -516,6 +524,8 @@ INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pf
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb

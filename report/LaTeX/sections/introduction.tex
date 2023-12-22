@@ -1,5 +1,10 @@
 % \chapter{Introduction}
 \section{\orange{Introduction}}
+One of the most profound questions one can ask, is that of his own cognition. How is it possible that we have a representation of the world such that we can dream, imagine, make quick inferences, come up with hypotheses, understand causal relations, have multiple representations of concepts and intrinsically understand relations between concepts?
+
+In this thesis, I address these capacities of human cognition and outline how we can interpret them in a Bayesian framework.
+% In the following, I expound on each capacity in detail 
+
 
 In this thesis I want to investigate and discuss a certain model of cognition.
 - We look at the world and learn to distinguish things. Discernment is the fundamental operator of cognition.
@@ -158,6 +163,8 @@ Humans possess a native capacity for meta-cognitive evaluation, instinctively ga
 Compositionality is central to cognitive productivity and learning. It allows for the creation of infinitely varied representations from a finite set of basic elements, similar to the mind's capacity to think an endless array of thoughts or generate countless sentences. This is particularly useful in forming hierarchical structures that simplify complex relationships, thus making inductive reasoning more efficient.
 In Bayesian terms, this means that the latent $z$ can be compositional and take the form of a nested hierarchical structure.
 
+\todo{out of distribution generalisation (OOD)}
+
 
 \todo[inline]{should holarchies go here?}
 
@@ -181,6 +188,21 @@ In this Bayesian framework, the joint probability \( P(z, x) = P(x \vert z) \cdo
 The recognition model is an approximation of the posterior \(Q(z \vert x) \approx P(z \vert x) \), the brain's inference about the state of the world given the data.
 [for further discussion see ]
 
+\subsubsection{\green{System 1 \& System 2}}
+Kahneman describes two distinct systems that characterize the dual aspects of human cognition \cite{Kahneman11}:
+
+\emph{System 1} operates automatically and quickly, with little or no effort and no sense of voluntary control. It encompasses intuitive judgments and perceptual associations — it allows for rapid, heuristic-based processing that is often subconscious.
+System 1 is akin to the generative model in Bayesian inference. Just as System 1 can produce instantaneous responses and intuitions, the generative model provides immediate perceptual hypotheses and predictions that guide behavior in a fluid and dynamic manner without the need for conscious deliberation.
+
+\emph{System 2} allocates attention to the effortful mental activities that demand it, including complex computations. It is associated with the conscious, rational mind and is deliberate, effortful, and orderly. 
+The process of updating the recognition density is more reflective and can be related to the slow, controlled inference that characterizes conscious thought. Adjusting the recognition density is akin to the effortful correction or modulation of System 1's rapid predictions when errors are detected or when more complex reasoning is required.
+
+For example, when learning to play the piano, initial efforts require conscious attention and deliberate practice to master certain phrases (System 2). Over time, as these phrases become internalized, they can be executed more automatically and intuitively (System 1). This transition illustrates how learned skills move from conscious, effortful control to intuitive, automatic execution, mirroring the interplay between the recognition density (System 2) and the generative model (System 1) in Bayesian cognition.
+
+
+
+
+
 \subsubsection{\green{Varied Representations}}
 [aristotle - it is a sign of intelligence to be able to entertain a thought without accepting it.]
 Humans interpret the same data in different ways. 
@@ -196,22 +218,13 @@ Optical illusions, like the old woman/young woman or the duck/rabbit images [sho
 
 From a Bayesian perspective, this idea relates to the choice between seeking a singular, most probable interpretation (Maximum A Posteriori, or MAP: $\arg max P(z|x)$) and considering a range of possible interpretations (approximating the posterior distribution: $P(z|x)$). The former approach aims for a definitive answer, while the latter embraces uncertainty and variability in the data.
 
-\subsubsection{\green{System 1 \& System 2}}
-Kahneman describes two distinct systems that characterize the dual aspects of human cognition \cite{Kahneman11}:
-
-\emph{System 1} operates automatically and quickly, with little or no effort and no sense of voluntary control. It encompasses intuitive judgments and perceptual associations — it allows for rapid, heuristic-based processing that is often subconscious.
-System 1 is akin to the generative model in Bayesian inference. Just as System 1 can produce instantaneous responses and intuitions, the generative model provides immediate perceptual hypotheses and predictions that guide behavior in a fluid and dynamic manner without the need for conscious deliberation.
-
-\emph{System 2} allocates attention to the effortful mental activities that demand it, including complex computations. It is associated with the conscious, rational mind and is deliberate, effortful, and orderly. 
-The process of updating the recognition density is more reflective and can be related to the slow, controlled inference that characterizes conscious thought. Adjusting the recognition density is akin to the effortful correction or modulation of System 1's rapid predictions when errors are detected or when more complex reasoning is required.
-
-For example, when learning to play the piano, initial efforts require conscious attention and deliberate practice to master certain phrases (System 2). Over time, as these phrases become internalized, they can be executed more automatically and intuitively (System 1). This transition illustrates how learned skills move from conscious, effortful control to intuitive, automatic execution, mirroring the interplay between the recognition density (System 2) and the generative model (System 1) in Bayesian cognition.
 
 
 \subsubsection{\green{Concepts}}
 Concepts, as the building blocks of thought, vary widely in their forms and representations. They range from concrete, perceivable objects such as 'a table' to abstract notions like 'love' or 'money', theoretical constructs ('the gene', 'the atom'), mathematical entities ('addition', 'multiplication'), and even non-existent entities like 'a unicorn'. This variety, as highlighted by Blouw et al. \cite{blouw2016concepts}, underscores the diverse spectrum of concepts that the human mind can conceive and manipulate.
 
-An effective conceptual framework not only categorizes these varied forms but also explains their \emph{extension} (why a concept refers to certain things and not others) and \emph{intension} (why it describes these referents in specific ways) \cite{ball2013surfaces}. The concept space, therefore, must be understood as a multidimensional and dynamic entity, where concepts are not isolated but embedded in a rich tapestry of relationships and attributes.
+An effective conceptual framework not only categorizes these varied forms but also explains their \emph{extension} (why a concept refers to certain things and not others) and \emph{intension} (why it describes these referents in specific ways) \cite{ball2013surfaces}. 
+% The concept space, therefore, must be understood as a multidimensional and dynamic entity, where concepts are not isolated but embedded in a rich tapestry of relationships and attributes.
 
 Several key criteria help in mapping and understanding this concept space:
 
@@ -222,6 +235,7 @@ Several key criteria help in mapping and understanding this concept space:
     \item [Parameter Distance] This refers to the number of 'knobs' or minimal changes needed to transition from one concept to another. For example, determining the minimal edits or shifts needed to transform the concept of 'dog' to 'cat', or 'rock' music to 'jazz'. This concept is akin to edit distance in text or Kolmogorov complexity in information theory, offering a quantifiable measure of conceptual transformation.
 \end{description}
 \todo[inline]{need sources for all of these}
+\todo[inline]{this section needs to be rewritten. its shit}
 
 
 [kiki, bobo, other examples]
@@ -266,9 +280,9 @@ The concept space that LLMs navigate can be illustrated through analogies such a
 
 
 
+\todo[inline]{until here i show how we build up the elements needed for this framework of bayesian program synthesis., which combines almost all these things.}
 
-
-\subsubsection{\green{Probabilistic Programming}}
+\subsubsection{\green{Probabilistic Programming as a language of thought}}
 
 Dehaene et al. posit that human cognition is uniquely characterized by its ability to form symbolic representations and recursive mental structures akin to a language of thought, enabling the creation of domain-specific conceptual systems \cite{dehaene_symbols_2022}. This cognitive ability allows for the generation of new concepts through the compositional arrangement of existing elements, a process exemplified by the derivation of geometric concepts. Cognition simplifies complex patterns into mental representations via mental compression, where the complexity of a concept is measured by the length of its mental representation as per the Minimum Description Length (MDL) principle.
 
@@ -290,6 +304,7 @@ Distinct from other primates, humans have developed the capability to use symbol
 Experiments show that humans do not seem to start from blank-slate but rather from rich domain knowledge [argument for primitives, more sources] \cite{lake_building_2016}. Lake et al. propose that concepts can be represented as simple stochastic programs [elaborate]. A program here can be thought of a procedure that generates more examples of the same concept. If a program would represent the concept "animal", if would generate examples such as "giraffe", "zebra", "fish", and so on. Of course, higher-level programs could produce lower-level programs, in other words, in this paradigm, the essential aspect of compositionality gives rise to a part-whole hierarchical structure, i.e. a holarchy [reference].
 
 % The idea is that we model the world by creating programs that generate our observations \cite{rule_child_2020}.
+\todo[inline]{child as a hacker}
 
 
 % Roumi et al.'s experiment indeed suggest that humans may interpret and compress sequence regularities in a type of program of minimum description length (MDL) \cite{al_roumi_mental_2021}.
@@ -299,11 +314,72 @@ Experiments show that humans do not seem to start from blank-slate but rather fr
 [the assumption we make here is that features are somehow aggregated or extracted into symbols [see \cite{garcez_neurosymbolic_2020}], primitives, along with possibly innate symbols \cite{Lake_Ullman_Tenenbaum_Gershman_2017}] 
 
 
-\todo[inline]{child as a hacker}
+
+% \subsection{\red{Where do symbolic architectures have a benefit over purely connectionist?}}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \subsection{\red{Background}}
+\subsubsection{\red{Program Synthesis}}
+
+
+Program synthesis is undecidable \cite{gulwani_program_2017}. This means that some form of search over the program space is necessary.
+A variety of techniques have been investigated to overcome this challenge, ranging from evolutionary algorithms, to MCMC sampling, probabilistic inference, and most recently neurosymbolic architectures, making use of neural network to help guide the search through a vast program space \cite{gulwani_program_2017, ullman_theory_2012}.
+
+
+Robustfill \cite{Devlin_Uesato_Bhupatiraju_Singh_Mohamed_Kohli_2017}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 In the following, I will first introduce the state-of-the-art model in this regard, to present the possibilities of this framework as well as the methods used, many of which inspired my own model.
+
+\begin{itemize}
+    \item neural guided search, neuro-symbolic architectures, etc.
+\end{itemize}
 
 \subsubsection{\green{DreamCoder}}
 One of the most successful models in this endeavor is DreamCoder - a model that synthesises programs from initial primitives and a set of tasks with the objective of learning its own domain specific language \cite{ellis_dreamcoder_2021}. The model utilises a modified version of a wake-sleep algorithm introduced by Hinton to learn a generative model and a recognition network in tandem, following the paradigm of separating the world model from the inference model \cite{hinton1995wake} [reference to earlier section, sys 1,2]. The generative model learns a probability distribution over programs while the recognition network learns to map from tasks to programs in order to perform neurally guided search over the program space. Using this recognition model, they build a parallel search algorithm which is a mixture of best-first and depth-first and enumerates programs with decreasing probabilities. See \cite{Ellis_Wong_Nye_Sable-Meyer_Cary_Morales_Hewitt_Solar-Lezama_Tenenbaum} for details.
@@ -320,52 +396,56 @@ Figure \ref{fig:conc_library}(B) shows an example, in which the task to learn is
     \label{fig:conc_library}
 \end{figure*}
 
-Formally, the overall objective of DreamCoder is to find the optimal DSL \(\mathcal{D}\), which is a set of typed \(\lambda\)-calculus expressions \todo[inline]{explain typed lambda calculus See on the representation and learning of concepts(Morales) }, along with optimal weights \( \theta \) to navigate it, such as to solve a given a set of tasks \(x \in X\).
+% % Formally, the overall objective of DreamCoder is to find the optimal DSL \(\mathcal{D}\), which is a set of typed \(\lambda\)-calculus expressions \todo[inline]{explain typed lambda calculus See on the representation and learning of concepts(Morales) }, along with optimal weights \( \theta \) to navigate it, such as to solve a given a set of tasks \(x \in X\).
 
-I.e. the objective is to find the joint distribution:
-\begin{equation}
-    J(\mathcal{D}, \theta) = P(\mathcal{D}, \theta) \prod_{x \in X} \sum_{\rho} P(x|\rho)P(\rho|\mathcal{D},\theta) 
-\end{equation}
+% % I.e. the objective is to find the joint distribution:
+% % \begin{equation}
+% %     J(\mathcal{D}, \theta) = P(\mathcal{D}, \theta) \prod_{x \in X} \sum_{\rho} P(x|\rho)P(\rho|\mathcal{D},\theta) 
+% % \end{equation}
 
-where:
-\begin{conditions*}
-    P(\mathcal{D}, \theta) & Prior distribution over languages and parameters \\
-    P(x|\rho) & Likelihood of task \(x \in X\) given program \(\rho\)
-\end{conditions*}
-\todo[inline]{whats the last term in the above formula?}
-Since computing \( J(\mathcal{D}, \theta) \) entails marginalising over all programs, which is intractable, they instead marginalise over a finite beam [definition] per task \( {\mathcal{B}_x} \) which is operationalized as a lower bound on the joint density. This bound is even tighter than the ELBO [reference].
-\[
-    \mathcal{L}(\mathcal{D}, \theta, \{\mathcal{B}_x\}) = P(\mathcal{D}, \theta) \prod_{x \in X} \sum_{\rho \in \{\mathcal{B}_x\}} P(x|\rho)P(\rho|\mathcal{D},\theta)
-\]
+% % where:
+% % \begin{conditions*}
+% %     P(\mathcal{D}, \theta) & Prior distribution over languages and parameters \\
+% %     P(x|\rho) & Likelihood of task \(x \in X\) given program \(\rho\)
+% % \end{conditions*}
+% % \todo[inline]{whats the last term in the above formula?}
+% % Since computing \( J(\mathcal{D}, \theta) \) entails marginalising over all programs, which is intractable, they instead marginalise over a finite beam [definition] per task \( {\mathcal{B}_x} \) which is operationalized as a lower bound on the joint density. This bound is even tighter than the ELBO [reference].
+% % \[
+% %     \mathcal{L}(\mathcal{D}, \theta, \{\mathcal{B}_x\}) = P(\mathcal{D}, \theta) \prod_{x \in X} \sum_{\rho \in \{\mathcal{B}_x\}} P(x|\rho)P(\rho|\mathcal{D},\theta)
+% % \]
 
-The model operates in three distinct phases:
+% % The model operates in three distinct phases:
 
-\begin{description}
-    \item[Wake] In the wake phase, the objective is to find the best program $\rho$ for each task $x \in X$ DreamCoder is presented with. Each task consist of one or a few ($\sim10$) examples.
-    The objective is to maximize \(\mathcal{L}\) w.r.t. to the beam \(\{\mathcal{B}_x\}\)
-    \item[Sleep: Abstraction] A key component of the success of DreamCoder is the refactoring of programs. In this phase, DreamCoder consolidates new abstractions from the programs it has found during the wake phase. Experiences are replayed, and commonalities between programs are found so that they can be abstracted into new concepts to use in the future. 
-    In the abstraction phase \(\mathcal{L}\) w.r.t. \(\mathcal{D}\) is maximized.
-    \item[Sleep: Dreaming] The objective during the dreaming phase is to train the recognition model $Q$ to perform MAP inference by both fantasies, and replays. When fantasising, programs are drawn from the learned library as a generative model. The model is then trained on the produced tasks. This ensures a large and varied data-set to learn from and encourages out-of-distribution generalisation. Replays, simply training on previously seen task-program pairs, ensures that the model improves its predictions on the actual tasks it needs to learn and doesn't forget how to solve tasks it has already solved correctly.
-\end{description}
+% % \begin{description}
+% %     \item[Wake] In the wake phase, the objective is to find the best program $\rho$ for each task $x \in X$ DreamCoder is presented with. Each task consist of one or a few ($\sim10$) examples.
+% %     The objective is to maximize \(\mathcal{L}\) w.r.t. to the beam \(\{\mathcal{B}_x\}\)
+% %     \item[Sleep: Abstraction] A key component of the success of DreamCoder is the refactoring of programs. In this phase, DreamCoder consolidates new abstractions from the programs it has found during the wake phase. Experiences are replayed, and commonalities between programs are found so that they can be abstracted into new concepts to use in the future. 
+% %     In the abstraction phase \(\mathcal{L}\) w.r.t. \(\mathcal{D}\) is maximized.
+% %     \item[Sleep: Dreaming] The objective during the dreaming phase is to train the recognition model $Q$ to perform MAP inference by both fantasies, and replays. When fantasising, programs are drawn from the learned library as a generative model. The model is then trained on the produced tasks. This ensures a large and varied data-set to learn from and encourages out-of-distribution generalisation. Replays, simply training on previously seen task-program pairs, ensures that the model improves its predictions on the actual tasks it needs to learn and doesn't forget how to solve tasks it has already solved correctly.
+% % \end{description}
 
-In dreaming they maximize \(\mathcal{L}\) w.r.t. \(\theta\).
+% % In dreaming they maximize \(\mathcal{L}\) w.r.t. \(\theta\).
 
-\[
-    \mathcal{L}_{\text{MAP}}^{\text{Replay}} = \mathbb{E}_{x\sim X} \left[ \log Q \left( \arg\max_{p \in \mathcal{B}_x} P(p|x, D, \theta)  \Big\lvert x \right) \right]
-\]
+% % \[
+% %     \mathcal{L}_{\text{MAP}}^{\text{Replay}} = \mathbb{E}_{x\sim X} \left[ \log Q \left( \arg\max_{p \in \mathcal{B}_x} P(p|x, D, \theta)  \Big\lvert x \right) \right]
+% % \]
 
-\[
-    \mathcal{L}_{\text{MAP}}^{\text{Fantasy}} = \mathbb{E}_{x \sim (D, \theta)} \left[ \log Q \left( \arg\max_{p} P(p|x, D, \theta) \Big\lvert x \right) \right]  
-\]
+% % \[
+% %     \mathcal{L}_{\text{MAP}}^{\text{Fantasy}} = \mathbb{E}_{x \sim (D, \theta)} \left[ \log Q \left( \arg\max_{p} P(p|x, D, \theta) \Big\lvert x \right) \right]  
+% % \]
 
-\begin{description}
-    \item[Parameterisation] The authors chose to optimize MAP rather than the posterior because together with their parameterisation of the recognition model, this encourages to break syntactic symmetries.
+% % \begin{description}
+%     \item[Parameterization] The authors chose to optimize MAP rather than the posterior because together with their parameterization of the recognition model, this encourages to break syntactic symmetries.
 
-    The recognition model \(Q\) takes a task as input and outputs a 3-dimensional bigram transition matrix \(Q_{ijk}\), where \(i\) indexes possible children, \(j\) indexes possible parents and \(k\) indexes which argument of the parent is being generated. This parameterization was chosen as a balance between quality and efficiency.
+The recognition model \(Q\) takes a task as input and outputs a 3-dimensional bigram transition matrix \(Q_{ijk}\), where \(i\) indexes possible children, \(j\) indexes possible parents and \(k\) indexes which argument of the parent is being generated. This parameterization was chosen as a balance between quality and efficiency.
     
-\end{description}
+% \end{description}
 
 % It is apparent that the abstraction phase is crucial for learning the DSL. In this project however, I want to focus on learning a good sampler. The model can subsequently always be extended to include the abstraction phase and thus expand the DSL. 
+\todo[inline]{should this be here? or is it too detailed?}
+
+
+
 
 
 
@@ -381,7 +461,48 @@ The authors discuss different program finding strategies. Specifically, they fin
 \subsubsection{\green{GFlowNet}}
 Generative Flow Networks (GFlowNets), introduced by Bengio et al., are a class of generative models designed to learn to construct objects from a target distribution over complex high-dimensional spaces, particularly where explicit density estimation is challenging and diverse candidates are encouraged \cite{bengio_flow_2021}. GFlowNets learn a stochastic policy for generating sequences of actions that lead to the construction of a sample. This sampling process is done in such a way that the frequency of generating any given sample is proportional to a given reward function associated with that sample. A trained GFlowNet can therefore act as an excellent sampler.
 
+GFlowNet is still quite a new model, first published in 2021. The literature on new models including improvements and adjustments is growing rapidly.
+
+[different way of dealing with marginalization, using flow.]
+what are the added benefits?
+Include GNN-GFNs, using them for building molecules. 
+Any problem which starts wich building blocks that can be composed to more complex structures. See Dehaene, as well as the discussion on holarchies. 
+
+\subsubsection{\orange{Program Embedding}}
+In section \ref{sec:llm} we have seen that the underlying mechanism of the Transformer architecture used in LLMs, is able to learn syntactic and semantic structure from its data.
+Kim et al. discuss the benefit of a distributed representation of PCFGs, over the classic notion of simply assigning a scalar to each rule of the CFG to attain a PCFG  \cite{kim_compound_2019}. To that extent I will utilise the Transformer as the generative model.
 
 
-\subsection{\red{Aim}}
+
+\subsection{\orange{Aim}}
+
+We have seen how a probabilistic program synthesis algorithm looks like and what it can achieve [change this sentence]. 
+Moreover, we have learnt that sampling might be a good alternative to enumerative search and that GFlowNets are a method to implement a generative model and sampler. 
+
+Additionally, we have learnt that LLMs which use the Transformer architecture [embeddings plus self-attention instead of transformer architecture?] learn statistical regularities that go beyond syntax into the semantic realm. In the following I will show how I combine all these concepts to arrive at my own model \textrm{FlowCoder} \footnote{Code available at \url{https://github.com/R1704/master_thesis}}.
+
+
+Why do we do it?
+\begin{enumerate}
+    \item First, I want to investigate whether GFlowNet is an adequate strategy within the realm of program synthesis. Can a GFlowNet be trained to be a good sampler?
+    \item out of distribution generalisation 
+    \item Another reason for using GFNs over DreamCoder or other methods is that we build programs sequentially. This makes the method more dynamic and gives us more control. For example we can do inferences about intermediate latent variables, train from partial states, etc. [should this be here or in discussion?]
+    \item We want to embed programs. This gives us an additional semantic layer. [compare with neural pcfg, and other approaches and criticisms of dreamcoder]
+    \item I want to learn the whole probabilitiy dist to a task, not just the MAP.
+    \item DreamCoder has most o the cognitive capabilities, but not program space (arguably), MAP, different way of dealing with marginalisation, although it is amortized variational inference, and sampling rather than enumeration (no syntactic PCFG, rather embedded neural PCFG. )
+\end{enumerate}
+
+
+
+
+
+Research Questions: what do we want to find out
+\begin{enumerate}
+    \item 
+\end{enumerate} 
+
+
+
+
+
 

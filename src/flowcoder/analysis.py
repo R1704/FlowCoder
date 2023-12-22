@@ -82,7 +82,10 @@ for group_name, tasks in task_groups.items():
 
 # We only want to embed solved task embeddings
 # df = pd.read_csv('/vol/tensusers4/rhommelsheim/master_thesis/results/depth_3_48_tasks2023-12-07 22:41:392023-12-13 00:00:12_inference.csv')
-df = pd.read_csv('/vol/tensusers4/rhommelsheim/master_thesis/results/depth_3_48_tasks2023-12-07 22:24:45_inference.csv')
+# df = pd.read_csv('/vol/tensusers4/rhommelsheim/master_thesis/results/depth_3_48_tasks2023-12-07 22:24:45_inference.csv')
+df = pd.read_csv('/vol/tensusers4/rhommelsheim/master_thesis/results/stats_2023-12-04 19:37:08.204531.csv')
+
+
 solved_tasks = df[df['Solved']]['Task Name'].unique()
 # print('Solved tasks:')
 # for st in solved_tasks:

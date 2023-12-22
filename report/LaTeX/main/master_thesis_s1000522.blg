@@ -5,48 +5,50 @@ The style file: unsrt.bst
 Database file #1: ../auxiliary/ref.bib
 Warning--empty journal in Ellis_Wong_Nye_Sable-Meyer_Cary_Morales_Hewitt_Solar-Lezama_Tenenbaum
 Warning--empty year in Ellis_Wong_Nye_Sable-Meyer_Cary_Morales_Hewitt_Solar-Lezama_Tenenbaum
+Warning--empty journal in Bieber_Sutton_Larochelle_Tarlow_2020
+Warning--there's a number but no volume in Bieber_Sutton_Larochelle_Tarlow_2020
 Warning--empty journal in blokpoel2018deep
 Warning--empty journal in haselager1997
 Warning--empty journal in palmer1978fundamental
-You've used 58 entries,
+You've used 70 entries,
             1791 wiz_defined-function locations,
-            793 strings with 14750 characters,
-and the built_in function-call counts, 13254 in all, are:
-= -- 1151
-> -- 635
-< -- 9
-+ -- 238
-- -- 180
-* -- 929
-:= -- 2134
-add.period$ -- 187
-call.type$ -- 58
-change.case$ -- 54
+            861 strings with 17904 characters,
+and the built_in function-call counts, 16804 in all, are:
+= -- 1468
+> -- 834
+< -- 14
++ -- 308
+- -- 238
+* -- 1155
+:= -- 2660
+add.period$ -- 229
+call.type$ -- 70
+change.case$ -- 66
 chr.to.int$ -- 0
-cite$ -- 63
-duplicate$ -- 589
-empty$ -- 1287
-format.name$ -- 180
-if$ -- 2930
+cite$ -- 77
+duplicate$ -- 769
+empty$ -- 1585
+format.name$ -- 238
+if$ -- 3761
 int.to.chr$ -- 0
-int.to.str$ -- 58
-missing$ -- 61
-newline$ -- 296
-num.names$ -- 64
-pop$ -- 192
+int.to.str$ -- 70
+missing$ -- 71
+newline$ -- 357
+num.names$ -- 78
+pop$ -- 246
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 236
+skip$ -- 362
 stack$ -- 0
-substring$ -- 777
-swap$ -- 117
-text.length$ -- 9
+substring$ -- 940
+swap$ -- 198
+text.length$ -- 14
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 5
-while$ -- 117
-width$ -- 60
-write$ -- 637
-(There were 5 warnings)
+warning$ -- 7
+while$ -- 142
+width$ -- 72
+write$ -- 774
+(There were 7 warnings)

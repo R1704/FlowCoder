@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JupyterPersistentConnectionParameters">
+    <option name="knownRemoteServers">
+      <list>
+        <JupyterConnectionParameters>
+          <option name="authType" value="notebook" />
+          <option name="token" value="9d0bbc4360ce490ca868569a3d5165aacd45d01d68f0ea2d" />
+          <option name="urlString" value="http://127.0.0.1:8890/" />
+          <authParams2>
+            <map>
+              <entry key="token" value="9d0bbc4360ce490ca868569a3d5165aacd45d01d68f0ea2d" />
+            </map>
+          </authParams2>
+        </JupyterConnectionParameters>
+        <JupyterConnectionParameters>
+          <option name="authType" value="notebook" />
+          <option name="token" value="35470905434d6bb786b59a17c7990bae84c62ce347ad6211" />
+          <option name="urlString" value="http://127.0.0.1:8891/" />
+          <authParams2>
+            <map>
+              <entry key="token" value="35470905434d6bb786b59a17c7990bae84c62ce347ad6211" />
+            </map>
+          </authParams2>
+        </JupyterConnectionParameters>
+        <JupyterConnectionParameters>
+          <option name="authType" value="notebook" />
+          <option name="token" value="de934258db52061b1cb16750d7bebd9a0b614d510f5de5d0" />
+          <option name="urlString" value="http://127.0.0.1:8899/" />
+          <authParams2>
+            <map>
+              <entry key="token" value="de934258db52061b1cb16750d7bebd9a0b614d510f5de5d0" />
+            </map>
+          </authParams2>
+        </JupyterConnectionParameters>
+        <JupyterConnectionParameters>
+          <option name="authType" value="notebook" />
+          <option name="token" value="b7a6034e1891fa54f8b01f78fdec39a401d9e51e4999081b" />
+          <option name="urlString" value="http://localhost:8899/" />
+          <authParams2>
+            <map>
+              <entry key="token" value="b7a6034e1891fa54f8b01f78fdec39a401d9e51e4999081b" />
+            </map>
+          </authParams2>
+        </JupyterConnectionParameters>
+      </list>
+    </option>
+    <option name="moduleParameters">
+      <map>
+        <entry key="$USER_HOME$/Coding/Art/.idea/Art.iml">
+          <value>
+            <JupyterConnectionParameters>
+              <option name="authType" value="notebook" />
+              <option name="token" value="35470905434d6bb786b59a17c7990bae84c62ce347ad6211" />
+              <option name="urlString" value="http://127.0.0.1:8891/" />
+              <authParams2>
+                <map>
+                  <entry key="token" value="35470905434d6bb786b59a17c7990bae84c62ce347ad6211" />
+                </map>
+              </authParams2>
+            </JupyterConnectionParameters>
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/Documents/Coding/socrates_nlp/.idea/socrates_nlp.iml">
+          <value>
+            <JupyterConnectionParameters>
+              <option name="authType" value="notebook" />
+              <option name="token" value="b7a6034e1891fa54f8b01f78fdec39a401d9e51e4999081b" />
+              <option name="urlString" value="http://localhost:8899/" />
+              <authParams2>
+                <map>
+                  <entry key="token" value="b7a6034e1891fa54f8b01f78fdec39a401d9e51e4999081b" />
+                </map>
+              </authParams2>
+            </JupyterConnectionParameters>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

@@ -1,36 +1,37 @@
 \section{\orange{Discussion}}
-Now I will address our aim and 
+In this section I will summarize key findings, and address the aims of the research.
 
 
-Why do we do it?
-\begin{enumerate}
-    \item First, I want to investigate whether GFlowNet is an adequate strategy within the realm of program synthesis. Can a GFlowNet be trained to be a good sampler?
-    \item Another reason for using GFNs over DreamCoder or other methods is that we build programs sequentially. This makes the method more dynamic and gives us more control. For example we can do inferences about intermediate latent variables, train from partial states, etc. [should this be here or in discussion?]
-    \item We want to embed programs. This gives us an additional semantic layer. [compare with neural pcfg, and other approaches and criticisms of dreamcoder]
-    \item I want to learn the whole probabilitiy dist to a task, not just the MAP.
-\end{enumerate}
-
-% Summarize key findings 
-% How does it relate to previous research
-% 
+what do we want from the model?
+- it should not resample too often, about an eighth (this can be improved). of course we are counting the correct solutions too, over and over 
+- it should be fast (when converged, it's immediate) (however everythong above depth 4 was critical)
+- it should generalize OOD (it solves previously unseen tasks within and outside of task group)
+- sleep is crucial
 
 In the following section, I will compare FlowCoder to the concepts introduced in section [introduction or more specific 1.1, 1.2, etc.]
 
-The experiment revealed that FlowCoder can be trained as an adequate program synthesizer. 
-The model's performance steadily increases with alternating E-M steps, suggesting that it is beneficial to train the generative model separately from the forward policy and having the two models bootstrap each other. The generative model proposes better representations of the program space while the forward policy selects better actions, proportional to the posterior distribution, given the task at hand.
-Moreover, the model produces varied solutions, not only converging on a point estimate, the most likely program, but even in inference proposes multiple programs solving the tasks. 
+\subsection{\orange{Experimental Results}}
+
+\begin{itemize}
+    \item since the model solves most tasks within groups, it seeps to suggest that it learns relationships between groups (program space). 
+\end{itemize}
+
+The experiments of section \ref{sec:results} revealed that FlowCoder can be trained as an adequate program synthesizer. 
+First, we found that the model solves more tasks in inference than in training, including tasks of groups which had previously been unseen, suggesting some out-of-distribution generalization capabilities.
+Moreover, the model produces varied solutions, not only converging on a point estimate, the most likely program, but even in inference proposes multiple programs solving the tasks, suggesting that it has found a multi-modal distribution. 
 In section [x] we have discussed why a multitude of representations are useful. In the context of program synthesis however, we must not conflate semantics with syntax [see discussion]. As shown in table \ref{tab:multiple_solutions}, many inefficient alternate solutions to a task were found. We would actually like to avoid programs that add 0, multiply by 1, etc. Breaking syntactic symmetries can be done by optimising for minimum description length and including an abstraction phase as is done in DreamCoder.
-The model is able to sample varied correct solutions on the first step, suggesting that when we make the investment of training the model to convergence, we reap the benefits of one-shot inference.
-Moreover, the model solved more tasks in inference than in training, suggesting some out-of-distribution (OOD) generalisation capabilities.
+The model is able to sample varied correct solutions on the first step, suggesting that when we make the investment of training the model to convergence, we reap the benefits in the form of one-shot inference.
+The model's performance steadily increases with alternating E-M steps, suggesting that it is beneficial to train the generative model separately from the forward policy and having the two models bootstrap each other. The generative model proposes better representations of the program space while the forward policy selects better actions, proportional to the posterior distribution, given the task at hand.
 
 
 Many tasks have not been solved, but it looks like if the model had been kept training, it could converge on those too.
 moreover, we need to adjust resampling since some tasks have not been solved but have been resampled many times.
 
 
-
-
-
+- finding a balance between 
+- exploration (beta, epsilon, fantasy) to find many modes, E-step
+- exploitation (replay) converging on modes, not forgetting, M-step
+and exploitation (exploration to find many modes) but also exploitation
 
 
 
@@ -51,14 +52,15 @@ Fijalkow et al. compare different search strategies and show that methods that d
 \end{itemize}
 
 
-ASTs can be constructed in various orders. Ideally, we could let the GFlowNet predict which node to expand. However, this would have meant creating an additional model as a node predictor, which increases FlowCoder's complexity. Moreover, since ASTs are inherently two dimensional and I am using a transformer to encode CFG rules as a representation of a program, ASTs have to be linearized. I decided to expand the tree in order of depth-first, both to eliminate the need for another model and also to give the transformer the input in consistent order, making learning easier. 
 
-- bottom-up construction could be beneficial as nodes can already be evaluated
+\begin{description}
+    \item[Sampling strategy] ASTs can be constructed in various orders. Ideally, we could let the GFlowNet predict which node to expand. However, this would have meant creating an additional model as a node predictor, which increases FlowCoder's complexity. Moreover, since ASTs are inherently two dimensional and I am using a transformer to encode CFG rules as a representation of a program, ASTs have to be linearized. I decided to expand the tree in order of depth-first, both to eliminate the need for another model and also to give the transformer the input in consistent order, making learning easier. 
+    \item[] - bottom-up construction could be beneficial as nodes can already be evaluated
+    - construction order
+    - include diagram
+\end{description}
 
 
-
-- construction order
-- include diagram
 
 
 
@@ -78,7 +80,6 @@ I do this, first, because if we see that the model finds the posterior, it can a
 % abc xyz
 % abd wyz/ xya
 
-DreamCoder's parameterisation and method leads the model to learn to avoid redundancies, e.g. adding $0$ or multiplying by $1$. Since Flowcoder searches for all solutions solving a task, it doesn't learn to avoid these redundancies. This could be implemented in the future.
 
 I constrain the program depth to 3, which is enough to solve most programs and is not too computationally heavy.
 Since most tasks can be solved by short programs, 
@@ -90,10 +91,6 @@ Despite the minimum description length being a factor which may be necessary, I 
 
 
 \subsection{\orange{Comparison to DreamCoder}}
-
-
-
-
 
 
 \subsection{\orange{Speed}}
@@ -152,7 +149,7 @@ $\mathcal{O}(m \times n)$, where $m$ and  $n$ are the lengths of the two input s
     
 
 
-The scalability of the model depends on various factors. First, we have seen that GFN can deal with the marginalisation term and is an instance of amortized bayesian inference. This means that we can capitalise on seen data to generalise to many modes even in high-dimensional spaces. [show that amortized inference scales]
+The scalability of the model depends on various factors. First, we have seen that GFN can deal with the marginalization term and is an instance of amortized bayesian inference. This means that we can capitalise on seen data to generalise to many modes even in high-dimensional spaces. [show that amortized inference scales]
 The intention of this study is to show that the general method of using GFNs for program synthesis is useful and not to optimise it for efficiency and scalability. Many adjustments can be made to accommodate for scaling. 
 program representation, 
 choosing the generative and forward (and possibly backward) policy models, 
@@ -164,8 +161,11 @@ Scaling neural search paper
 all of the program construction/ reconstruction/ evaluation can be reduced. 
 
 
-the problem with scaling is marginalisation. DC deals with this by marginalising over a beam of programs for each task. GFN deals with it by adhering to the flow objective. 
+the problem with scaling is marginalization. DC deals with this by marginalising over a beam of programs for each task. GFN deals with it by adhering to the flow objective. 
 other amortized variational inference methods, \dots
+
+
+
 
 
 
@@ -191,15 +191,7 @@ since we are representing trees, it might be beneficial to embed programs in hyp
 There are other ways to embed the cfg, [e.g. see kim].
 - 3-index bigram, .. compound PCFG including information of neighboring states, parents, childrewn, etc. 
 
-Rules could be encoded including additional information like tree depth, arg idx, parents, siblings, etc. 
-since an AST is two dimensional, there are many expansion orders. 
-my model is a transformer with a MLP on top to predict logits for the rule. I could have another, to predict the position to attach the next node. Other than that if i only embed primitives instead of rules, 
-We could use a GNN and do both node and edge prediction. 
-Otherwise, we also need to decide expansion order since rules are context free, i.e. if we only predict the rule there may be multiple parts of the tree where this could be applied to. However, there may be benefits in expanding in different orders. We could apply a second GFN to predict the next best node to expand.
-In the cfg we have terminals and nonterminals
 
-When constructing an AST, it can be expanded in various orders.
-E.g. we could predict the tree bottom up, i.e. predict terminal nodes and then connect them progressively. The benefit of this is that we can evaluate partial expression. However, once a partial tree is predicted, the other arguments of the function are dependent on it so we have to keep expanding nodes upwards until ...
 
 since we are representing the tree as an array of rules, so that we can use them with transformer, we need to reformat it back into a tree to evaluate it. i.e. we need to fisrt construct it and then go through it again for evaluation. this slows down the computation. 
 
@@ -207,8 +199,28 @@ since we are representing the tree as an array of rules, so that we can use them
 - heapsearch, evaluation, using sub-trees, etc. 
 Another expansion is using a depth first search (DFS) [source] approach (note that this is not about searching through the CFG, but constructing the AST). Since we are essentially linearising a tree when giving it as input to the transformer, the transformer has additional order information, which in combination with positional encoding lets it learn better. 
 
+hyperbolic space
 
-\subsection{\red{program space}}
+
+
+We could embed parent, child, etc. to make ean embedding of a rule more informed. i chose not to do it to see whether its enough (discuss in limitations,e tc. )
+
+Syntax vs Semantics 
+Semantics can be understood as data flow, e.g. partial evaluations could be used as part of the representation of the program. 
+type information 
+For a discussion on semantics and meaning see sec [meaning]
+In LLMs, we see that they l
+
+
+
+
+
+
+
+
+
+\subsection{\red{Program Embeddings}}
+programs are commonly represented as AST. 
 % Although these models are great, their method reveals a foundational limitation: their heavy reliance on syntactical constraints. While these constraints are undoubtedly vital for ensuring the correctness of generated programs, they do not necessarily guarantee a deep understanding or utilization of semantic relationships within the code. 
 % A lot of information may be lost, by disregarding the semantic relationships. As we have seen in [reference LLMs], there seems to be a semantic grammar on top of the syntactical structure of the language which we may be able to leverage.
 % This has been criticized in [cite all the relevant papers (using GNNs, etc. ) also Kim's neural PCFG].
@@ -219,12 +231,34 @@ Another expansion is using a depth first search (DFS) [source] approach (note th
 Does DC learn a program space (discuss their tsne)
 - hyperbolic
 
+Graph Neural Networks seem like an interesting option to represent ASTs
+Allamanis et al. use Gated Graph Neural Networks to include local semantics in their program representations 
+
+Allamanis et al. use Gated Graph Neural Networks to represent both syntactic and semantic information by including data flow and type hierarchy signals \cite{allamanis2017learning}. The authors formalize how to turn ASTs to graphs.
+
+Wang et al. propose a semantic program embedding, learnt from program execution traces \cite{wang2017dynamic}.
+
+Ibarz et al. present a generalist neural algorithmic learner by leveraging GNNs \cite{ibarz2022generalist}.
+Zhang et al. propose a novel neural AST representation of source code \cite{zhang_novel_2019}.
+
+Oliviera and Löh develop abstract syntax graphs (rather than trees) to preserve sharing and recursion within a DSL \cite{oliveira_abstract_2013}.
 
 
 
 
 
 
+
+
+
+\subsection{\red{reward}}
+
+\begin{itemize}
+    \item Reward should be learnt (Energy based model). Where does the brain get it from?
+    \item Is Levenshtein a reasonable reward? think about computational complexity (Kolmogorov complexity)
+    \item Reward depends on tasks
+    \item Rewards can be based on utility or efficiency rather than accuracy, or on aesthetics or other determinants. This is a complex topic which should be investigated in the future. 
+\end{itemize}
 
 
 
@@ -235,9 +269,23 @@ Does DC learn a program space (discuss their tsne)
 \begin{itemize}
     \item Make the network choose where to expand (not DFS). Note that we are not going through the CFG DFS, but creating the AST with DFS (GNN, evaluation etc. )
     \item What should be the best order of solving tasks? should we try to solve a certain task for x amount of time and then move on to the next? curriculum learning? 
-
+    \item Better reward
 \end{itemize}
 
+
+
+
+
+
+
+
+
+\subsection{\red{Related Work}}
+\begin{itemize}
+    \item apperception engine
+    \item one language to rule them all
+    \item 
+\end{itemize}
 
 \subsection{\red{Future Work}}
 \begin{itemize}
@@ -280,14 +328,16 @@ Does DC learn a program space (discuss their tsne)
 
 
 
+
+
 \subsubsection{\orange{Comparison to other approaches}}
 
 Previously, techniques in approximate Bayesian inference, have been applied to deal with the difficult marginalization term.
 
-Variational Inference (VI) is a strategy that leverages a simpler distribution \( q(z | x) \)  to approximate a more complex target distribution. This is achieved by minimizing the Kullback-Leibler (KL) divergence [definition?] between the true distribution and its approximation.
+Variational Inference (VI) is a strategy that leverages a simpler distribution \( q(z | x) \)  to approximate a more complex target distribution. This is achieved by minimizing the Kullback-Leibler (KL) divergence, a similarity measure of probability distributions, between the true distribution and its approximation.
 
 \[
-    D_{KL}[q_(z|x) || p_(z|x)]
+    D_{KL}[q(z|x) || p(z|x)]
 \]
 
 The approximation can be optimized by increasing the Evidence Lower Bound (ELBO) by:
@@ -302,14 +352,11 @@ In the context of \emph{amortized} VI, computation of the variational parameters
 this aligns with the free energy principle formulation [show that.]
 maximizing the evidence lower bound (ELBO), is equivalent to the negative free energy. 
 
-
 Amortized variational inference refers to the use of a parameterized function (e.g., a neural network) to approximate the posterior distribution in a variational Bayesian setting, where the parameters are learned once and can be used to infer the posterior for any given data point without retraining. It is "amortized" because the cost of learning the inference model is spread over all the data points it is used on.
 
 GFlowNets relate to amortized variational inference in the sense that they learn a policy network that can generate samples for any given reward function without having to solve a new optimization problem for each sample. This is similar to how an amortized inference model can be applied to new data without additional optimization.
 
 In both cases, the "amortization" allows for efficient inference or generation after the initial cost of learning the model. However, GFlowNets focus on learning to sample in proportion to a reward function, whereas amortized variational inference is concerned with approximating the posterior distribution of latent variables given observed data.
-
-
 
 \begin{itemize}
     \item Relation to MDPs, POMDPs
@@ -331,7 +378,6 @@ Ullman et al. MCMC[source, definition] and Metropolis-Hastings[source, definitio
 
 % Neural Program Synthesis: Neural networks, especially recurrent ones, have shown promise in generating programmatic structures. The parallels between neural networks and neural structures in the brain offer tantalizing possibilities for cognitive science.
 
-% Program synthesis in its most general formulation is undecidable, which necessitates some form of search over the (possibly expanding) program space \cite{gulwani_program_2017} [reference to undecidability, size of program space etc.]. 
 
 % A variety of statistical techniques have been proposed, ranging from evolutionary algorithms, 
 % machine learning and genetic programming to MCMC sampling and probabilistic inference [source].  
@@ -346,7 +392,6 @@ Ullman et al. MCMC[source, definition] and Metropolis-Hastings[source, definitio
 
 % Belief propagation has been used to synthesize imperative program fragments that execute polynomial computations and list manipulations [62].
 
-\cite{gulwani_program_2017}
 \todo[inline]{should the above be in the intro??}
 
 
@@ -377,46 +422,6 @@ Ullman et al. MCMC[source, definition] and Metropolis-Hastings[source, definitio
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-% Make a diagram of the pipeline, sample forward, until a state is constructed, evaluation, etc. maybe also with sleep
 
 
 
@@ -505,40 +510,40 @@ Ullman et al. MCMC[source, definition] and Metropolis-Hastings[source, definitio
 
 
 
-% \begin{figure}
-%     \centering
-%     \begin{tikzpicture}[
-%       node distance = 2cm,
-%       auto,
-%       block/.style = {circle, draw, font=\sffamily\Large\bfseries},
-%       line/.style = {draw, -latex}
-%     ]
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[
+      node distance = 2cm,
+      auto,
+      block/.style = {circle, draw, font=\sffamily\Large\bfseries},
+      line/.style = {draw, -latex}
+    ]
     
-%     % Nodes
-%     \node [block] (S) {S};
-%     \node [block, below left of=S] (R1) {R};
-%     \node [block, below right of=S] (T1) {T};
-%     \node [block, below left of=R1] (R2) {R};
-%     \node [block, below right of=R1] (T2) {T};
-%     \node [block, below right of=R2] (a) {a};
-%     \node [block, right of=a] (b) {b};
+    % Nodes
+    \node [block] (S) {S};
+    \node [block, below left of=S] (R1) {R};
+    \node [block, below right of=S] (T1) {T};
+    \node [block, below left of=R1] (R2) {R};
+    \node [block, below right of=R1] (T2) {T};
+    \node [block, below right of=R2] (a) {a};
+    \node [block, right of=a] (b) {b};
     
-%     % Paths
-%     \path [line] (S) -- node {f(R,T)} (R1);
-%     \path [line] (S) -- node {g(T)} (T1);
-%     \path [line] (R1) -- node {f(R,T)} (R2);
-%     \path [line] (R1) -- node {g(T)} (T2);
-%     \path [line] (T2) -- node {a} (a);
-%     \path [line] (T2) -- node {b} (b);
+    % Paths
+    \path [line] (S) -- node {f(R,T)} (R1);
+    \path [line] (S) -- node {g(T)} (T1);
+    \path [line] (R1) -- node {f(R,T)} (R2);
+    \path [line] (R1) -- node {g(T)} (T2);
+    \path [line] (T2) -- node {a} (a);
+    \path [line] (T2) -- node {b} (b);
     
-%     % DFS, BFS, A* paths (without specific details)
-%     \draw [red, thick, dashed] (S) to [bend left] (R2);
-%     \draw [blue, thick, dashed] (S) to [bend right] (b);
-%     \draw [green, thick, dashed] (S) to [bend right] (T2);
+    % DFS, BFS, A* paths (without specific details)
+    \draw [red, thick, dashed] (S) to [bend left] (R2);
+    \draw [blue, thick, dashed] (S) to [bend right] (b);
+    \draw [green, thick, dashed] (S) to [bend right] (T2);
     
-%     \end{tikzpicture}
-%     \caption{Illustration of the tree of leftmost derivations.}
-%     \end{figure}
+    \end{tikzpicture}
+    \caption{Illustration of the tree of leftmost derivations.}
+    \end{figure}
 
 
     % \begin{figure}
@@ -667,59 +672,3 @@ Ullman et al. MCMC[source, definition] and Metropolis-Hastings[source, definitio
 
 
 
-
-
-
-    \begin{figure*}[htbp]
-        \centering
-        \begin{adjustbox}{width=\textwidth}
-            \begin{tikzpicture}[
-                node distance=2cm, 
-                auto, 
-                thick,
-                box/.style={
-                    rectangle,
-                    rounded corners,
-                    draw=black, 
-                    align=center,
-                    drop shadow,
-                    minimum height=1cm,
-                    minimum width=2cm
-                },
-                arrow/.style={
-                    ->,
-                    -{Stealth[length=10pt]}
-                }
-            ]
-            
-                % Nodes
-                \node[box, fill=yellow!50] (task) {Task};
-                \node[box, fill=yellow!70, right=3cm of task] (ioencoder) {IOEncoder};
-                \node[box, fill=blue!20, below=1cm of task] (state) {State};
-                \node[box, fill=blue!50, right=3cm of state] (ruleencoder) {RuleEncoder};
-                
-                % Positioning the Transformer node in between IOEncoder and RuleEncoder
-                \coordinate (middle) at ($(ioencoder.east)!0.5!(ruleencoder.east)$);
-                \node[box, fill=green!20, right=3cm of middle] (transformer) {Transformer};
-                
-                % Nodes for FORWARD and Z at 45 degree angles
-                \node[box, fill=purple!30, above right=0.5cm and 2cm of transformer] (forward) {FORWARD};
-                \node[box, fill=purple!50, below right=0.5cm and 2cm of transformer] (z) {Z};
-            
-                % Edges
-                \draw[arrow] (task) -- (ioencoder);
-                \draw[arrow] (state) -- (ruleencoder);
-                \draw[arrow] (ioencoder) -- (transformer);
-                \draw[arrow] (ruleencoder) -- (transformer);
-                \draw[arrow] (transformer) -- (forward);
-                \draw[arrow] (transformer) -- (z);
-            
-            \end{tikzpicture}
-        \end{adjustbox}
-        \caption{Insert explanation + maybe change task to an actual task; same with state; maybe also show the forward and Z output better.}
-        \label{ref:model_diagram}
-    \end{figure*}
-    
-    
-    
-    

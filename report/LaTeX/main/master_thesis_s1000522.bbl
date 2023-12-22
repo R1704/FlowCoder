@@ -105,6 +105,24 @@ Artur~d'Avila Garcez and Luis~C. Lamb.
 \newblock {\em arXiv:2012.05876 [cs]}, December 2020.
 \newblock arXiv: 2012.05876.
 
+\bibitem{gulwani_program_2017}
+Sumit Gulwani, Oleksandr Polozov, and Rishabh Singh.
+\newblock {\em Program synthesis}.
+\newblock Number 4.2017, 1-2 in Foundations and trends in programming
+  languages. Now Publishers, Hanover, MA Delft, 2017.
+
+\bibitem{ullman_theory_2012}
+Tomer~D. Ullman, Noah~D. Goodman, and Joshua~B. Tenenbaum.
+\newblock Theory learning as stochastic search in the language of thought.
+\newblock {\em Cognitive Development}, 27(4):455--480, October 2012.
+
+\bibitem{Devlin_Uesato_Bhupatiraju_Singh_Mohamed_Kohli_2017}
+Jacob Devlin, Jonathan Uesato, Surya Bhupatiraju, Rishabh Singh, Abdel-rahman
+  Mohamed, and Pushmeet Kohli.
+\newblock Robustfill: Neural program learning under noisy i/o.
+\newblock In {\em Proceedings of the 34th International Conference on Machine
+  Learning}, page 990–998. PMLR, July 2017.
+
 \bibitem{hinton1995wake}
 Geoffrey~E Hinton, Peter Dayan, Brendan~J Frey, and Radford~M Neal.
 \newblock The" wake-sleep" algorithm for unsupervised neural networks.
@@ -131,6 +149,21 @@ Emmanuel Bengio, Moksh Jain, Maksym Korablyov, Doina Precup, and Yoshua Bengio.
 \newblock In {\em Advances in {Neural} {Information} {Processing} {Systems}},
   volume~34, pages 27381--27394. Curran Associates, Inc., 2021.
 
+\bibitem{kim_compound_2019}
+Yoon Kim, Chris Dyer, and Alexander Rush.
+\newblock Compound {Probabilistic} {Context}-{Free} {Grammars} for {Grammar}
+  {Induction}.
+\newblock In {\em Proceedings of the 57th {Annual} {Meeting} of the
+  {Association} for {Computational} {Linguistics}}, pages 2369--2385, Florence,
+  Italy, July 2019. Association for Computational Linguistics.
+
+\bibitem{de_Bruijn_1972}
+N.~G de~Bruijn.
+\newblock Lambda calculus notation with nameless dummies, a tool for automatic
+  formula manipulation, with application to the church-rosser theorem.
+\newblock {\em Indagationes Mathematicae (Proceedings)}, 75(5):381–392,
+  January 1972.
+
 \bibitem{bengio2023gflownet}
 Yoshua Bengio, Salem Lahlou, Tristan Deleu, Edward~J Hu, Mo~Tiwari, and
   Emmanuel Bengio.
@@ -150,24 +183,73 @@ Edward Hu, Nikolay Malkin, Moksh Jain, Katie Everett, Alexandros Graikos, and
   February 2023.
 \newblock arXiv:2302.06576 [cs, stat].
 
-\bibitem{kim_compound_2019}
-Yoon Kim, Chris Dyer, and Alexander Rush.
-\newblock Compound {Probabilistic} {Context}-{Free} {Grammars} for {Grammar}
-  {Induction}.
-\newblock In {\em Proceedings of the 57th {Annual} {Meeting} of the
-  {Association} for {Computational} {Linguistics}}, pages 2369--2385, Florence,
-  Italy, July 2019. Association for Computational Linguistics.
+\bibitem{allamanis2017learning}
+Miltiadis Allamanis, Marc Brockschmidt, and Mahmoud Khademi.
+\newblock Learning to represent programs with graphs.
+\newblock {\em arXiv preprint arXiv:1711.00740}, 2017.
 
-\bibitem{ullman_theory_2012}
-Tomer~D. Ullman, Noah~D. Goodman, and Joshua~B. Tenenbaum.
-\newblock Theory learning as stochastic search in the language of thought.
-\newblock {\em Cognitive Development}, 27(4):455--480, October 2012.
+\bibitem{velickovic_clrs_2022}
+Petar Veličković, Adrià~Puigdomènech Badia, David Budden, Razvan Pascanu,
+  Andrea Banino, Misha Dashevskiy, Raia Hadsell, and Charles Blundell.
+\newblock The {CLRS} {Algorithmic} {Reasoning} {Benchmark}, June 2022.
+\newblock arXiv:2205.15659 [cs, stat].
 
-\bibitem{gulwani_program_2017}
-Sumit Gulwani, Oleksandr Polozov, and Rishabh Singh.
-\newblock {\em Program synthesis}.
-\newblock Number 4.2017, 1-2 in Foundations and trends in programming
-  languages. Now Publishers, Hanover, MA Delft, 2017.
+\bibitem{Bieber_Sutton_Larochelle_Tarlow_2020}
+David Bieber, Charles Sutton, Hugo Larochelle, and Daniel Tarlow.
+\newblock Learning to execute programs with instruction pointer attention graph
+  neural networks.
+\newblock (arXiv:2010.12621), October 2020.
+\newblock arXiv:2010.12621 [cs].
+
+\bibitem{ibarz2022generalist}
+Borja Ibarz, Vitaly Kurin, George Papamakarios, Kyriacos Nikiforou, Mehdi
+  Bennani, R{\'o}bert Csord{\'a}s, Andrew Dudzik, Matko Bo{\v{s}}njak, Alex
+  Vitvitskyi, Yulia Rubanova, et~al.
+\newblock A generalist neural algorithmic learner.
+\newblock {\em arXiv preprint arXiv:2209.11142}, 2022.
+
+\bibitem{peng_rethinking_2022}
+Han Peng, Ge~Li, Yunfei Zhao, and Zhi Jin.
+\newblock Rethinking {Positional} {Encoding} in {Tree} {Transformer} for {Code}
+  {Representation}.
+\newblock In {\em Proceedings of the 2022 {Conference} on {Empirical} {Methods}
+  in {Natural} {Language} {Processing}}, pages 3204--3214, Abu Dhabi, United
+  Arab Emirates, December 2022. Association for Computational Linguistics.
+
+\bibitem{Wang_Lee_Chen_2019}
+Yaushian Wang, Hung-Yi Lee, and Yun-Nung Chen.
+\newblock Tree transformer: Integrating tree structures into self-attention.
+\newblock In Kentaro Inui, Jing Jiang, Vincent Ng, and Xiaojun Wan, editors,
+  {\em Proceedings of the 2019 Conference on Empirical Methods in Natural
+  Language Processing and the 9th International Joint Conference on Natural
+  Language Processing (EMNLP-IJCNLP)}, page 1061–1070, Hong Kong, China,
+  November 2019. Association for Computational Linguistics.
+
+\bibitem{he_trees_2021}
+Qi~He, João Sedoc, and Jordan Rodu.
+\newblock Trees in transformers: a theoretical analysis of the {Transformer}'s
+  ability to represent trees, December 2021.
+\newblock arXiv:2112.11913 [cs].
+
+\bibitem{wang2017dynamic}
+Ke~Wang, Rishabh Singh, and Zhendong Su.
+\newblock Dynamic neural program embedding for program repair.
+\newblock {\em arXiv preprint arXiv:1711.07163}, 2017.
+
+\bibitem{zhang_novel_2019}
+Jian Zhang, Xu~Wang, Hongyu Zhang, Hailong Sun, Kaixuan Wang, and Xudong Liu.
+\newblock A {Novel} {Neural} {Source} {Code} {Representation} {Based} on
+  {Abstract} {Syntax} {Tree}.
+\newblock In {\em 2019 {IEEE}/{ACM} 41st {International} {Conference} on
+  {Software} {Engineering} ({ICSE})}, pages 783--794, Montreal, QC, Canada, May
+  2019. IEEE.
+
+\bibitem{oliveira_abstract_2013}
+Bruno C. D.~S. Oliveira and Andres Löh.
+\newblock Abstract syntax graphs for domain specific languages.
+\newblock In {\em Proceedings of the {ACM} {SIGPLAN} 2013 workshop on {Partial}
+  evaluation and program manipulation}, pages 87--96, Rome Italy, January 2013.
+  ACM.
 
 \bibitem{sep-leibniz-logic-influence}
 Volker Peckhaus.
