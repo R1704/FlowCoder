@@ -5,53 +5,45 @@
 
 \clearpage
 \section*{Acknowledgement}
+I would like to express my sincere gratitude to my supervisor for the numerous insightful discussions, indulging my every new excitement for new ideas. Their guidance and expertise have been invaluable in shaping my research and in enhancing my understanding.
+Additionally, I would like to show appreciation to my parents, to my sister, and to my friends for their endless patience, encouragement, and unconditional belief in me.
+Lastly, the unwavering support of my partner throughout this journey has been a constant source of motivation and inspiration, which I am greatly thankful for.
+
+I am truly fortunate to have such a strong support network, and I am deeply appreciative of the roles each of them has played in my academic and personal development.
 
 \begin{abstract}
-    I posit that the construction of our conceptual architecture, abides by the same principles as any hierarchical self-organising system, namely discernment about what it is and what it is not. 
+    \acrfull{ai} research has historically been polarized between symbolic reasoning, characterized by precise but inflexible models, and deep learning, known for its analogical reasoning capabilities yet limited by poor generalization to \acrfull{ood} data and high data requirements. Despite the successes of \acrfullpl{llm}, challenges such as confabulation and a lack of causal reasoning persist, underscoring a gap in achieving human-like cognition. This study introduces FlowCoder, a novel program synthesizer that synergizes the symbolic and subsymbolic paradigms by embedding programs within a Transformer-based implicit world model and utilizing \acrfull{gfn} for program inference. FlowCoder demonstrates an ability in extrapolating to \acrshort{ood} tasks and performing efficient one-shot inference given sufficient training.
+    This work showcases FlowCoder's capacity as a model in program synthesis and more so discusses its potential and theoretical implications as a model for a \acrfull{lot}.
 \end{abstract}
 
 \tableofcontents
 \listoffigures
 \listoftables
 
-
-% \todo[inline]{Go through text and see which words should be operationalised into the glossary}
-% \todo[inline]{Check that al terms in glossary are used somewhere in text}
-% \todo[inline]{Put all terms in gpt and ask for similar terms}
-% \todo[inline]{Use plagiarism checker}
-% \todo[inline]{make sure that the tone of the thesis is the same everywhere. 
-% Write it with wit. Make it fun to read. 
-% Don't make convoluted sentences.}
-% \todo[inline]{Make sure to link sections to one another.}
-% \todo[inline]{Check for british vs american grammar}
-% \todo[inline]{Put good quotes in fitting sections.}
-% \todo[inline]{Go through all craft notes (tags) and include ideas}
-% \todo[inline]{Make sure that all formulas use the same notation}
-% Order the appendix
-
-
-
 \newpage
 \input{../sections/introduction}
+
 \newpage
 \input{../sections/methods}
+
 \newpage
 \input{../sections/results}
+
 \newpage
 \input{../sections/discussion}
-\newpage
-\input{../sections/philosophical}
+
+% \newpage
+% \input{../sections/philosophical}
+
+\printglossary[type=\acronymtype]
+% \printglossary
 
 \clearpage
-\printglossaries
 
+\printbibliography
 \clearpage
-\bibliographystyle{unsrt}
-\bibliography{../auxiliary/ref.bib}
 
-\clearpage
 \appendix
-\onecolumn
 \input{../auxiliary/appendix}
 
 \end{document}

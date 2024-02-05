@@ -1,54 +1,20 @@
-This is BibTeX, Version 0.99d (TeX Live 2020)
-Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
-The top-level auxiliary file: master_thesis_s1000522.aux
-The style file: unsrt.bst
-Database file #1: ../auxiliary/ref.bib
-Warning--empty journal in Ellis_Wong_Nye_Sable-Meyer_Cary_Morales_Hewitt_Solar-Lezama_Tenenbaum
-Warning--empty year in Ellis_Wong_Nye_Sable-Meyer_Cary_Morales_Hewitt_Solar-Lezama_Tenenbaum
-Warning--empty journal in Bieber_Sutton_Larochelle_Tarlow_2020
-Warning--there's a number but no volume in Bieber_Sutton_Larochelle_Tarlow_2020
-Warning--empty journal in blokpoel2018deep
-Warning--empty journal in haselager1997
-Warning--empty journal in palmer1978fundamental
-You've used 70 entries,
-            1791 wiz_defined-function locations,
-            861 strings with 17904 characters,
-and the built_in function-call counts, 16804 in all, are:
-= -- 1468
-> -- 834
-< -- 14
-+ -- 308
-- -- 238
-* -- 1155
-:= -- 2660
-add.period$ -- 229
-call.type$ -- 70
-change.case$ -- 66
-chr.to.int$ -- 0
-cite$ -- 77
-duplicate$ -- 769
-empty$ -- 1585
-format.name$ -- 238
-if$ -- 3761
-int.to.chr$ -- 0
-int.to.str$ -- 70
-missing$ -- 71
-newline$ -- 357
-num.names$ -- 78
-pop$ -- 246
-preamble$ -- 1
-purify$ -- 0
-quote$ -- 0
-skip$ -- 362
-stack$ -- 0
-substring$ -- 940
-swap$ -- 198
-text.length$ -- 14
-text.prefix$ -- 0
-top$ -- 0
-type$ -- 0
-warning$ -- 7
-while$ -- 142
-width$ -- 72
-write$ -- 774
-(There were 7 warnings)
+[0] Config.pm:304> INFO - This is Biber 2.14
+[0] Config.pm:307> INFO - Logfile is 'master_thesis_s1000522.blg'
+[77] biber-darwin:322> INFO - === Mon Feb  5, 2024, 14:53:01
+[93] Biber.pm:415> INFO - Reading 'master_thesis_s1000522.bcf'
+[214] Biber.pm:943> INFO - Found 91 citekeys in bib section 0
+[228] Biber.pm:4256> INFO - Processing section 0
+[229] Utils.pm:75> INFO - Globbing data source '../auxiliary/ref.bib'
+[229] Utils.pm:91> INFO - Globbed data source '../auxiliary/ref.bib' to ../auxiliary/ref.bib
+[239] Biber.pm:4455> INFO - Looking for bibtex format file '../auxiliary/ref.bib' for section 0
+[277] bibtex.pm:1653> INFO - LaTeX decoding ...
+[1349] bibtex.pm:1471> INFO - Found BibTeX data source '../auxiliary/ref.bib'
+[2131] Utils.pm:304> WARN - I didn't find a database entry for 'malkin_trajectory_2022' (section 0)
+[2133] Utils.pm:304> WARN - I didn't find a database entry for related entry 'Kahneman12' in entry 'Kahneman11' - ignoring (section 0)
+[2238] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[2238] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[2238] Biber.pm:4084> INFO - Sorting list 'nty/global//global/global' of type 'entry' with template 'nty' and locale 'en-US'
+[2238] Biber.pm:4090> INFO - No sort tailoring available for locale 'en-US'
+[2346] bbl.pm:652> INFO - Writing 'master_thesis_s1000522.bbl' with encoding 'UTF-8'
+[2439] bbl.pm:755> INFO - Output to master_thesis_s1000522.bbl
+[2439] Biber.pm:128> INFO - WARNINGS: 2

@@ -35,18 +35,20 @@ def evaluation_from_compressed(program_compressed, dsl, environment, target_type
 
     return stack.pop()
 
+
 def reconstruct_from_compressed(program, target_type):
     program_as_list = []
     list_from_compressed(program, program_as_list)
-    # print(f'list from compressed {program_as_list}')
     program_as_list.reverse()
     return reconstruct_from_list(program_as_list, target_type)
+
 
 def list_from_compressed(program, program_as_list=None):
     (P, sub_program) = program
     if sub_program:
         list_from_compressed(sub_program, program_as_list)
     program_as_list.append(P)
+
 
 def reconstruct_from_list(program_as_list, target_type):
     if len(program_as_list) == 1:

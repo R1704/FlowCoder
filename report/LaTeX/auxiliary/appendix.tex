@@ -1,7 +1,7 @@
 
-\section{Domain Specific Language (DSL)} \label{app:dsl}
-
-\subsection{Semantics}
+\chapter{Domain Specific Language (DSL)} \label{app:dsl}
+The \acrlong{dsl}, including semantics and primitive types, as given by \citet{fijalkowScalingNeuralProgram2021}.
+\section{Semantics}
 \begin{lstlisting}[style=mypy, breaklines=true]
     semantics = {
     "empty": [],
@@ -42,7 +42,7 @@
 \end{lstlisting}
 
 \clearpage
-\subsection{Primitive Types}
+\section{Primitive Types}
 \begin{lstlisting}[style=mypy, breaklines=true]
     primitive_types = {
     "empty": List(t0),
@@ -83,7 +83,7 @@
 \end{lstlisting}
 
 \clearpage
-\section{Experiment Hyperparameters}\label{app:hyperparams}
+\chapter{Experiment Hyperparameters}\label{app:hyperparams}
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|}
@@ -94,8 +94,8 @@
         $\gamma$ & $10$ \\\hline
         $\delta$ & $150$ \\\hline 
         $\epsilon$ & $0.3$ \\\hline 
-        \texttt{replay\_prob} & $1$ / $0.3$ \\\hline 
-        \texttt{fantasy\_prob} & $1$ \\\hline 
+        $\xi$ & $1$ / $0.3$ \\\hline 
+        $\sigma$ & $1$ \\\hline 
         \texttt{learning rate: generative model} & $0.0001$ \\\hline 
         \texttt{learning rate: forward policy} & $0.0001$ \\\hline 
         \texttt{e-steps} & $2.000$ \\\hline 
@@ -109,7 +109,7 @@
 \end{table}
 
 \clearpage
-\section{Model Parameters}
+\chapter{Model Parameters}
 \begin{table}[h!]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -145,7 +145,7 @@
     \end{table}
 
 \clearpage
-\section{Formal Grammars}\label{app:cfg}
+\chapter{Formal Grammars}\label{app:cfg}
 
 \textbf{Context-Free Grammars (CFGs)} are essential in defining the syntactical structures of many formal languages.
 We can formalize the notion of CFGs as follows:
@@ -174,10 +174,10 @@ In other words, the problem is to locate a program \( p^* \) within the vast pro
     \item \( N \) and \( \Sigma \) are as defined in the CFG.
     \item \( P' \) is a set of production rules, where each rule \( A \rightarrow \alpha \) is associated with a probability \( P(A \rightarrow \alpha) \), representing the likelihood of selecting that particular rule. These probabilities are subject to the condition that, for each non-terminal \( A \), the sum of probabilities for all rules \( A \rightarrow \alpha \) is equal to 1.
 \end{itemize}
-
-
 \clearpage
-\section{Levenshtein Distance}\label{app:levenshtein}
+
+
+\chapter{Levenshtein Distance}\label{app:levenshtein}
 Given two strings \( s \) and \( t \) of lengths \( m \) and \( n \) respectively, the Levenshtein distance \( d(s, t) \) is defined as the cost of the cheapest sequence of edits needed to transform \( s \) into \( t \). 
 The Levenshtein distance can be efficiently computed using dynamic programming. The idea is to construct a matrix where each cell \( (i, j) \) represents the cost of transforming the first \( i \) characters of \( s \) into the first \( j \) characters of \( t \). 
 
@@ -197,14 +197,74 @@ The formula for filling in the matrix is:
 
 The value of \( d(m, n) \) will then be the Levenshtein distance between \( s \) and \( t \).
 
+\clearpage
+\chapter{Trajectory Balance Loss}\label{app:TB}
+The following is a detailed derivation of the Trajectory Balance loss (for completeness sake), as described by Malkin et al. \cite{malkin_trajectory_2022}.
 
-\section{Tasks}
 
-% \begin{longtable}{ll}
-%     \toprule
-%     Task & Example \\
-%     \midrule
-%     \endhead
-%     \csvreader[late after line=\\]{/Users/ron/Code/master_thesis/src/tasks_examples.csv}{Task=\Task,Example=\Example}{\Task & \Example}
-%     \bottomrule
-% \end{longtable}
+Combining \autoref{eq:flow} and \autoref{eq:flow_match} gives us:
+
+\begin{equation}
+    \frac{R(s_T)}{Z_\theta} \prod_{t=0}^{T-1} \pi_\theta(s_{t+1} | s_{t}) = \frac{R(s_0)}{Z_\theta} \prod_{t=0}^{T-1} \beta_\theta(s_{t} | s_{t+1})
+\end{equation}
+
+Here \( \beta \) is the backward policy, predicting parent states. 
+The initial state \(s_0\) has the total flow and no reward, we can rewrite it and get:
+
+\begin{equation}
+    Z_{\theta} \prod_{t=0}^{T-1} \pi_\theta(s_{t+1} | s_{t}) = R(s_T) \prod_{t=0}^{T-1} \beta_\theta(s_{t} | s_{t+1})
+\end{equation}
+
+We can now take the log on both sides:
+
+\begin{equation}
+    \log \left(Z_{\theta} \prod_{t=0}^{T-1} \pi_\theta(s_{t+1} | s_{t})\right) = \log \left(R(s_T) \prod_{t=0}^{T-1} \beta_\theta(s_{t} | s_{t+1})\right)
+\end{equation}
+
+This can be rearranged to:
+
+\begin{equation}
+    \log Z_\theta + \sum_{t=0}^{T-1} \log \pi_\theta(s_{t+1}|s_{t}) = \log R(s_T) + \sum_{t=0}^{T-1} \log \beta_\theta(s_{t}|s_{t+1})
+\end{equation}
+
+The trajectory balance loss is the squared difference:
+
+\begin{equation}
+    \mathcal{L}_{TB} = \left(\log Z_\theta + \sum_{t=0}^{T-1} \log \pi_\theta(s_{t+1}|s_{t}) - \log R(s_T) - \sum_{t=0}^{T-1} \log \beta_\theta(s_{t}|s_{t+1})\right)^2
+\end{equation}
+
+In order to mitigate computational expense, I am embedding CFG rules rather than primitives, such that each rule is unique. Thus, every predicted node has exactly one parent. Therefore, $\beta$ will always be $1$ and can be disregarded from the equation.
+Moreover, since we are solving tasks \( x \in X \), we have a conditional reward distribution $R(s_T|x)$, as well as a conditional forward policy $\pi_\theta(s_T|x)$ and partition function $Z_\theta(x)$.
+This gives us the final loss:
+
+\begin{equation}
+    \mathcal{L}_{TB} = \left(\log Z_\theta(x) + \sum_{t=0}^{T-1} \log \pi_\theta(s_{t+1}|s_{t}, x) - \log R(s_T \vert x)\right)^2
+\end{equation}    
+
+
+
+\chapter{Variational Inference}\label{app:vi}
+Variational Inference (VI) is a strategy that leverages a simpler distribution \( q(z | x) \)  to approximate a more complex target distribution. This is achieved by minimizing the Kullback-Leibler (KL) divergence, a similarity measure of probability distributions, between the true distribution and its approximation.
+
+\[
+    D_{KL}[q(z|x) || p(z|x)]
+\]
+
+The approximation can be optimized by increasing the Evidence Lower Bound (ELBO) by:
+
+\begin{equation}
+\text{ELBO} = E_{q(z|x)}[\log p(x|z)] - D_{KL}(q(z|x) || p(z|x))
+\end{equation}
+Where \( E_{q(z|x)} \) denotes the expectation under the recognition density \( q \).
+
+In the context of \emph{amortized} VI, computation of the variational parameters \( \phi \) is shared across multiple data points. Traditional VI might determine a unique set of variational parameters \( \phi_i \) for each data point \( x_i \), which is computationally intensive. Amortized VI, however, leverages a function (commonly a neural network) to compute the variational parameters \( \phi \) for any data point \( x \) in a single pass, enhancing efficiency. In other words, we parameterize the recognition density. 
+
+this aligns with the free energy principle formulation [show that.]
+maximizing the evidence lower bound (ELBO), is equivalent to the negative free energy. 
+
+Amortized variational inference refers to the use of a parameterized function (e.g., a neural network) to approximate the posterior distribution in a variational Bayesian setting, where the parameters are learned once and can be used to infer the posterior for any given data point without retraining. It is "amortized" because the cost of learning the inference model is spread over all the data points it is used on.
+
+GFlowNets relate to amortized variational inference in the sense that they learn a policy network that can generate samples for any given reward function without having to solve a new optimization problem for each sample. This is similar to how an amortized inference model can be applied to new data without additional optimization.
+
+In both cases, the "amortization" allows for efficient inference or generation after the initial cost of learning the model. However, GFlowNets focus on learning to sample in proportion to a reward function, whereas amortized variational inference is concerned with approximating the posterior distribution of latent variables given observed data.
+

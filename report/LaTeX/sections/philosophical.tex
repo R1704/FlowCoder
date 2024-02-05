@@ -1,7 +1,7 @@
 \chapter{Philosophical Ramifications}
 Here I want to discuss the paradigms assumed more generally, consider alternatives, and discuss the benefits and limitations of the approach and lastly consider the overarching elusive questions every cognitive scientist thinks about: who am I.
 
-\section{\orange{Language of Thought}}
+\section{\orange{Language of Thought}}\label{LOT}
 
 The idea that the thoughts are constructed by some kind of Language of Thought (LOT), in order to understand and represent our reality has a long history. 
 Gottfried Leibniz imagined a \textit{Characteristica Universalis}, a formal language capable of expressing metaphysical concepts \cite{sep-leibniz-logic-influence}.
@@ -185,67 +185,6 @@ The question then remains, where primitives actually come from.
 \subsubsection{\green{Neurosymbolic AI}}
 [should this be in the concept section?]
 
-Garcez et al. analyse connectivist and symbolic paradigms and find that the most effective AI would integrate these approaches \cite{garcez2020neurosymbolic}. They find that for effective learning from data, knowledge in neurosymbolic AI should be embedded into vector representations. Once networks are trained, symbols can be extracted. These symbols are not only descriptive but also operate at an optimal level of abstraction. This facilitates infinite applications with finite resources. Furthermore, this enables compositional and discrete reasoning at the symbolic layer, providing the capability to extrapolate beyond the given data distribution. Combinatorial reasoning is challenging. The combination of learning and reasoning addresses this problem by learning to reduce the number of effective combinations. 
-Consider a neural network that learns certain regularities and recognizes that whenever it sees features of type A, features of type B are also present, but features of type C are not. This implicit rule can be made explicit by converting it into symbols: $\forall x A(x) \rightarrow (\exists y B(y) \land \lnot \exists z C(z))$.
-[relate this to the framing problem that if A and B change, C should change...]
-
-
-Discussing what LLMs are supposed to model, whether approximations are necessary etc. Symbols. \cite{Blank_2023}
-
-\subsubsection{\red{Variable Binding}}
-
-
-
-\section{\orange{What is Meaning?}}
-- what do the symbols mean? or "what's all that jazz (for concepts or so)"
-- is there a need for symbols?
-
-Conceptual role semantics (CRS) is the view that the meanings of expressions of a language (or other symbol system) or the contents of mental states are determined or explained by the role of the expressions or mental states in thinking. The theory can be taken to be applicable to language in the ordinary sense, to mental representations, conceived of either as symbols in a ‘language of thought’ or as mental states such as beliefs, or to certain other sorts of symbol systems. CRS rejects the competing idea that thoughts have intrinsic content that is prior to the use of concepts in thought. According to CRS, meaning and content derive from use, not the other way round.
-
-\begin{itemize}
-    \item variable binding
-    \item grounding
-    \item binding problem
-\end{itemize}
-
-Piantadosi asserts that symbols have no inherent meaning, instead, meaning emerges from the dynamic relations between symbols. I.e., only the conceptual role and the dynamics of the symbols define meaning \cite{piantadosi2021computational}.
-
-By defining meaning as an emergent phenomenon of conceptual roles, Piantadosi and Hill do not rule out that large language models (LLM) already have some foundation of meaningful concepts \cite{piantasodi2022meaning}.
-
-Recent work tries to relate these ideas to biological systems, e.g. Quan et al. propose how role-filler interactions could be implemented in the brain via temporal synchrony to permit symbolic processing and dynamic binding of variables \cite{do2021neural}.
-
-Santoro et al. argue for a semiotic approach, assert that symbols are subjective, and propose that meaning of symbols in artificial systems will arise when they are subjected to socio-cultural interactions \cite{santoro2021symbolic}.
-
-
-
-
-
-Meaning: You establish the relationship between pattern and the function that describes the universe, your conceptual model, and that is meaning. Meaning is your entire mental universe. It's the unified model of reality that your mind is constructing. So for any new thing, if we can establish a relationship between the thing and our model, it has meaning. If we can place it in our conceptual framework, it gets meaning. 
-
-- subsubsection: what is meaning?
-
-\improvement[inline]{difference between what is meaning and what is meaningful, maps of meaning. what is meaningful is what guides you. its a gradient, a heuristic. Show studies that deeper understanding improves memory and meaning.}
-
-
-
-
-
-Ellis et al. use $\lambda$-calculus, which is Turing complete, to build something akin to a LOT \cite{ellis_dreamcoder_2021}. In response, Piantadosi shows that combinatorial logic is equivalent to $\lambda$-calculus and why combinatorial-logic-like (LCL) language is preferable, for one because it doesn't assume primitives, thereby avoiding the problem of their meaning and origin.
-
-One of the questions regarding a LOT is whether thoughts can be produced by simple syntactic symbol manipulation.
-I (and many others) suspect that semantics are not just an emergent phenomenon but that it actively shapes our perception and concept formation \cite{santoro2021symbolic, hofstadter_gdel_1979}.
-
-Moreover, purely symbolic attempts, albeit being the original approach of artificial intelligence, have proven to be insufficient \cite{garcez2020neurosymbolic}. Instead, the successes of modern AI are owed to the advances of connectionist models. These however, have their own deficits, namely, being incredibly data-hungry, lacking causality, and lacking out-of-distribution generalization, to name a few. Therefore, new approaches try to combine these two AI strands into what is known as \emph{neurosymbolic AI} \cite{garcez2020neurosymbolic}.
-
-
-
-
-\subsubsection{\green{Poverty of the Stimulus}}
-\todo[inline]{should this be here?}
-
-The "poverty of the stimulus" argument is an argument that is often made in the field of linguistics and cognitive science. It argues that children are able to learn language despite being exposed to a relatively limited amount of data, which suggests that they must have some innate knowledge or ability that helps them learn language.
-
-The argument is based on the observation that the linguistic input that children receive is often incomplete, ambiguous, or inconsistent. For example, children may hear sentences that contain errors or that are not grammatical. Despite this, children are able to learn the rules of their language and use them to produce and understand sentences that they have never heard before.
 
 
 
@@ -273,6 +212,8 @@ DreamCoder does adhere to this principle, since all the knowledge it has is enco
 
 \paragraph{\green{Novelty}} An agent should be able to generate novel hypotheses, i.e. programs that are not already stored in the library. In DreamCoder, programs are represented as polymorphically typed $\lambda$-expressions which allow for the ability to define new functions. When presented with a (novel) task, DreamCoder synthesizes programs, tailored to the task. This is one of the main features of the algorithm: program synthesis.
 
+\todo[inline]{This is related to plagiarism and originality. Constructivism.}
+
 \paragraph{\green{Groundedness}} A candidate hypothesis should be grounded, meaning, the relation of the representations of the explanandum and explanans should be well-defined. Since DreamCoder uses a DSL, this property is inherent in the system. Moreover, the output of DreamCoder is a library of programs (along with a recognition model). Programs are universal and can be represented by any Turing-complete language.
 
 \paragraph{\green{Sensibility}} A candidate hypothesis should explain the observation. All candidate programs suggested during the wake phase are sensible, as they are only selected during search if they solve the task at hand. 
@@ -287,11 +228,12 @@ Search is done by a specifically engineered parallel enumaration algorithm which
 
 \subsubsection{\green{Inference to the Best Explanation}}
 Now that we already have a set of candidates, how do we select the best of the generated hypotheses? After applying neurally guided search, we have an enumerated list of programs solving the task. \textit{Best} is defined in DreamCoder as the shortest program with the highest probability of solving the task. This makes it seem as if abduction is solved easily and tractably. However, the bulk of the computations happen in the sleep phases. In the dreaming phase, the recognition model $Q$ is trained to solve MAP inference, on both replays and fantasies and it is known for MAP inference to be NP-hard. Nonetheless, in replays the system only marginalizes over the best $k$ programs for each task, which reduces the amount of computations and makes the model scalable. 
-One of the major hinderences in the quest for commonsense in AI is the problem of finding the \emph{relevant} pieces of knowledge while ignoring irrelevant information \footnote{For an extensive discussion on the frame problem, see \cite{haselager1997}}.
+One of the major hindrances in the quest for commonsense in AI is the problem of finding the \emph{relevant} pieces of knowledge while ignoring irrelevant information \footnote{For an extensive discussion on the frame problem, see \cite{haselager1997}}.
 There are two main approaches trying to solve this problem. One is to improve the representation of the knowledge while the other posits a better inference should be applied. DreamCoder implements both these strategies; in fact, these two approaches bootstrap each other and keep improving while learning new tasks.
 
 \paragraph{\green{Representation}} Regarding the representational approach, the question arises of how implicit knowledge should be dealt with. Say, $A > B$ and $B > C$, implicitly we know, $A > C$. This piece of information though, has to be derived before it can be used. Similarly, once this has been derived and has been made explicit, if any of the relations change, it might happen that a derived conclusion has to be adjusted retrospectively. This opens up new problems. One way of solving this is by using intrinsic representations which means that the representations of the relations have the same constraints as the actual relations \cite{palmer1978fundamental}. 
-In DreamCoder knowledge is represented symbolically, i.e. the programs in the library are implemented as syntax trees. During the abstraction phase, programs that have been found during wake are refactored. The authors leverage \emph{E-graph matching} which is a data structure that can compactly represent alternative versions of the same program and \emph{version space} which is a data-structure that allows for efficient set operations on its compactly represented programs, to deal with the combinatorial explosion that arises with refactoring. In essence, during abstraction the system looks for sub-routines that have been useful across many of the existing programs as well as the programs that have been newly found during wake and compresses them into new concepts which can be used in upcoming tasks. In this way, explicit knowledge is made more accessible and although the overall library grows, the depth and breadth of the library virtually shrinks because many sub-programs that are deep in the library don't have to be used anymore. Moreover, crucial implicit knowledge is therefore inferred and made explicit. Since the system develops and learns over time, it can adapt whenever it encounters novel tasks.
+% In DreamCoder knowledge is represented symbolically, i.e. the programs in the library are implemented as syntax trees. During the abstraction phase, programs that have been found during wake are refactored. The authors leverage \emph{E-graph matching} which is a data structure that can compactly represent alternative versions of the same program and \emph{version space} which is a data-structure that allows for efficient set operations on its compactly represented programs, to deal with the combinatorial explosion that arises with refactoring. In essence, during abstraction the system looks for sub-routines that have been useful across many of the existing programs as well as the programs that have been newly found during wake and compresses them into new concepts which can be used in upcoming tasks. In this way, explicit knowledge is made more accessible and although the overall library grows, the depth and breadth of the library virtually shrinks because many sub-programs that are deep in the library don't have to be used anymore.
+ Moreover, crucial implicit knowledge is therefore inferred and made explicit. Since the system develops and learns over time, it can adapt whenever it encounters novel tasks.
 
 \paragraph{\green{Inference}} Proponents of the inferential approach usually don't dismiss the symbolic representations but propose that developments in order to better understand inference itself must be made. This is exactly where IBE comes into play. During dreaming, DreamCoder strengthens the mapping between programs and tasks during \emph{replay} and during \emph{fantasies} it learns to deviate from the observed data-set. This means, that the system learns to quickly recognize which patterns in the library are useful and how to quickly find them. One could say, it learns an intuition for the task-domain. It can therefore extrapolate to new tasks.
 
@@ -304,6 +246,13 @@ During waking then, DreamCoder has an improved library of programs, as well as a
 \end{itemize}
 
 
+
+
+
+
+
+
+
 \subsection{\red{Subsymbolic Parse Trees}}
 Implicit vs explicit
 \begin{itemize}
@@ -313,6 +262,12 @@ Implicit vs explicit
     \item etc. 
     \item other world models, schidthuber, etc.
 \end{itemize}
+
+
+
+
+
+
 
 
 
@@ -662,7 +617,7 @@ Conceptual space (relate this to Gordenford)
 
 
 \subsection{\green{Semantic Pointer Architecture}}
-Eliasmith et al. propose Semantic Pointers (SP) as neural representations that carry semantic content and can be thought of as vectors in high-dimensional space. They are composable into the representational structures necessary to support complex cognition \cite{eliasmith2013build}. To illustrate the notion of SPs, see figure \ref{fig:sp}. On the left we see how a visual percept, in this case a table, is compressed sequentially, much like in the layers of the visual cortex to eventually be represented by a single vector - a semantic pointer. 
+Eliasmith et al. propose Semantic Pointers (SP) as neural representations that carry semantic content and can be thought of as vectors in high-dimensional space. They are composable into the representational structures necessary to support complex cognition \cite{eliasmith2013build}. To illustrate the notion of SPs, see \autoref{fig:sp}. On the left we see how a visual percept, in this case a table, is compressed sequentially, much like in the layers of the visual cortex to eventually be represented by a single vector - a semantic pointer. 
     On the right we see the "inverse" function in which a semantic pointer is decompressed and returns the table. Notice that due to noise, the result does not correspond exactly to the original input. 
 
 \begin{figure*}
@@ -721,9 +676,9 @@ Eliasmith et al. propose Semantic Pointers (SP) as neural representations that c
 \subsection{\green{Concept space} \label{subsec:gaerdenfors}}
 \story{Properties of concepts, introducing the idea of concepetual spaces and a geometry of concept space (latent space)}
 
-Gärdenfors offers a geometric interpretation of cognition that serves as a bridge between the sub-symbolic and the symbolic, between the perceptual and the conceptual \cite{Gaerdenfors}. Her argues that concepts can be represented as regions in a conceptual space, where the dimensions of the space correspond to the different features or properties that can be used to describe the concepts.
+Gärdenfors offers a geometric interpretation of cognition that serves as a bridge between the sub-symbolic and the symbolic, between the perceptual and the conceptual \cite{Gaerdenfors}. He argues that concepts can be represented as regions in a conceptual space, where the dimensions of the space correspond to the different features or properties that can be used to describe the concepts.
 
-In this model, each quality dimension — be it temperature, weight, brightness, or hue — becomes an axis in a multi-dimensional space. Concepts are then regions within these spaces. Imagine, if you will, a three-dimensional space where color is represented: one axis for hue, another for saturation, and a third for brightness. A "concept" like 'red' would be a specific region in this 3D color space.
+In this model, each quality dimension — be it temperature, weight, brightness, or hue — becomes an axis in a multi-dimensional space. Concepts are then regions within these spaces. Imagine a three-dimensional space where color is represented: one axis for hue, another for saturation, and a third for brightness. A "concept" like 'red' would be a specific region in this 3D color space.
 
 
 In mathematical terms, a set is convex if, for every pair of points within the set, the line segment connecting them is also contained within the set. Imagine a balloon. If you pick any two points within the balloon and draw a line between them, that line never leaves the space of the balloon. In Gärdenfors' geometric concept space, most concepts are "convex" regions. For example, if you have a swan and a goose and consider them both as instances of "bird", then it's likely you'll consider everything in between also a "bird".
@@ -766,27 +721,27 @@ In mathematical terms, a set is convex if, for every pair of points within the s
 % Natural: Conceptual spaces are grounded in our perceptual and motor experiences. For example, the dimensions of the conceptual space for colors correspond to the different ways in which we perceive colors.
 % Flexible: Conceptual spaces can be used to model a variety of cognitive processes, including categorization, reasoning, and analogy.
 
-\source[inline]{Gardenfords book (2004)}
+% \source[inline]{Gardenfords book (2004)}
 
 
 
 
-I suspect that we use symmetry as an inductive bias [relate to dehaene]. The concept of opposites is a type of symmetrical relation where two entities are diametrically opposed on a spectrum or scale. Day and night, hot and cold, up and down — these pairs may help us organize our world into understandable categories. Of course there are many other types of symmetry, which could act as important inductive biases in order to construct a conceptual world model, 
-\begin{description}
-    \item[Reflectional Symmetry] When one half is the mirror image of the other half. E.g., many human faces or butterfly wings.
-    \item[Rotational Symmetry] When an object looks the same after a certain amount of rotation. E.g., a regular pentagon or a snowflake.
-    \item[Translational Symmetry] When an object can be moved (or translated) a certain distance and appear unchanged. E.g., wallpaper patterns.
-    \item[Bilateral Symmetry] Seen in many animals, where the left and right halves of an organism are mirror images of each other.
-    \item[Radial Symmetry] Where symmetry is centered around a central axis, like in starfish or daisies.
-    \item[Spiral Symmetry] Seen in objects like shells or certain galaxies, where there's a continuous curve centered on a point.
-    \item[Chiral Symmetry] Refers to objects that are mirror images but not superimposable, like left and right hands.
-    \item[Time Symmetry] In physics, certain processes are time-symmetric, meaning they can proceed forward or backward in time without violating the laws of physics.
-    \item[Scale Symmetry] When patterns look the same at any scale. Fractals are an example of this.
-    \item[Oppositional Symmetry] In abstract terms, where concepts have opposites or counterparts, like good/evil, light/dark, or positive/negative.
-\end{description} 
+% I suspect that we use symmetry as an inductive bias [relate to dehaene]. The concept of opposites is a type of symmetrical relation where two entities are diametrically opposed on a spectrum or scale. Day and night, hot and cold, up and down — these pairs may help us organize our world into understandable categories. Of course there are many other types of symmetry, which could act as important inductive biases in order to construct a conceptual world model, 
+% \begin{description}
+%     \item[Reflectional Symmetry] When one half is the mirror image of the other half. E.g., many human faces or butterfly wings.
+%     \item[Rotational Symmetry] When an object looks the same after a certain amount of rotation. E.g., a regular pentagon or a snowflake.
+%     \item[Translational Symmetry] When an object can be moved (or translated) a certain distance and appear unchanged. E.g., wallpaper patterns.
+%     \item[Bilateral Symmetry] Seen in many animals, where the left and right halves of an organism are mirror images of each other.
+%     \item[Radial Symmetry] Where symmetry is centered around a central axis, like in starfish or daisies.
+%     \item[Spiral Symmetry] Seen in objects like shells or certain galaxies, where there's a continuous curve centered on a point.
+%     \item[Chiral Symmetry] Refers to objects that are mirror images but not superimposable, like left and right hands.
+%     \item[Time Symmetry] In physics, certain processes are time-symmetric, meaning they can proceed forward or backward in time without violating the laws of physics.
+%     \item[Scale Symmetry] When patterns look the same at any scale. Fractals are an example of this.
+%     \item[Oppositional Symmetry] In abstract terms, where concepts have opposites or counterparts, like good/evil, light/dark, or positive/negative.
+% \end{description} 
 
-\improvement[inline]{isn't that already inherent since ANNs are doing linear algebra? I think the ANNs are capable of finding symmetrical relations but it could be a more explicit inductive bias/ heuristic? like we see that LLMs find some relations (man : king :: woman : queen), but it could be used explicitly for the construction of concepts. Also think about relational }
-[insert figure]
+% \improvement[inline]{isn't that already inherent since ANNs are doing linear algebra? I think the ANNs are capable of finding symmetrical relations but it could be a more explicit inductive bias/ heuristic? like we see that LLMs find some relations (man : king :: woman : queen), but it could be used explicitly for the construction of concepts. Also think about relational }
+% [insert figure]
 
 
 
@@ -824,7 +779,7 @@ I suspect that we use symmetry as an inductive bias [relate to dehaene]. The con
     \item the left abstracts, the left is more interested in categories, the right in the unique case
     \item the left sees things as inanimate, the right sees them as animate
     \item as we age we use the representations of what we know increasingly, neglecting the world. We become more solipsistic. This makes sense because perceiving things for the first time is computationally heavy and expensive, so the things we know from experience will usually be good enough.
-    \item Talk about confabulation (and perhaps in relation to LLMs)
+    \item Talk about confabulation (and perhaps in relation to LLMs See \cite{Smith_Greaves_Panch_2023}) 
 \end{itemize}
 
 Often, the most obvious things, once unpacked, reveal the most [examples?]. Our most basic perceptions and assumptions are so deeply integrated into our cognitive processes that they become invisible to us, essentially automatic. When driving the same route everyday, people may arrive at their destination without conscious awareness of it. Tasks become automated. [show studies, other examples like piano.]
@@ -845,11 +800,11 @@ This concept parallels the notion of "overfitting" in machine learning, where a 
 As we automate more cognitive functions—either through learned habits or technological aids—we engage less in "active sampling" of the world, reducing the richness and nuance in our perceptions. This leads to a form of "lossy compression" of reality, where only the most salient features, according to our models, are retained.
 
 
-- Problems should be solved at the lowest possible level of the hierarchy. Larger goals require more sophisticated organization.
-- How does a system recognize that it cannot solve it alone and that it needs to recruit other cells? Think of the computational boundary. Perhaps we must be able to estimate computational complexity. 
-- This compression of sensory information into concepts may be the origin of symbolic processing. 
+% - Problems should be solved at the lowest possible level of the hierarchy. Larger goals require more sophisticated organization.
+% - How does a system recognize that it cannot solve it alone and that it needs to recruit other cells? Think of the computational boundary. Perhaps we must be able to estimate computational complexity. 
+% - This compression of sensory information into concepts may be the origin of symbolic processing. 
 
-- Things we don't have concepts for don't exist. We can't describe them in our language. [related to joscha about truth.] 
+% - Things we don't have concepts for don't exist. We can't describe them in our language. [related to joscha about truth.] 
 
 
 
@@ -862,21 +817,16 @@ As we automate more cognitive functions—either through learned habits or techn
 % \subsection{The Geometry of Cognitive Spaces}
 % \subsubsection{Hyperbolic Spaces} (aligns with holarchies)
 
-\begin{itemize}
-    \item show representations in human brains and argue why the brain may largely be a generative model. 
-\end{itemize}
 
-A paradigm, coming originally from Ethology is the idea of reactive agents which have four defined "rules" on which they act (Murphy, 2000). Reflexes are hard-wired responses to certain stimuli. A knee-jerk reaction. Taxes
-define the movement of an organism towards (or away from) a certain stimuli. An example is the way ants follow a trail by chemotaxis. More complex behaviour is elicited through fixed-action-patterns. These consist of a sequence of certain behaviours, usually triggered by some stimulus. A squirrel's nut burying behaviour is an example. Lastly, the sequencing of innate behaviours such as a digger wasp's brood-tending is an example of even more complex behaviour. Further, it has been shown how complex behaviour can emerge as an epiphenomenon such as in swarms, ants (Franks, 1989) or even in Conway's popular Game of Life (Conway, 1970).
 
 
 
-\begin{itemize}
-    \item Efficient inference over hierarchical Bayesian models is still difficult.
-    \item Approximate inference
-    \item Here we can go into models monte carlo e.g. etc.
-    \item Einstein: intuition, rationality
-\end{itemize}
+% \begin{itemize}
+%     \item Efficient inference over hierarchical Bayesian models is still difficult.
+%     \item Approximate inference
+%     \item Here we can go into models monte carlo e.g. etc.
+%     \item Einstein: intuition, rationality
+% \end{itemize}
 
 
 
@@ -1007,114 +957,114 @@ define the movement of an organism towards (or away from) a certain stimuli. An 
 
 
 
-\section{\green{Cognition, Nested Multi-scale Hierarchies, and Self-Organisation}}
+% \section{\green{Cognition, Nested Multi-scale Hierarchies, and Self-Organisation}}
 
-Biological systems demonstrate remarkable complexity through self-organization, a process where spontaneous pattern formation results from the interactions of individual components within an environment. 
+% Biological systems demonstrate remarkable complexity through self-organization, a process where spontaneous pattern formation results from the interactions of individual components within an environment. 
 
-Biological organization is composed of nested goal-seeking agents, maintaining operational and organizational closure through homeostasis and allostasis \cite{ciaunica_nested_2023, vernon_embodied_2015} [explain terms in more detail, or is glossary enough?].
+% Biological organization is composed of nested goal-seeking agents, maintaining operational and organizational closure through homeostasis and allostasis \cite{ciaunica_nested_2023, vernon_embodied_2015} [explain terms in more detail, or is glossary enough?].
 
-Atoms form molecules, which form cells, tissues, organs, organisms, groups, societies, civilizations, and so on. Levin describes this as a multiscale competency architecture, which is not only structural but also functional \cite{Levin_2023}. Each level of this organization has some competency and solves problems in its own action space. Moreover, each level interacts with the levels above and below which is reflected in the idea of circular causality \cite{ciaunica_nested_2023, vernon_embodied_2015}. 
-% Douglas Hofstadter calls this a heterarchy and gives the example
+% Atoms form molecules, which form cells, tissues, organs, organisms, groups, societies, civilizations, and so on. Levin describes this as a multiscale competency architecture, which is not only structural but also functional \cite{Levin_2023}. Each level of this organization has some competency and solves problems in its own action space. Moreover, each level interacts with the levels above and below which is reflected in the idea of circular causality \cite{ciaunica_nested_2023, vernon_embodied_2015}. 
+% % Douglas Hofstadter calls this a heterarchy and gives the example
 
 
 
 
 
-\section{\green{Who am I?}}
-In order to understand who I am, I need to understand what I am not.
-What is a cognitive system, how does it emerge and how does it develop.
-How does a cognitive system make the distinction between it and the world?
+% \section{\green{Who am I?}}
+% In order to understand who I am, I need to understand what I am not.
+% What is a cognitive system, how does it emerge and how does it develop.
+% How does a cognitive system make the distinction between it and the world?
 
-\subsection{\green{The Genesis of Cognition}}
+% \subsection{\green{The Genesis of Cognition}}
 
-When thinking about the genesis of the self, we can think back to our earliest developmental stage, that of being an unfertilised \gls{oocyte}, and realize that the self gradually emerges from it.
+% When thinking about the genesis of the self, we can think back to our earliest developmental stage, that of being an unfertilised \gls{oocyte}, and realize that the self gradually emerges from it.
 
-Levin shows that upon scratching a \gls{blastoderm}, it self-organizes into twins or triplets, etc., depending on the amount of scratches. \source[inline]{source}. This demonstrates that the number of selves in an \gls{embryo} is not determined by genetics, but is instead a result of physiological self-organization. The problem of discerning between one's self and the external world is an ongoing, dynamic process that needs to be solved "online". This indicates that our self-concept is ever-evolving, reshaped by new information and experiences.
+% Levin shows that upon scratching a \gls{blastoderm}, it self-organizes into twins or triplets, etc., depending on the amount of scratches. \source[inline]{source}. This demonstrates that the number of selves in an \gls{embryo} is not determined by genetics, but is instead a result of physiological self-organization. The problem of discerning between one's self and the external world is an ongoing, dynamic process that needs to be solved "online". This indicates that our self-concept is ever-evolving, reshaped by new information and experiences.
 
-The ability to pursue goals is a trait that all agents have in common and the size of that goal is a way to classify and compare diverse intelligences, Levin suggests \cite{Levin_2022, levin_computational_2019}.
+% The ability to pursue goals is a trait that all agents have in common and the size of that goal is a way to classify and compare diverse intelligences, Levin suggests \cite{Levin_2022, levin_computational_2019}.
 
-For example, a single-celled organism may have the goal of finding food and avoiding predators, while a human may have the goal of building a family or writing a thesis about cognition.
+% For example, a single-celled organism may have the goal of finding food and avoiding predators, while a human may have the goal of building a family or writing a thesis about cognition.
 
-\improvement[inline]{is the homunculus is basically an advanced version of this?}
-The brain builds a map of proprioception. It's a statistical map over nerves that fire together. When they almost always fire together, they're likely to be close to each other. Homunculus.
+% \improvement[inline]{is the homunculus is basically an advanced version of this?}
+% The brain builds a map of proprioception. It's a statistical map over nerves that fire together. When they almost always fire together, they're likely to be close to each other. Homunculus.
 
-Now the way we distinguish between us and other people or more generally, us and the rest of the world, is simply by realizing that my actions lead to changes in my proprioception and other's actions do not. I.e. we perceive a change in the environment and we need to classify whether we produced the change or not. If the change and our sense of self aligns, it's likely we did it.  [elaborate]
+% Now the way we distinguish between us and other people or more generally, us and the rest of the world, is simply by realizing that my actions lead to changes in my proprioception and other's actions do not. I.e. we perceive a change in the environment and we need to classify whether we produced the change or not. If the change and our sense of self aligns, it's likely we did it.  [elaborate]
 
-In \source[inline]{source} Levin expounds on the idea that the self-organisational process of bodies is fundamentally the same as that of minds.
-\improvement[inline]{not only in structure but in representation. i.e. can we show that the imagination, the conceptual world has the same structure as the actual hardware? is the software built by the same principle as the hardware? is it growing simultaneosly? is there an isomorphism?}. 
+% In \source[inline]{source} Levin expounds on the idea that the self-organisational process of bodies is fundamentally the same as that of minds.
+% \improvement[inline]{not only in structure but in representation. i.e. can we show that the imagination, the conceptual world has the same structure as the actual hardware? is the software built by the same principle as the hardware? is it growing simultaneosly? is there an isomorphism?}. 
 
-All bodies are \emph{composed} of a multitude of levels of organisation, from single cells to entire organisms. Each tier of this hierarchy possesses unique competencies and goals, yet collaboratively works towards the organism's overarching objectives.
+% All bodies are \emph{composed} of a multitude of levels of organisation, from single cells to entire organisms. Each tier of this hierarchy possesses unique competencies and goals, yet collaboratively works towards the organism's overarching objectives.
 
-\Gls{embodiment} is the grounding of cognitive processes in bodily experiences. Bodies are not just passive vessels for minds but play an active role in cognition \source[inline]{Serge paper on embodiment, sensorimotor information} [elaborate]. 
+% \Gls{embodiment} is the grounding of cognitive processes in bodily experiences. Bodies are not just passive vessels for minds but play an active role in cognition \source[inline]{Serge paper on embodiment, sensorimotor information} [elaborate]. 
 
-Diving deeper into bodily self-organization, organisms such as axolotls exhibit a fascinating ability. Despite undergoing amputation, they can regenerate their limbs and halt precisely when restoration is complete. This ability, despite the variety of starting conditions and challenges, hints at an inherent bodily blueprint or internal representation. Intriguingly, this map is underpinned by bioelectrical patterns, which play a pivotal role not just in regeneration but also embryonic development.
+% Diving deeper into bodily self-organization, organisms such as axolotls exhibit a fascinating ability. Despite undergoing amputation, they can regenerate their limbs and halt precisely when restoration is complete. This ability, despite the variety of starting conditions and challenges, hints at an inherent bodily blueprint or internal representation. Intriguingly, this map is underpinned by bioelectrical patterns, which play a pivotal role not just in regeneration but also embryonic development.
 
-Expanding on this, Levin notes that there is no marked distinction between neural and developmental tissue in this context. Both comprise ion channels and electrical synapses. In fact, novel techniques have emerged to both interpret and modify these bioelectrical blueprints. \source[inline]{source}
+% Expanding on this, Levin notes that there is no marked distinction between neural and developmental tissue in this context. Both comprise ion channels and electrical synapses. In fact, novel techniques have emerged to both interpret and modify these bioelectrical blueprints. \source[inline]{source}
 
-These "blueprints", or more precisely, endogenous bioelectric pre-patterns, guide the cells to arrange in a certain way and by manipulating them, for instance by introducing potassium ion channel RNA, Levin and his team successfully induced cells to form eyes in non-ocular locations. More impressively, in the absence of sufficient cells, the system recruits additional cells to realize this goal.
+% These "blueprints", or more precisely, endogenous bioelectric pre-patterns, guide the cells to arrange in a certain way and by manipulating them, for instance by introducing potassium ion channel RNA, Levin and his team successfully induced cells to form eyes in non-ocular locations. More impressively, in the absence of sufficient cells, the system recruits additional cells to realize this goal.
 
-In one experiment, the team modified the bioelectrical pattern of a planarian to have a two-headed form. Upon injury, the planarian regenerated, aligning with this new, dual-headed pattern. This reveals, that the planarian is able to have a representation of a body state, different from its current state. It means it has a rewritable memory and is able to represent \gls{counterfactual states}.
+% In one experiment, the team modified the bioelectrical pattern of a planarian to have a two-headed form. Upon injury, the planarian regenerated, aligning with this new, dual-headed pattern. This reveals, that the planarian is able to have a representation of a body state, different from its current state. It means it has a rewritable memory and is able to represent \gls{counterfactual states}.
 
-This finding suggests, congruent to the conventional view, that genetic information alone doesn't solely dictate the form and function of organisms. Instead, bioelectric signals play a pivotal role in guiding cellular behaviors and tissue outcomes. Traditional genetics emphasizes the idea that the DNA sequence encodes the necessary information to produce an organism's phenotype. While this is fundamentally true, there seem to be other layers of information that can guide tissue organization and even regeneration.
+% This finding suggests, congruent to the conventional view, that genetic information alone doesn't solely dictate the form and function of organisms. Instead, bioelectric signals play a pivotal role in guiding cellular behaviors and tissue outcomes. Traditional genetics emphasizes the idea that the DNA sequence encodes the necessary information to produce an organism's phenotype. While this is fundamentally true, there seem to be other layers of information that can guide tissue organization and even regeneration.
 
-\improvement[inline]{
-This may be a primitive precursor to symbolic thought. Perhaps even to visualization and imagination.
-Perhaps moving from bioelectrical pattern representation of the brain, which is in a sense the first counterfactual, this may be the first primitive version of symbolic? representation, and allude to the brain being a machine to store more complex patterns. 
-}
+% \improvement[inline]{
+% This may be a primitive precursor to symbolic thought. Perhaps even to visualization and imagination.
+% Perhaps moving from bioelectrical pattern representation of the brain, which is in a sense the first counterfactual, this may be the first primitive version of symbolic? representation, and allude to the brain being a machine to store more complex patterns. 
+% }
 
-\todo[inline]{Show the work of Lenia, how they do it, and what they have achieved. Also, the Gecko thingy from Distill.pub}
+% \todo[inline]{Show the work of Lenia, how they do it, and what they have achieved. Also, the Gecko thingy from Distill.pub}
 
 
-\subsection{\green{Computational boundary of the self}}
-Levin introduces the term \gls{cognitive light cone}, which metaphorically describes the limits of an agent's knowledge and ability to act. It is defined by the set of all events that an agent can perceive, measure, and model. 
-\improvement{introduce cognitive light cone and include stuff from computational boundary of the self}
+% \subsection{\green{Computational boundary of the self}}
+% Levin introduces the term \gls{cognitive light cone}, which metaphorically describes the limits of an agent's knowledge and ability to act. It is defined by the set of all events that an agent can perceive, measure, and model. 
+% \improvement{introduce cognitive light cone and include stuff from computational boundary of the self}
 
-\subsubsection{\green{Body Patterning and Cognition: A Common Origin}}
+% \subsubsection{\green{Body Patterning and Cognition: A Common Origin}}
 
-Cells are able to make group decisions and regrow into defined patterns.
+% Cells are able to make group decisions and regrow into defined patterns.
 
-There is a strong metaphor between “adaptive whole organism behavior and the plasticity of cellular activity during construction and repair of a body”
+% There is a strong metaphor between “adaptive whole organism behavior and the plasticity of cellular activity during construction and repair of a body”
 
-“Neural networks control the movement of a body in three-dimensional space; this scheme may be an evolutionary exaptation and speed-optimization of a more ancient, slower role of bioelectrical signaling: the movement of body configuration through anatomical morphospace during embryogenesis, repair, and remodeling”
+% “Neural networks control the movement of a body in three-dimensional space; this scheme may be an evolutionary exaptation and speed-optimization of a more ancient, slower role of bioelectrical signaling: the movement of body configuration through anatomical morphospace during embryogenesis, repair, and remodeling”
 
-\subsubsection{\green{Multicellularity vs. Cancer: The Shifting Boundary of the Self}}
+% \subsubsection{\green{Multicellularity vs. Cancer: The Shifting Boundary of the Self}}
 
-While healthy cells within a multicellular organism orchestrate their functions to achieve systemic homeostasis, cancerous cells behave in a manner that one might describe as "narcissistically individualistic," focused solely on their own objectives.
+% While healthy cells within a multicellular organism orchestrate their functions to achieve systemic homeostasis, cancerous cells behave in a manner that one might describe as "narcissistically individualistic," focused solely on their own objectives.
 
-In standard physiological states, cellular networks coalesce to fulfill an overarching agenda—namely, the creation and sustenance of intricate macrostructures. Here, individual cells are subsumed into a collective intelligence, a sort of physiological "hive mind" or "swarm intelligence", directed toward system-level anatomical objectives. Contrarily, in the cancerous state, a cell's conception of its 'Self' is shrunk, both spatially and temporally.
+% In standard physiological states, cellular networks coalesce to fulfill an overarching agenda—namely, the creation and sustenance of intricate macrostructures. Here, individual cells are subsumed into a collective intelligence, a sort of physiological "hive mind" or "swarm intelligence", directed toward system-level anatomical objectives. Contrarily, in the cancerous state, a cell's conception of its 'Self' is shrunk, both spatially and temporally.
 
-Spatially, cancerous cells find themselves in a state of electrical isolation from their cellular neighbors, impairing their capacity for long-distance information exchange and cooperative action. Temporally, the scope of a cell's prospective planning dwindles: where a healthy cell may operate on a time scale spanning decades, a cancerous cell may focus solely on activities that, though enhancing its own immediate survival, jeopardize the host organism in the near term.
+% Spatially, cancerous cells find themselves in a state of electrical isolation from their cellular neighbors, impairing their capacity for long-distance information exchange and cooperative action. Temporally, the scope of a cell's prospective planning dwindles: where a healthy cell may operate on a time scale spanning decades, a cancerous cell may focus solely on activities that, though enhancing its own immediate survival, jeopardize the host organism in the near term.
 
-Unicellular organisms or cancer cells are not intrinsically more selfish than cells in a multicellular organism; rather, the "Self" is defined as the boundary of information, in terms of space, time, and complexity, that can pass between the subunits. 
+% Unicellular organisms or cancer cells are not intrinsically more selfish than cells in a multicellular organism; rather, the "Self" is defined as the boundary of information, in terms of space, time, and complexity, that can pass between the subunits. 
 
-Most biological organisms emerges as a hierarchy of nested "selves," each subject to its own evolutionary pressures and game-theoretic dynamics, at varying scales of organizational complexity.
+% Most biological organisms emerge as a hierarchy of nested "selves," each subject to its own evolutionary pressures and game-theoretic dynamics, at varying scales of organizational complexity.
 
-This conceptualization of a dynamic boundary of the 'Self' has implications that stretch beyond the biological realm, into the study of swarm intelligence. Consider, for instance, a termite colony as a "super-organism," with its own extended physiological and rudimentary cognitive functions. This interplay between patterns of cellular organization and larger sociobiological systems offers a poignant example of the scale-invariance that characterizes cognitive paradigms, equally applicable to cellular communities and animal (and human) societies.
+% This conceptualization of a dynamic boundary of the 'Self' has implications that stretch beyond the biological realm, into the study of swarm intelligence. Consider, for instance, a termite colony as a "super-organism," with its own extended physiological and rudimentary cognitive functions. This interplay between patterns of cellular organization and larger sociobiological systems offers a poignant example of the scale-invariance that characterizes cognitive paradigms, equally applicable to cellular communities and animal (and human) societies.
 
-\subsubsection{\green{Defining Individuation From a Cognitive Perspective}}
+% \subsubsection{\green{Defining Individuation From a Cognitive Perspective}}
 
-Levin proposes a definition of an individual based on its information-processing structure and the goals it pursues. A coherent, unified self emerges from the integrated activity of its components that work towards specific goal states. This definition can apply to both biological and artificial agents, focusing on the information processing and goal-directed activity of any given system.
+% Levin proposes a definition of an individual based on its information-processing structure and the goals it pursues. A coherent, unified self emerges from the integrated activity of its components that work towards specific goal states. This definition can apply to both biological and artificial agents, focusing on the information processing and goal-directed activity of any given system.
 
-The cognitive boundary of an individual is the most distant set of events that a system can measure and attempts to regulate in its goal-directed activity. Different agents have different cognitive boundaries based on their complexity and abilities. For example, a tick has a smaller cognitive boundary than a dog or a human due to its limited memory and predictive power.
+% The cognitive boundary of an individual is the most distant set of events that a system can measure and attempts to regulate in its goal-directed activity. Different agents have different cognitive boundaries based on their complexity and abilities. For example, a tick has a smaller cognitive boundary than a dog or a human due to its limited memory and predictive power.
 
-Individuals can exist at different levels of organization, with various, sometimes overlapping goals. This framework can be applied to ethology, artificial intelligence (AI), and artificial life. However, more work is needed to make it practical and applicable in these fields.
+% Individuals can exist at different levels of organization, with various, sometimes overlapping goals. This framework can be applied to ethology, artificial intelligence (AI), and artificial life. However, more work is needed to make it practical and applicable in these fields.
 
-The volume of possible cognitive boundaries expands over evolutionary time. Innovations in body structure can drastically increase the cognitive boundaries of viable selves. There may be no upper limit to the size of cognitive boundaries, and it's possible that artificial life, biomedical enhancement, or engineered AI could create beings with much larger cognitive boundaries than humans.
+% The volume of possible cognitive boundaries expands over evolutionary time. Innovations in body structure can drastically increase the cognitive boundaries of viable selves. There may be no upper limit to the size of cognitive boundaries, and it's possible that artificial life, biomedical enhancement, or engineered AI could create beings with much larger cognitive boundaries than humans.
 
-Levin concludes that a potential sequence of evolutionary scenarios for the expansion of cognitive boundaries.
-“Thus, physiological connectivity is the binding mechanism responsible for the appearance of larger unified Selves.”
+% Levin concludes that a potential sequence of evolutionary scenarios for the expansion of cognitive boundaries.
+% “Thus, physiological connectivity is the binding mechanism responsible for the appearance of larger unified Selves.”
 
-The expansion of cognitive boundaries in the biosphere can be traced through a hypothesized sequence of phases, beginning with homeostasis. Homeostatic persistence allows simple systems to maintain spatial and metabolic integrity, providing the basis for cognitive goals. The minimization of anti-homeostatic stress is a powerful driver for evolutionary innovation, leading to the development of richer biochemical networks and memory systems.
+% The expansion of cognitive boundaries in the biosphere can be traced through a hypothesized sequence of phases, beginning with homeostasis. Homeostatic persistence allows simple systems to maintain spatial and metabolic integrity, providing the basis for cognitive goals. The minimization of anti-homeostatic stress is a powerful driver for evolutionary innovation, leading to the development of richer biochemical networks and memory systems.
 
-One example of an early memory system is chemotaxis in bacteria. More advanced creatures developed complex learning networks, allowing for associative learning and modularity, which in turn led to the evolution of reactive homeostasis into predictive allostasis.
+% One example of an early memory system is chemotaxis in bacteria. More advanced creatures developed complex learning networks, allowing for associative learning and modularity, which in turn led to the evolution of reactive homeostasis into predictive allostasis.
 
-Sensory machinery in complex animals is based on ancient ion channel mechanisms. As cells organize into multicellular tissues, they can share information and expand their cognitive boundaries. The advent of multicellularity results from the drive to minimize surprise, with multicellular organisms providing more predictable environments for individual cells. This leads to the formation of more complex agents with larger goals.
+% Sensory machinery in complex animals is based on ancient ion channel mechanisms. As cells organize into multicellular tissues, they can share information and expand their cognitive boundaries. The advent of multicellularity results from the drive to minimize surprise, with multicellular organisms providing more predictable environments for individual cells. This leads to the formation of more complex agents with larger goals.
 
-The transition from single cells to multicellular tissues is facilitated by developmental bioelectricity, which enables the exchange of ionic signals among cells to propagate instructive influence. This has been observed in bacterial biofilms and more advanced cell types. Gap junctions, or intracellular electrical synapses, allow cells to selectively share bioelectric states and implement memory. Physiological connectivity creates larger unified Selves, with bioelectric networks responsible for coordinating cells toward common goals, such as body patterning.
+% The transition from single cells to multicellular tissues is facilitated by developmental bioelectricity, which enables the exchange of ionic signals among cells to propagate instructive influence. This has been observed in bacterial biofilms and more advanced cell types. Gap junctions, or intracellular electrical synapses, allow cells to selectively share bioelectric states and implement memory. Physiological connectivity creates larger unified Selves, with bioelectric networks responsible for coordinating cells toward common goals, such as body patterning.
 
-The developmental control bioelectric network shares an evolutionary history with the nervous system, and neurotransmitter molecules are used downstream of bioelectric driving forces. Tunneling nanotubes, axon-like structures with gap junctions at their ends, enable directed connections between cells and pave the way for neural axons and electrical synapses. The bioelectric system was optimized for speed in nervous systems, using the same mechanisms to optimize input-output relations within and between internal mechanisms and the outside world.
+% The developmental control bioelectric network shares an evolutionary history with the nervous system, and neurotransmitter molecules are used downstream of bioelectric driving forces. Tunneling nanotubes, axon-like structures with gap junctions at their ends, enable directed connections between cells and pave the way for neural axons and electrical synapses. The bioelectric system was optimized for speed in nervous systems, using the same mechanisms to optimize input-output relations within and between internal mechanisms and the outside world.
 
-In conclusion, the expansion of cognitive boundaries in the biosphere can be traced through various evolutionary stages, from homeostasis to multicellularity, and the development of complex learning networks and memory systems. This expansion is facilitated by the minimization of anti-homeostatic stress and the drive to minimize surprise, leading to the emergence of more complex agents with larger goals.
+% In conclusion, the expansion of cognitive boundaries in the biosphere can be traced through various evolutionary stages, from homeostasis to multicellularity, and the development of complex learning networks and memory systems. This expansion is facilitated by the minimization of anti-homeostatic stress and the drive to minimize surprise, leading to the emergence of more complex agents with larger goals.
 
 
 
@@ -1136,63 +1086,63 @@ In conclusion, the expansion of cognitive boundaries in the biosphere can be tra
 
 
 
-\subsection{\orange{Embodied cognition and circular causality: on the role of constitutive autonomy in the reciprocal coupling of perception and action}}
+% \subsection{\orange{Embodied cognition and circular causality: on the role of constitutive autonomy in the reciprocal coupling of perception and action}}
 
-\cite{vernon_embodied_2015}
-Varela defines cognition as \textit{effective action}: action that preserves the agent's autonomy, maintaining the agent and its ontogeny, i.e., its continued development.
+% \cite{vernon_embodied_2015}
+% Varela defines cognition as \textit{effective action}: action that preserves the agent's autonomy, maintaining the agent and its ontogeny, i.e., its continued development.
 
-There are two hallmarks of a cognitive agent:
-1. Prospection, i.e., prediction or anticipation
-2. The ability to learn new knowledge by making sense of its interactions with the world around it and, in the process, enlarging its repertoire of effective actions.
+% There are two hallmarks of a cognitive agent:
+% 1. Prospection, i.e., prediction or anticipation
+% 2. The ability to learn new knowledge by making sense of its interactions with the world around it and, in the process, enlarging its repertoire of effective actions.
 
-Homeostasis refers to the maintenance of stable internal conditions within an organism, while allostasis refers to the adaptive regulation of these internal conditions in response to changing demands.
+% Homeostasis refers to the maintenance of stable internal conditions within an organism, while allostasis refers to the adaptive regulation of these internal conditions in response to changing demands.
 
-Both homeostasis and allostasis play a role in the reciprocal coupling of perception and action, as well as in the self-regulation of the agent's autonomy. (\gls{perception action cycle})
+% Both homeostasis and allostasis play a role in the reciprocal coupling of perception and action, as well as in the self-regulation of the agent's autonomy. (\gls{perception action cycle})
 
-Autonomy is defined as the degree of self-determination of a system, i.e., the degree to which a system's behavior is not determined by the environment and, thus, the degree to which a system determines its own goals. 
+% Autonomy is defined as the degree of self-determination of a system, i.e., the degree to which a system's behavior is not determined by the environment and, thus, the degree to which a system determines its own goals. 
 
-\rephrase[inline]{I would argue that the autonomy always depends on the levels above and below, in the hierarchy. i.e., we are part of a society, but we are also constituted of and encapsulated by simpler elements. Therefore we share the goals of those levels. Being part of an environment imposes an inductive bias.}
+% \rephrase[inline]{I would argue that the autonomy always depends on the levels above and below, in the hierarchy. i.e., we are part of a society, but we are also constituted of and encapsulated by simpler elements. Therefore we share the goals of those levels. Being part of an environment imposes an inductive bias.}
 
-Living systems face two challenges: they are 
+% Living systems face two challenges: they are 
 
-1. delicate: they are easily disrupted or destroyed by environmental forces, requiring avoidance or repair of disruptions.
-2. dissipative: they are comprised of far-from-equilibrium processes, necessitating external energy sources to maintain their stability and avoid lapsing into thermodynamic equilibrium, which would threaten their autonomy or existence.
+% 1. delicate: they are easily disrupted or destroyed by environmental forces, requiring avoidance or repair of disruptions.
+% 2. dissipative: they are comprised of far-from-equilibrium processes, necessitating external energy sources to maintain their stability and avoid lapsing into thermodynamic equilibrium, which would threaten their autonomy or existence.
 
-\info[inline]{relate (or reference) this to maxwells explanation of active inference.}
+% \info[inline]{relate (or reference) this to maxwells explanation of active inference.}
 
-Cognition, is the property which helps look into the future, to avoid these problems.
+% Cognition, is the property which helps look into the future, to avoid these problems.
 
-There are two types of autonomy:
+% There are two types of autonomy:
 
-1. \emph{Behavioral autonomy} focusses on the external characteristics of the system: the extent to which the agent sets its own goals and its robustness and flexibility in dealing with an uncertain and possibly precarious environment.
-2. \emph{Constitutive autonomy} focusses on the internal organization and the organizational processes that keep the system viable and maintain itself as an identifiable autonomous entity.
+% 1. \emph{Behavioral autonomy} focusses on the external characteristics of the system: the extent to which the agent sets its own goals and its robustness and flexibility in dealing with an uncertain and possibly precarious environment.
+% 2. \emph{Constitutive autonomy} focusses on the internal organization and the organizational processes that keep the system viable and maintain itself as an identifiable autonomous entity.
 
-These two parts of autonomy enable each other recursively.
+% These two parts of autonomy enable each other recursively.
 
-\info[inline]{this is again FEP, homeostasis, allostasis}
+% \info[inline]{this is again FEP, homeostasis, allostasis}
 
-Operational closure refers to a system that is self-contained and parametrically coupled with its environment but not controlled by the environment. It is a characteristic of a system that maintains its autonomy by subordinating all changes to the maintenance of its organization. This concept is used to identify systems that are self-contained and exhibit self-production or self-construction.
+% Operational closure refers to a system that is self-contained and parametrically coupled with its environment but not controlled by the environment. It is a characteristic of a system that maintains its autonomy by subordinating all changes to the maintenance of its organization. This concept is used to identify systems that are self-contained and exhibit self-production or self-construction.
 
-Organizational closure, on the other hand, characterizes a system that exhibits self-production or self-construction and is recognized as a unity in the space where its processes exist. It is a necessary characteristic of autopoietic systems, which are self-organizing systems that self-produce and operate at the biochemical level. Organizational closure is related to the concept of constitutive autonomy, where a system actively generates and sustains its existence and systemic identity under precarious conditions.
+% Organizational closure, on the other hand, characterizes a system that exhibits self-production or self-construction and is recognized as a unity in the space where its processes exist. It is a necessary characteristic of autopoietic systems, which are self-organizing systems that self-produce and operate at the biochemical level. Organizational closure is related to the concept of constitutive autonomy, where a system actively generates and sustains its existence and systemic identity under precarious conditions.
 
-Both operational closure and organizational closure are important concepts in understanding the autonomy and self-regulation of cognitive agents. They highlight the self-contained nature of these systems and their ability to maintain their organization and identity through self-production and self-construction processes.
+% Both operational closure and organizational closure are important concepts in understanding the autonomy and self-regulation of cognitive agents. They highlight the self-contained nature of these systems and their ability to maintain their organization and identity through self-production and self-construction processes.
 
-Structural coupling refers to mutual pertubation of an agent and its environment.
+% Structural coupling refers to mutual pertubation of an agent and its environment.
 
-They conclude by highlighting the importance of constitutive autonomy and allostasis as a form of predictive regulation [relate this to FEP]. 
+% They conclude by highlighting the importance of constitutive autonomy and allostasis as a form of predictive regulation [relate this to FEP]. 
 
 
-\begin{itemize}
-    \item Autopoiesis
-    \item Heterarchy
-\end{itemize}
+% \begin{itemize}
+%     \item Autopoiesis
+%     \item Heterarchy
+% \end{itemize}
 
-\begin{itemize}
-    \item Cellular Automata
-    \item Lenia
-    \item (Pure) Enactivism?
-    \item Show how the FEP (Bayesian interpretation) can be used to explain multiscale systems.
-\end{itemize}
+% \begin{itemize}
+%     \item Cellular Automata
+%     \item Lenia
+%     \item (Pure) Enactivism?
+%     \item Show how the FEP (Bayesian interpretation) can be used to explain multiscale systems.
+% \end{itemize}
 
 
 
@@ -1203,21 +1153,21 @@ They conclude by highlighting the importance of constitutive autonomy and allost
 
 
 
-Difference between self-organization and emergence:
+% Difference between self-organization and emergence:
 
-Self-organization is a process where a global pattern emerges from numerous lower-level component interactions, while emergence refers to the generation of a global pattern that is qualitatively different from the assembly of components.
+% Self-organization is a process where a global pattern emerges from numerous lower-level component interactions, while emergence refers to the generation of a global pattern that is qualitatively different from the assembly of components.
 
-Self-organization is basically a macro-level structure out of smaller parts, emergence is when the whole is more than the sum of its parts.
+% Self-organization is basically a macro-level structure out of smaller parts, emergence is when the whole is more than the sum of its parts.
 
-Self-organization in emergence leads to systems with clear identities or behaviors due to local-to-global determination and global-to-local determination.
+% Self-organization in emergence leads to systems with clear identities or behaviors due to local-to-global determination and global-to-local determination.
 
-\info[inline]{relate this to piccininis distinctions of emergence. Also to michael levins observer dependent cognition (sth like that?) where function emerges by viewing the system in different ways.}
+% \info[inline]{relate this to piccininis distinctions of emergence. Also to michael levins observer dependent cognition (sth like that?) where function emerges by viewing the system in different ways.}
 
-Autonomous systems are not only reactive but also preemptive and proactive, readying themselves for multiple contingencies and deploying strategies to deal with them while pursuing their defined goals. \info[inline]{we are not only reactive}
-Such systems must therefore be able prepare for counterfactual states \info[inline]{link to counterfactuals}. 
-Allostasis is concerned with adapting to change in order to achieve the goal of stability in the face of uncertain circumstances. \todo[inline]{link to hemispheres. apprehension vs ?}
+% Autonomous systems are not only reactive but also preemptive and proactive, readying themselves for multiple contingencies and deploying strategies to deal with them while pursuing their defined goals. \info[inline]{we are not only reactive}
+% Such systems must therefore be able prepare for counterfactual states \info[inline]{link to counterfactuals}. 
+% Allostasis is concerned with adapting to change in order to achieve the goal of stability in the face of uncertain circumstances. \todo[inline]{link to hemispheres. apprehension vs ?}
 
-Seth notes that "He notes that attention can then be viewed as a way of balancing active inference and model update, (referred to as precision weighting)."
+% Seth notes that "He notes that attention can then be viewed as a way of balancing active inference and model update, (referred to as precision weighting)."
 
 
 
@@ -1242,7 +1192,7 @@ Seth notes that "He notes that attention can then be viewed as a way of balancin
 
 
 
-\section{\orange{What is a Holarchy?}}
+% \section{\orange{What is a Holarchy?}}
 
 
 % \section{Examples of holarchies:}
@@ -1278,101 +1228,99 @@ Seth notes that "He notes that attention can then be viewed as a way of balancin
 % \story{we make explicit that holarchies are fundamental emergent structures and show how to build them}
 
 
-A holon has an identity and that identity can be interpreted, which creates meaning. 
+% A holon has an identity and that identity can be interpreted, which creates meaning. 
 
-The holon transcends and includes. It is dynamic and it changes. When it changes, it changes its identity and therefore, the meaning that can be derived from it. 
+% The holon transcends and includes. It is dynamic and it changes. When it changes, it changes its identity and therefore, the meaning that can be derived from it. 
 
-An atom, when it accepts more protons and electrons, changes its identity and function and ability to connect with other atoms.
-
-
-
-
-
-A holarchy is a system in which each whole is made up of parts, and each part is a whole in itself. Holarchies are nested, meaning that each whole is also a part of a larger whole. This structure is similar to a hierarchy, but with the important difference that holarchies are non-linear. In other words, there is no single top-down chain of command. Instead, each level of the holarchy is interconnected and interdependent.
-
-The concept of holarchy was first introduced by Ken Wilber in the 1970s [source], an extrapolation of Arthur Koestler's notion of a Holon, a thing that is simultaneously a whole and part of a larger whole, following the cybernetic tradition of studying the complex dynamics of self-organizing systems. Wilber realized that the human mind and society could also be understood as holarchies, and he developed his integral theory to describe this structure in detail.
-
-One of the key features of holarchies is that they are emergent. This means that the properties of a holarchy cannot be predicted by simply understanding the properties of its parts. For example, the behavior of a human brain cannot be fully explained by understanding the behavior of individual neurons. Instead, the brain's emergent properties, such as consciousness and intelligence, arise from the complex interactions of its many parts.
-
-
-\begin{itemize}
-    \item argue thoroughly why the conceptual framework is built as a holarchy
-    \item We agree on an assumption that we construct a model of the world.
-    \item What exactly would an explicit model or an implicit model or no model at all look like?
-    \item We agree that there are certain hierarchical relationships. [example book, music, ontology, etc.]
-    \item Here we can talk about conceptual structures, holarchy, part-whole hierarchies. 
-    \item How concepts are split with more attention, etc. 
-    \item Do the upper levels of a holarchy control the lower levels? I.e. Does the holarchy become a heterarchy?
-    \item Heterarchy, sand example in nested organism pregnancy friston paper, DNA, GEB
-    \item Multi-scale systems
-    \item Ontology
-    \item Mereology? and relation to Category theory?
-    \item This is essentially learning a 
-        \item hierarchical LVM
-        \item hierarchical graphical model
-        \item Parse tree
-        \item Can be formalised as Context Free Grammar. 
-        \item The grammar here is the generative model. 
-        \item What is a generative model?
-        \item A generative model is simply a probabilistic description of how causes (i.e., latent states) generate consequences (i.e., data or sensations). \cite{friston_world_2021}
-    \item Include Hofstader levels of abstraction (let's have a coffee.)
-\end{itemize}
+% An atom, when it accepts more protons and electrons, changes its identity and function and ability to connect with other atoms.
 
 
 
 
 
-\subsection{\orange{Active Inference}}
-\cite{Ramstead_Kirchhoff_Friston_2020}
-Ramstead et al. make the distinction between \emph{active} inference and \emph{enactive} inference. 
+% A holarchy is a system in which each whole is made up of parts, and each part is a whole in itself. Holarchies are nested, meaning that each whole is also a part of a larger whole. This structure is similar to a hierarchy, but with the important difference that holarchies are non-linear. In other words, there is no single top-down chain of command. Instead, each level of the holarchy is interconnected and interdependent.
 
-"active inference," is a corollary Karl Friston's Free Energy Principle [source]. This framework posits that living systems minimize a variational free energy function to maintain themselves in a state that is compatible with their existence. Here, cognition is essentially about predictive modeling, and action is how an agent resamples the environment to minimize the error in its predictions. The agent, in this frame, is akin to a scientist, continually updating its internal models of the world to reduce surprises and fulfill its own expectations. It's a constant renegotiation of hypothesis and test, theory and experiment, query and observation.
+% The concept of holarchy was first introduced by Ken Wilber in the 1970s [source], an extrapolation of Arthur Koestler's notion of a Holon, a thing that is simultaneously a whole and part of a larger whole, following the cybernetic tradition of studying the complex dynamics of self-organizing systems. Wilber realized that the human mind and society could also be understood as holarchies, and developed his integral theory to describe this structure in detail.
 
-"Enactive inference," on the other hand, draws more from the "enactive" tradition of cognitive science, inspired by figures like Francisco Varela and Evan Thompson [source]. This perspective argues that cognition is fundamentally rooted in an organism's interactions with its environment, emphasizing a co-constitutive relationship between the two. There's a deeper focus here on the importance of embodiment and the constitutive role that action plays in shaping cognitive structures. Mind and world, subject and object, create each other in a reciprocal embrace. It's less about a model inside the head predicting the world and more about the continual creation of a world through interaction.
+% One of the key features of holarchies is that they are emergent. This means that the properties of a holarchy cannot be predicted by simply understanding the properties of its parts. For example, the behavior of a human brain cannot be fully explained by understanding the behavior of individual neurons. Instead, the brain's emergent properties, such as consciousness and intelligence, arise from the complex interactions of its many parts.
 
 
-\rephrase[inline]{From Maxwell Ramstead Tutorial on active inference}
-Caucheteux et al. provide evidence that the human brain continuously predicts a hierarchy of representations that spans multiple timescales and also that syntactic and semantic predictions are processed separately \cite{caucheteux_evidence_2023}. This differs from LLMs which are trained to predict the next token. [maybe put this in language section]
+% \begin{itemize}
+%     \item argue thoroughly why the conceptual framework is built as a holarchy
+%     \item We agree on an assumption that we construct a model of the world.
+%     \item What exactly would an explicit model or an implicit model or no model at all look like?
+%     \item We agree that there are certain hierarchical relationships. [example book, music, ontology, etc.]
+%     \item Here we can talk about conceptual structures, holarchy, part-whole hierarchies. 
+%     \item How concepts are split with more attention, etc. 
+%     \item Do the upper levels of a holarchy control the lower levels? I.e. Does the holarchy become a heterarchy?
+%     \item Heterarchy, sand example in nested organism pregnancy friston paper, DNA, GEB
+%     \item Multi-scale systems
+%     \item Ontology
+%     \item Mereology? and relation to Category theory?
+%     \item This is essentially learning a 
+%         \item hierarchical LVM
+%         \item hierarchical graphical model
+%         \item Parse tree
+%         \item Can be formalised as Context Free Grammar. 
+%         \item The grammar here is the generative model. 
+%         \item What is a generative model?
+%         \item A generative model is simply a probabilistic description of how causes (i.e., latent states) generate consequences (i.e., data or sensations). \cite{friston_world_2021}
+%     \item Include Hofstader levels of abstraction (let's have a coffee.)
+% \end{itemize}
 
-The complexity of the human brain arises from its intricate structure, both in terms of its physical components and its functional organization. A comprehensive understanding of the brain requires a multilevel approach that spans from the microscopic scale of molecules to the macroscopic scale of brain systems and interactions with the environment.
 
-At the most foundational level, the brain's function rests on the interactions of its cellular components. Neurons, the primary cellular units of the brain, are responsible for processing and transmitting information. These transmission processes are facilitated by neurotransmitters, the chemicals that help propagate signals across synapses, the specialized junctions between neurons.
 
-Beyond individual neurons, the microcircuit level involves small neural networks. These are clusters of interconnected neurons that serve specific functions. Whether it's processing particular sensory information or executing a distinct motor task, these microcircuits play a pivotal role in the brain's operational hierarchy.
 
-Scaling upwards, the brain is segmented into specific brain areas and nuclei, each playing a unique functional role. For instance, the hippocampus is crucial for memory processes, while the basal ganglia are deeply involved in movement and motor coordination.
 
-At the systems level, individual brain areas are not isolated entities but are part of broader brain systems. These systems, such as the limbic system responsible for emotion and motivation, comprise various interrelated structures, e.g., the amygdala, hippocampus, and certain sections of the thalamus.
+% \subsection{\orange{Active Inference}}
+% \cite{Ramstead_Kirchhoff_Friston_2020}
+% Ramstead et al. make the distinction between \emph{active} inference and \emph{enactive} inference. 
 
-[is this section too long? maybe shorten it, we get it, the brain is a hierarchy..]
+% "active inference," is a corollary Karl Friston's Free Energy Principle [source]. This framework posits that living systems minimize a variational free energy function to maintain themselves in a state that is compatible with their existence. Here, cognition is essentially about predictive modeling, and action is how an agent resamples the environment to minimize the error in its predictions. The agent, in this frame, is akin to a scientist, continually updating its internal models of the world to reduce surprises and fulfill its own expectations. It's a constant renegotiation of hypothesis and test, theory and experiment, query and observation.
+
+% "Enactive inference," on the other hand, draws more from the "enactive" tradition of cognitive science, inspired by figures like Francisco Varela and Evan Thompson [source]. This perspective argues that cognition is fundamentally rooted in an organism's interactions with its environment, emphasizing a co-constitutive relationship between the two. There's a deeper focus here on the importance of embodiment and the constitutive role that action plays in shaping cognitive structures. Mind and world, subject and object, create each other in a reciprocal embrace. It's less about a model inside the head predicting the world and more about the continual creation of a world through interaction.
+
+
+% \rephrase[inline]{From Maxwell Ramstead Tutorial on active inference}
+% Caucheteux et al. provide evidence that the human brain continuously predicts a hierarchy of representations that spans multiple timescales and also that syntactic and semantic predictions are processed separately \cite{caucheteux_evidence_2023}. This differs from LLMs which are trained to predict the next token. [maybe put this in language section]
+
+% The complexity of the human brain arises from its intricate structure, both in terms of its physical components and its functional organization. A comprehensive understanding of the brain requires a multilevel approach that spans from the microscopic scale of molecules to the macroscopic scale of brain systems and interactions with the environment.
+
+% At the most foundational level, the brain's function rests on the interactions of its cellular components. Neurons, the primary cellular units of the brain, are responsible for processing and transmitting information. These transmission processes are facilitated by neurotransmitters, the chemicals that help propagate signals across synapses, the specialized junctions between neurons.
+
+% Beyond individual neurons, the microcircuit level involves small neural networks. These are clusters of interconnected neurons that serve specific functions. Whether it's processing particular sensory information or executing a distinct motor task, these microcircuits play a pivotal role in the brain's operational hierarchy.
+
+% Scaling upwards, the brain is segmented into specific brain areas and nuclei, each playing a unique functional role. For instance, the hippocampus is crucial for memory processes, while the basal ganglia are deeply involved in movement and motor coordination.
+
+% At the systems level, individual brain areas are not isolated entities but are part of broader brain systems. These systems, such as the limbic system responsible for emotion and motivation, comprise various interrelated structures, e.g., the amygdala, hippocampus, and certain sections of the thalamus.
+
+% [is this section too long? maybe shorten it, we get it, the brain is a hierarchy..]
  
 
-At the pinnacle of brain organization, we find the integration of all its parts. The brain's two hemispheres, the left and right, offer different functional specialties. For instance, in a majority of right-handed individuals, language processing predominantly occurs in the left hemisphere [go into McGilchrist hemisphere differences? or in sys1,2, section?]. Furthermore, the integration of the brain and spinal cord establishes the central nervous system, crucial for sensory information relay and motor command execution.
+% At the pinnacle of brain organization, we find the integration of all its parts. The brain's two hemispheres, the left and right, offer different functional specialties. For instance, in a majority of right-handed individuals, language processing predominantly occurs in the left hemisphere [go into McGilchrist hemisphere differences? or in sys1,2, section?]. Furthermore, the integration of the brain and spinal cord establishes the central nervous system, crucial for sensory information relay and motor command execution.
 
-The brain does not function in isolation. It's in a continuous dialogue with the body and the external environment. The brain-body interaction underlines the significance of feedback loops that shape brain processes. Simultaneously, social and environmental interactions influence the brain, underscoring the interdependence between an individual and their surroundings.
+% The brain does not function in isolation. It's in a continuous dialogue with the body and the external environment. The brain-body interaction underlines the significance of feedback loops that shape brain processes. Simultaneously, social and environmental interactions influence the brain, underscoring the interdependence between an individual and their surroundings.
 
-\cite{Park_Friston_2013}
-One can witness that the brain, in its form and function, encapsulates a hierarchy that reflects the multifaceted layers of its surroundings. A paper by Park \& Friston goes further to demonstrate that the brain showcases nested networks that include structures as micro as dendrites to as macro as entire brain regions.
+% \cite{Park_Friston_2013}
+% One can witness that the brain, in its form and function, encapsulates a hierarchy that reflects the multifaceted layers of its surroundings. A paper by Park \& Friston goes further to demonstrate that the brain showcases nested networks that include structures as micro as dendrites to as macro as entire brain regions.
 
-These multi-scale systems operate not only in the spatial dimension, from microcosm to macrocosm, but also temporally. They span across phylogenetic, epigenetic, and ontogenetic timescales. This poses a challenge: how can we address these diverse spatial and temporal scales in a principled manner? What framework can effectively encompass this vast range of scales?
+% These multi-scale systems operate not only in the spatial dimension, from microcosm to macrocosm, but also temporally. They span across phylogenetic, epigenetic, and ontogenetic timescales. This poses a challenge: how can we address these diverse spatial and temporal scales in a principled manner? What framework can effectively encompass this vast range of scales?
 
-Most natural systems that are self-organizing tend to dissipate, as highlighted by Vernon [reference]. They increase entropy, which in this context, can be perceived as a measure of potential configurations a system could inhabit. A system with high entropy has a myriad of configurations available, while one with low entropy has limited options.
+% Most natural systems that are self-organizing tend to dissipate, as highlighted by Vernon [reference]. They increase entropy, which in this context, can be perceived as a measure of potential configurations a system could inhabit. A system with high entropy has a myriad of configurations available, while one with low entropy has limited options.
 
-Surprisingly, about 80\% of the brain's connections are involved in feedback [source, predictive coding]. Such a significant portion of the brain's energy is invested in a system that seems to serve a feedback purpose. 
+% Surprisingly, about 80\% of the brain's connections are involved in feedback [source, predictive coding]. Such a significant portion of the brain's energy is invested in a system that seems to serve a feedback purpose. 
 
-The predictive processing paradigm posits that instead of viewing the brain as a passive data collector, the brain is a query mechanism, primarily engaged in top-down prediction. The primary function becomes producing predictions about imminent sensory inputs. What ascends is the prediction error, the mismatch between predictions and actual sensory input. In this framework, perception becomes an inquiry-response mechanism, much like a Google search. The brain, through active inference, seeks to reverse the causality arrow, shifting from received data to inferring the probable causal factors. 
+% The predictive processing paradigm posits that instead of viewing the brain as a passive data collector, the brain is a query mechanism, primarily engaged in top-down prediction. The primary function becomes producing predictions about imminent sensory inputs. What ascends is the prediction error, the mismatch between predictions and actual sensory input. In this framework, perception becomes an inquiry-response mechanism, much like a Google search. The brain, through active inference, seeks to reverse the causality arrow, shifting from received data to inferring the probable causal factors. 
 
-This continuous feedback mechanism constantly compares expectations with actual perceptions. To minimize discrepancies, the brain can either modify its model or alter its environment. How do we quantify the effectiveness of such a model? 
+% This continuous feedback mechanism constantly compares expectations with actual perceptions. To minimize discrepancies, the brain can either modify its model or alter its environment. How do we quantify the effectiveness of such a model? 
 
-A common approach involves constructing various models encoding diverse hypotheses and evaluating their ability to account for data variance. Condensing this process yields the concept of *variational free energy*. Crucially, it's not analogous to thermodynamic energy; it gauges how efficiently a model explains data variance.
+% A common approach involves constructing various models encoding diverse hypotheses and evaluating their ability to account for data variance. Condensing this process yields the concept of *variational free energy*. Crucially, it's not analogous to thermodynamic energy; it gauges how efficiently a model explains data variance.
 
-The term 'variational free energy' draws parallels with thermodynamics. In thermodynamics, free energy represents the residual energy in a system capable of work. In information theory, it denotes the remaining room for parameter adjustments.
+% The term 'variational free energy' draws parallels with thermodynamics. In thermodynamics, free energy represents the residual energy in a system capable of work. In information theory, it denotes the remaining room for parameter adjustments.
 
-The concept of the Markov blanket suggests that given a set of states, the sensory and active states of a system remain independent of external world states. Active inference narrates how internal (model-encoding) and active (akin to skeletal muscles) states adapt to minimize free energy, enabling inference.
+% The concept of the Markov blanket suggests that given a set of states, the sensory and active states of a system remain independent of external world states. Active inference narrates how internal (model-encoding) and active (akin to skeletal muscles) states adapt to minimize free energy, enabling inference.
 
-Every component in this complex system is itself a system, from entire organisms to individual cells. Each component, being Markov-blanketed, can infer its position relative to others, provided communication exists. By sharing a generative model, units at one level can enact target morphologies.
-
-
+% Every component in this complex system is itself a system, from entire organisms to individual cells. Each component, being Markov-blanketed, can infer its position relative to others, provided communication exists. By sharing a generative model, units at one level can enact target morphologies.
 
 
 
@@ -1388,33 +1336,35 @@ Every component in this complex system is itself a system, from entire organisms
 
 
 
-\subsection{\orange{Self-organization and predictive processing}} \cite{friston_world_2021}
-As the brain develops, its neurons self-organize into networks that are able to generate and test predictions about the world. This process of self-organization allows the brain to develop a model of the world that it can use to make inferences about sensory input.
-
-One way to think about the relationship between self-organization and predictive processing is to consider how self-organization may allow the brain to develop a model of the world. As the brain develops, its neurons self-organize into networks that are able to represent different aspects of the world. For example, some networks may represent the visual world, while others may represent the auditory world or the somatosensory world.
-
-These networks are constantly interacting with each other, and this interaction allows the brain to develop a unified model of the world. This model of the world can then be used to generate predictions about sensory input.
-
-The identity of a multi-scale system can be thought of as the emergent properties that arise from the interactions of the different levels of organization. For example, the identity of a cell is not simply the sum of the identities of its individual molecules. Rather, the cell's identity is emergent from the way in which the molecules interact with each other to form complex structures and networks. [relate to levins part]
-
-This is reminiscient of embedding spaces in which words are self-organizing by getting input from the world. 
-\info[inline]{LLMs also create a generative model, but lack the causal structure.}
-
-can causal structure, understanding, etc. be approximated?
 
 
-\begin{itemize}
-    \item Discernment of Concepts
-    \item Discernment as the primary operator. 
-    \item Me against the World
-    \item Homeostasis
-    \item Allostasis
-    \item Operational Closure
-    \item Organizational Closure
-    \item Intentional Stance
-    \item Active inference
-    \item Explain Bayes theorem and how it relates 
-\end{itemize}
+% \subsection{\orange{Self-organization and predictive processing}} \cite{friston_world_2021}
+% As the brain develops, its neurons self-organize into networks that are able to generate and test predictions about the world. This process of self-organization allows the brain to develop a model of the world that it can use to make inferences about sensory input.
+
+% One way to think about the relationship between self-organization and predictive processing is to consider how self-organization may allow the brain to develop a model of the world. As the brain develops, its neurons self-organize into networks that are able to represent different aspects of the world. For example, some networks may represent the visual world, while others may represent the auditory world or the somatosensory world.
+
+% These networks are constantly interacting with each other, and this interaction allows the brain to develop a unified model of the world. This model of the world can then be used to generate predictions about sensory input.
+
+% The identity of a multi-scale system can be thought of as the emergent properties that arise from the interactions of the different levels of organization. For example, the identity of a cell is not simply the sum of the identities of its individual molecules. Rather, the cell's identity is emergent from the way in which the molecules interact with each other to form complex structures and networks. [relate to levins part]
+
+% This is reminiscient of embedding spaces in which words are self-organizing by getting input from the world. 
+% \info[inline]{LLMs also create a generative model, but lack the causal structure.}
+
+% can causal structure, understanding, etc. be approximated?
+
+
+% \begin{itemize}
+%     \item Discernment of Concepts
+%     \item Discernment as the primary operator. 
+%     \item Me against the World
+%     \item Homeostasis
+%     \item Allostasis
+%     \item Operational Closure
+%     \item Organizational Closure
+%     \item Intentional Stance
+%     \item Active inference
+%     \item Explain Bayes theorem and how it relates 
+% \end{itemize}
 
 
 
@@ -1437,7 +1387,7 @@ can causal structure, understanding, etc. be approximated?
 
 % Each of these latents is accompanied by a variational density or Bayesian belief, parameterized by an agent's states, weights, and structural elements. 
 
-% Friston highlights the importance of the representation of uncertainty when abiding by the free-energy principle, namely that we must optimize posterior probabilities - point estimates are not sufficient. [refer to this when discussing MLE over MAP] This makes the problem inherently more challenging than simply computing averages or expectations.
+% Friston highlights the importance of the representation of uncertainty when abiding by the free-energy principle, namely that we must optimize posterior probabilities - point estimates are not sufficient. This makes the problem inherently more challenging than simply computing averages or expectations.
 
 % In computational terms, log model evidence can be dissected into accuracy and complexity components [see formula], the latter of which relates to the Kullback-Leibler divergence between the posterior and prior distributions, effectively the degrees of freedom, necessary to account for the observations [too much here?]. This exerts a simplifying pressure on the model selection, resonating with Occam's Razor [reference, glossary?] paradigms in algorithmic complexity and minimum description length [reference to MDL from dehaene et al ].
 
@@ -1453,7 +1403,7 @@ can causal structure, understanding, etc. be approximated?
 
 
 
-Free will: if i can out model you, i.e. i can predict every action you do (we can try this with simple organisms.)
+% Free will: if i can out model you, i.e. i can predict every action you do (we can try this with simple organisms.)
 
 
 
@@ -1484,30 +1434,30 @@ Free will: if i can out model you, i.e. i can predict every action you do (we ca
 
 
 
-\begin{itemize}
-    \item Discuss Bayesian causal inference
-    \item Amortized sampling/ amortized inference
-    \item Are these the most promising tools to research complex systems?
-    \item Do we need a language of thought? (reference to JB, a chair isnt true or false, only a description can be true of false)
-    \item Then, does the language have to be symbolic, or not? 
-    \item Can a representation of a word, of natural language be seen as a symbol? yes, it points to something, and we know that we can work in language without the meaning, the underlying understanding. 
-\end{itemize}
+% \begin{itemize}
+%     \item Discuss Bayesian causal inference
+%     \item Amortized sampling/ amortized inference
+%     \item Are these the most promising tools to research complex systems?
+%     \item Do we need a language of thought? (reference to JB, a chair isnt true or false, only a description can be true of false)
+%     \item Then, does the language have to be symbolic, or not? 
+%     \item Can a representation of a word, of natural language be seen as a symbol? yes, it points to something, and we know that we can work in language without the meaning, the underlying understanding.
+% \end{itemize}
 
 
-\section{\red{Implications/ Consequences of the theory}}
-\begin{itemize}
-    \item Memes as exlicit cultural concepts of a super-organism
-    \item the conceptual world, just like the physical/ material world has a multi-scale structure. We can extend Dawkins idea of memes and realise that conglomerated ideas, form ideologies [what is the right scale? ] cells -> organism -> etc. :: thought -> idea -> ideology, etc. [question] when do LLMs form beliefs, ideologies
-    \item Cognitive light cone view of cancer and psychopaths (also in a game-theoretic view)
-    \item Describing systems as levels in a holarchy. We can describe groups, families, companies, corporations, (think noah harari and money is invented) as an organism and ask whether it is conscious. 
-    \item What we perceive is the simulation of our generative model. [ relation to baudrillard, simulation simulatcrum]
-\end{itemize}
+% \section{\red{Implications/ Consequences of the theory}}
+% \begin{itemize}
+%     \item Memes as exlicit cultural concepts of a super-organism
+%     \item the conceptual world, just like the physical/ material world has a multi-scale structure. We can extend Dawkins idea of memes and realise that conglomerated ideas, form ideologies [what is the right scale? ] cells -> organism -> etc. :: thought -> idea -> ideology, etc. [question] when do LLMs form beliefs, ideologies
+%     \item Cognitive light cone view of cancer and psychopaths (also in a game-theoretic view)
+%     \item Describing systems as levels in a holarchy. We can describe groups, families, companies, corporations, (think noah harari and money is invented) as an organism and ask whether it is conscious. 
+%     \item What we perceive is the simulation of our generative model. [ relation to baudrillard, simulation simulatcrum]
+% \end{itemize}
 
 
-\begin{itemize}
-    \item Summarise main findings and especially relate them to the questions. What have we learned about identity and the question "Who am I?"
-    \item Understanding, goals, models, etc. 
-\end{itemize}
+% \begin{itemize}
+%     \item Summarise main findings and especially relate them to the questions. What have we learned about identity and the question "Who am I?"
+%     \item Understanding, goals, models, etc. 
+% \end{itemize}
 
 
 
@@ -1609,74 +1559,58 @@ Free will: if i can out model you, i.e. i can predict every action you do (we ca
 
 
 
-\subsection{\red{review of human capabilities and comparing PPL vs LLMs}}
-
-\subsubsection{\red{World Model}}
-\subsubsection{\red{Bayesian Model}}
-\subsubsection{\red{Compositionality}}
-\subsubsection{\orange{Causality}}
-\subsubsection{\red{Correlation Does Not Imply Causation}}
-
-Generative models assign probability distributions, representing observations in such a way that they can generate new data points similar to the observations. The mapping between the probability distributions and the data is correlational. 
-
-Causal models in contrast, represent hypotheses of how observations were generated. They do not just represent the observations by correlation, but aim to accurately reflect the mechanisms by which the data originated.[source]
 
 
 
-[The Reichenbach Principle, named after philosopher Hans Reichenbach, is a foundational concept in the philosophy of science, particularly in the study of causation. It essentially states that if two events are found to be statistically correlated, then there must exist some causal connection between them. This causal connection can manifest in three forms: either one event causes the other, the second event causes the first, or both events are influenced by a common cause. This principle highlights the difference between mere correlation (statistical association) and causation (a direct or indirect relationship leading to the occurrence of an event).
-
-The significance of the Reichenbach Principle becomes clear when considering why causal models contain more information than purely statistical ones. Statistical models excel at identifying and quantifying relationships between variables based on observed data. They can tell us, for example, that two variables tend to vary together in a predictable way. However, statistical models don't inherently provide information about the directionality or the underlying mechanism of these relationships – they don't tell us whether one variable causes changes in the other, or if both are influenced by an external factor.
-
-Causal models, in contrast, are designed to map out these directional relationships. They go beyond mere association to explain how one variable affects another. This is done by incorporating knowledge of the underlying mechanisms and processes that drive the relationships between variables. In a causal model, variables are not just connected; they are linked in a way that specifies how changes in one will lead to changes in another.
-
-For example, consider the relationship between smoking and lung cancer. A statistical model can show that smoking is correlated with an increased risk of lung cancer, but it doesn't explain why this is the case. A causal model, on the other hand, can illustrate how smoking leads to biological changes in the body that increase the risk of developing lung cancer, thereby providing a more comprehensive understanding of the relationship.
-
-In summary, the Reichenbach Principle underscores the necessity of seeking causal explanations behind observed correlations. While statistical models are powerful tools for identifying patterns and relationships in data, causal models offer a deeper level of understanding. They provide insights into the mechanisms and processes underlying these patterns, allowing for more accurate predictions, effective interventions, and a richer comprehension of the phenomena being studied.]
-\cite{causal_representation_learning}
-\subsubsection{\red{Abduction}}
-\subsubsection{\red{System 1 \& 2}}
-\subsubsection{\red{Concepts}}
-
-\rephrase[inline]{from JB: LLMs learn how to complete sequences, they do statistics over patterns}
-Stephen shows that when LLMs create statistics over text, they first discover patterns, then syntax, then style, and only lastly semantics. Humans however start out by discovering semantics and then find patterns, syntax and lastly style. 
 
 
 
-- Can LLMs extract composable entities to recombine?
-
-% PROS:
-% - Semantics vs Syntax, semantic grammar
-% - vector representations of concepts, vector algebra, distance, etc. 
-% - Compositionality
 
 
-% CONS:
-% - They conflate an implicit world model with inference. (model in wolframs terms)
-% - they lack causality.
-% - pattern to syntax etc. vs other way around
+% The pervasiveness of hierarchical and self-similar structures across various domains of natural and conceptual phenomena presents a compelling landscape for interdisciplinary inquiry. From the intricate organization of biological systems to the complex architectures of cognition and cultural dynamics, this recurrent pattern suggests an underlying principle of organization that warrants a comprehensive examination. This paper delineates the parallels between these multi-scale structures, extending the discussion into the cognitive sciences, artificial intelligence, and memetics, and situating them within the meta-theoretical framework of Wilber's Integral Theory.
+
+% Natural systems exhibit a remarkable propensity for hierarchical organization: atoms form molecules; molecules form cells; cells form tissues; tissues form organs; and organs, in turn, form organisms. This nested structure, suggestive of a fractal-like self-similarity, is not confined to physical biology but extends into the domains of language, thought, and sociocultural constructs. Herein, we explore the implications of this hierarchical paradigm as it applies to mental models, cognitive processes, and cultural transmission, drawing correlations with existing theories and literature in these fields.
+
+% Cognitive science posits that human thought manifests in layers of increasing complexity, from fleeting thoughts to embedded ideologies. This progression echoes biological hierarchies, whereby thoughts are the elemental units, progressively organizing into complex belief systems and comprehensive worldviews. Under the lens of the Free Energy Principle, the brain's attempt to minimize surprise through a predictive hierarchical model aligns with this multilayered structure, suggesting a cognitive economy geared towards self-organization and efficiency.
+
+% In this thesis I am researching our ability to create a representation of the world, which leads to the ability of having a representation of ourselves and gives rise to an "I". I show how the same underlying principles describe physical organisms across multiple scales and extend that to the conceptual realm.
+% A few approaches are discussed and eventually a promising Bayesian approach is experimented with and analysed. 
 
 
 
-\begin{itemize}
-    \item could LLMs be regarded as symbolic like models? since each token is a vector and then the model builds aggregate representations given those vectors?
-    \item with GFN we are trying to predict trajectories/ thoughts, rather than predictions.
-\end{itemize}
 
 
 
-\begin{table}
-    \centering
-    \begin{tabular}{|l|c|c|}
-        \hline
-        \textbf{Aspects of cognition} & \textbf{LLMs} & \textbf{PPL} \\\hline
-        Compositionality & $\times$ & $\checkmark$ \\\hline
-        System 1 \& 2    &          & \\\hline
-        Causality        & $\times$ & $\checkmark$ \\\hline
-        Analogy          &          & \\\hline
-        Abduction        &          & \\\hline
-        Symbolic Reasoning & $\times$ & $\checkmark$ \\\hline
-        
-    \end{tabular}
-    \caption{title}
-    \label{}
-\end{table}
+
+
+
+
+
+
+
+
+% \subsection{\green{Concepts}}
+% Concepts, as the building blocks of thought, vary widely in their forms and representations. They range from concrete, perceivable objects such as 'a table' to abstract notions like 'love' or 'money', theoretical constructs ('the gene', 'the atom'), mathematical entities ('addition', 'multiplication'), and even non-existent entities like 'a unicorn'. This variety, as highlighted by Blouw et al. \cite{blouw2016concepts}, underscores the diverse spectrum of concepts that the human mind can conceive and manipulate.
+
+% An effective conceptual framework not only categorizes these varied forms but also explains their \emph{extension} (why a concept refers to certain things and not others) and \emph{intension} (why it describes these referents in specific ways) \cite{ball2013surfaces}. 
+% % The concept space, therefore, must be understood as a multidimensional and dynamic entity, where concepts are not isolated but embedded in a rich tapestry of relationships and attributes.
+
+% Several key criteria help in mapping and understanding this concept space:
+
+% \begin{description}
+%     \item [Relationship Path] This refers to the connections between concepts, governed by their similarities, differences, and functional relationships. It explains how one concept is related to or can be derived from another.
+%     \item [Mutual Information] This criterion examines how well concepts predict each other, based on their co-occurrence and interaction in reality. It reflects the degree to which the presence or understanding of one concept informs about another.
+%     \item [Change Distance] This involves measuring the conceptual 'distance' or difference between two concepts. It accounts for the extent of transformation or cognitive shift required to move from one concept to another in the conceptual space.
+%     \item [Parameter Distance] This refers to the number of 'knobs' or minimal changes needed to transition from one concept to another. For example, determining the minimal edits or shifts needed to transform the concept of 'dog' to 'cat', or 'rock' music to 'jazz'. This concept is akin to edit distance in text or Kolmogorov complexity in information theory, offering a quantifiable measure of conceptual transformation.
+% \end{description}
+% \todo[inline]{need sources for all of these}
+% \todo[inline]{this section needs to be rewritten. its shit}
+
+
+% [kiki, bobo, other examples]
+% % E.g. "dog" should be closer to "canine" than to "panda".
+
+% [for further discussion see ]
+
+
+

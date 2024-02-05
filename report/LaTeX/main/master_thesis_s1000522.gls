@@ -1,9 +1,1 @@
-\glossarysection[\glossarytoctitle]{\glossarytitle}\glossarypreamble
-\begin{theglossary}\glossaryheader
-\glsgroupheading{C}\relax \glsresetentrylist %
-\glossentry{cognitive light cone}{\glossaryentrynumbers{\relax 
-		\setentrycounter[]{page}\glsnumberformat{58}}}\glsgroupskip
-\glsgroupheading{P}\relax \glsresetentrylist %
-\glossentry{perception action cycle}{\glossaryentrynumbers{\relax 
-		\setentrycounter[]{page}\glsnumberformat{61}}}%
-\end{theglossary}\glossarypostamble
+\null

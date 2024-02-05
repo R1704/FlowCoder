@@ -1,22 +1,4 @@
-This is makeindex, version 2.15 [TeX Live 2020] (kpathsea + Thai support).
-Scanning style file ./master_thesis_s1000522.ist.............................done (29 attributes redefined, 0 ignored).
-Scanning input file master_thesis_s1000522.glo...
-!! Input index error (file = master_thesis_s1000522.glo, line = 1):
-   -- Illegal null field.
-!! Input index error (file = master_thesis_s1000522.glo, line = 2):
-   -- Illegal null field.
-!! Input index error (file = master_thesis_s1000522.glo, line = 3):
-   -- Illegal null field.
-!! Input index error (file = master_thesis_s1000522.glo, line = 4):
-   -- Illegal null field.
-!! Input index error (file = master_thesis_s1000522.glo, line = 5):
-   -- Illegal null field.
-!! Input index error (file = master_thesis_s1000522.glo, line = 6):
-   -- Illegal null field.
-!! Input index error (file = master_thesis_s1000522.glo, line = 7):
-   -- Illegal null field.
-.done (2 entries accepted, 7 rejected).
-Sorting entries....done (2 comparisons).
-Generating output file master_thesis_s1000522.gls....done (9 lines written, 0 warnings).
-Output written in master_thesis_s1000522.gls.
-Transcript written in master_thesis_s1000522.glg.
+Warning: File 'master_thesis_s1000522.glo' is empty.
+Have you used any entries defined in glossary 'main'?
+Remember to use package option 'nomain' if you
+don't want to use the main glossary.
