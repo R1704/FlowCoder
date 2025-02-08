@@ -1,3 +1,5 @@
+report/LaTeX/review.md
+
 # Created by https://www.toptal.com/developers/gitignore/api/pycharm,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=pycharm,macos
 
@@ -149,3 +151,54 @@ fabric.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm,macos
 /results/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+# Distribution / packaging
+bin/
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+
+# Translations
+*.mo
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+
+# Rope
+.ropeproject
+
+# Django stuff:
+*.log
+*.pot
+
+# Sphinx documentation
+docs/_build/

@@ -101,6 +101,60 @@ class Program:
     def count_constants(self):
         return 0
 
+    def is_complete(self) -> bool:
+        """Check if the program is complete (no non-terminals)."""
+        if isinstance(self, BasicPrimitive):
+            return True
+        if isinstance(self, Variable):
+            return True
+        if isinstance(self, Function):
+            return all(arg.is_complete() for arg in self.arguments) and self.function.is_complete()
+        if isinstance(self, Lambda):
+            return self.body.is_complete()
+        return False
+
+    def apply_rule(self, rule):
+        """Apply a CFG production rule to extend the program."""
+        if isinstance(self, Function):
+            # Try to apply rule to arguments first
+            for i, arg in enumerate(self.arguments):
+                if not arg.is_complete():
+                    new_arg = arg.apply_rule(rule)
+                    new_args = self.arguments.copy()
+                    new_args[i] = new_arg
+                    return Function(self.function, new_args, self.type)
+            # Then try function itself
+            if not self.function.is_complete():
+                new_func = self.function.apply_rule(rule)
+                return Function(new_func, self.arguments, self.type)
+        
+        return rule  # Replace non-terminal with rule
+
+    def remove_last_rule(self):
+        """Remove the last applied production rule."""
+        if isinstance(self, Function):
+            # Try to remove from arguments first
+            for i in reversed(range(len(self.arguments))):
+                if self.arguments[i].is_complete():
+                    new_args = self.arguments.copy()
+                    new_args[i] = None  # Replace with non-terminal
+                    return Function(self.function, new_args, self.type)
+            # Then try function itself
+            if self.function.is_complete():
+                return Function(None, self.arguments, self.type)
+        
+        return None  # Replace with non-terminal
+
+    def size(self) -> int:
+        """Calculate program size."""
+        if isinstance(self, (BasicPrimitive, Variable)):
+            return 1
+        if isinstance(self, Function):
+            return 1 + sum(arg.size() for arg in self.arguments) + self.function.size()
+        if isinstance(self, Lambda):
+            return 1 + self.body.size()
+        return 0
+
 
 class Variable(Program):
     def __init__(self, variable, type_=UnknownType(), probability={}):

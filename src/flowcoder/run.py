@@ -1,6 +1,3 @@
-import sys
-sys.path.append('/vol/tensusers4/rhommelsheim/master_thesis/src')
-
 from flowcoder.model import GFlowNet
 from flowcoder.data import Data
 from flowcoder.train import Training
@@ -14,9 +11,9 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 logging.getLogger('matplotlib.font_manager').disabled = True
 
-from_checkpoint = True
+from_checkpoint = False
 save_checkpoint = False
-train = False
+train = True
 inference = True
 
 
